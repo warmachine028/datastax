@@ -3,7 +3,7 @@ from setuptools import setup
 setup(name='datastax',
       version='0.0.1',
       description='A python package to handle dataStructures',
-      url='#',
+      url='https://github.com/warmachine028/datastax.git',
       author='Pritam K',
       author_email='pritamkundu771@gmail.com',
       license='MIT',
