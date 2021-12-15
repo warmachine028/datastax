@@ -1,3 +1,0 @@
-datastax
-datastax\linkedlists
-datastax\trees
