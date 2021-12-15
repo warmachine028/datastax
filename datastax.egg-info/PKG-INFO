@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: datastax
+Version: 0.0.1
+Summary: A python package to handle dataStructures
+Home-page: #
+Author: Pritam K
+Author-email: pritamkundu771@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Documentation
+License-File: LICENSE
+
+UNKNOWN
+
