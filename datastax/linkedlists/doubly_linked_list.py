@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 from datastax.linkedlists.linked_list import Node, LinkedList
 
 
 class DoublyNode(Node):
-    def __init__(self, data: Any, nex: Node = None, prev=None):
-        super().__init__(data, nex)
+    def __init__(self, data: Any, nex: DoublyNode = None, prev: DoublyNode = None):
+        super().__init__(data)
+        self.next = nex
         self.prev = prev
     
     def __str__(self):
@@ -17,6 +18,11 @@ class DoublyNode(Node):
 
 
 class DoublyLinkedList(LinkedList):
+    def __init__(self, array: list[Any], head: DoublyNode = None):
+        self._head: Optional[DoublyNode] = head
+        self._tail = head
+        super().__init__(array, head)
+    
     def append(self, data) -> None:
         node = DoublyNode(data, None, self.tail)
         if not self.head: self._head = node
@@ -32,20 +38,9 @@ class DoublyLinkedList(LinkedList):
     def __str__(self, reverse=False, node: DoublyNode = None):
         string = "NULL"
         if not self.head: return string
-        node = node or (self.tail if reverse else self.head)
-        while node:
-            string += f" <-> Node[{node.data}]"
-            node = node.prev if reverse else node.next
+        head = node or (self.tail if reverse else self.head)
+        while head:
+            string += f" <-> Node[{head.data}]"
+            head = head.prev if reverse else head.next
         string += " <-> NULL"
         return string
-
-
-# __main__
-if __name__ == '__main__':
-    D = DoublyLinkedList([*range(5)])
-    print("head -> ", D.head)
-    D.insert(10)
-    D.insert(20)
-    D.append(199)
-    print(D)
-    print(D.__str__(True))

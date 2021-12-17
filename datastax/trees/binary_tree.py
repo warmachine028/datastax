@@ -6,8 +6,8 @@ from queue import Queue
 from typing import Any, Optional
 
 
-def node_builder(value: str, piece_width: int) -> str:
-    value: str = value or ''
+def node_builder(data: Optional[str], piece_width: int) -> str:
+    value: str = data or ''
     gap1 = int(math.ceil(piece_width / 2 - len(value) / 2))
     gap2 = int(math.floor(piece_width / 2 - len(value) / 2))
     return f"{' ' * gap1}{value}{' ' * gap2}"
@@ -15,8 +15,8 @@ def node_builder(value: str, piece_width: int) -> str:
 
 class TreeNode:
     def __init__(self, data: Any,
-                 left: TreeNode = None,
-                 right: TreeNode = None) -> None:
+                 left=None,
+                 right=None) -> None:
         self.left = left
         self.data = data
         self.right = right
@@ -58,24 +58,25 @@ class TreeNode:
                 string_builder += f"└─▶ {values[1] or values[2]}"
         
         return string_builder
+    
+    def __repr__(self): return self.__str__()
 
 
 class BinaryTree:
-    def __init__(self, array: list[Any] = None, root: TreeNode = None):
+    def __init__(self, array: list[Any] = None, root=None):
         self._root = root
         self._construct(array)
-        self.__string = None
+        self.__string: Optional[str] = None
     
     @property
-    def root(self) -> Optional[TreeNode]:
+    def root(self):
         return self._root
     
     @property  # Level Order Traversal -> Tree to array
-    def array_repr(self, root: TreeNode = None) -> list[Any]:
+    def array_repr(self) -> list[Any]:
         array = []
-        queue = Queue()
-        root = root or self._root
-        if root: queue.put(root)
+        queue: Queue[TreeNode] = Queue()
+        if self.root: queue.put(self.root)
         while not queue.empty():
             node = queue.get()
             array.append(node.data)
@@ -84,7 +85,7 @@ class BinaryTree:
         
         return array
     
-    def insert(self, data: Any, path: list[str] = None) -> None:
+    def insert_path(self, data: Any, path: list[str] = None) -> None:
         node = TreeNode(data)
         if not self._root:
             self._root = node
@@ -107,7 +108,7 @@ class BinaryTree:
     
     # Helper function to construct tree by level order -> Array to tree
     def _construct(self, array: list[Any] = None) -> Optional[BinaryTree]:
-        if not array or array[0] is None: return
+        if not array or array[0] is None: return None
         
         queue: Queue[TreeNode] = Queue(len(array))
         current = 1
@@ -131,13 +132,13 @@ class BinaryTree:
     def __str__(self, root: TreeNode = None):
         root = root or self.root
         if not root: return "  NULL"
-        lines: list[list[str]] = []
-        level: list[TreeNode] = [root]
+        lines: list[list[Optional[str]]] = []
+        level: list[Optional[TreeNode]] = [root]
         nodes: int = 1
         max_width: int = 0
         while nodes:
             line: list[Optional[str]] = []
-            next_level: list[TreeNode] = []
+            next_level: list[Optional[TreeNode]] = []
             nodes = 0
             for node in level:
                 if node:
@@ -181,9 +182,9 @@ class BinaryTree:
     
     # Pre Order Traversal of Tree
     def preorder_print(self, root: TreeNode = None) -> str:
-        def string_builder(parent: TreeNode, has_right_child: bool, padding="", component="") -> None:
+        def string_builder(parent: Optional[TreeNode], has_right_child: bool, padding="", component="") -> None:
             if not parent: return
-            self.__string += f"\n{padding}{component}{parent.data}"
+            if self.__string is not None: self.__string += f"\n{padding}{component}{parent.data}"
             if parent is not root: padding += "│   " if has_right_child else "   "
             left_pointer, right_pointer = "├─▶ " if parent.right else "└─▶ ", "└─▶ "
             string_builder(parent.left, bool(parent.right), padding, left_pointer)

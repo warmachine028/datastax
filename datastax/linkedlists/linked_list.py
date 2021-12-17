@@ -10,7 +10,10 @@ class Node:
     
     def __str__(self):
         return f'Node[{self.data}] -> ' \
-               f'Node[{self.next.data}]' if self.next else "NULL"
+               f"{f'Node[{self.next.data}]' if self.next else 'NULL'}"
+    
+    def __repr__(self):
+        return self.__str__()
 
 
 class LinkedList:
@@ -30,7 +33,7 @@ class LinkedList:
     def append(self, data: Any) -> None:
         node = Node(data)
         if not self.head: self._head = node
-        else: self._tail.next = node
+        else: self.tail.next = node
         self._tail = node
     
     def insert(self, data: Any):
