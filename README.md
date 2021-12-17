@@ -5,7 +5,7 @@
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
     <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
     <br>
-    <a href="https://github.com/warmachine028/datastax/releases/tag/V4.2.1-beta"> <img alt="" src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
+    <a href="https://github.com/warmachine028/datastax/releases/tag/0.0.1"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
     <br>
     <img src="https://img.shields.io/github/stars/warmachine028/datastax">
     <a href= "https://github.com/warmachine028/datastax/blob/main/LICENSE"><img src="https://img.shields.io/github/license/warmachine028/datastax?color=orange"></a>
