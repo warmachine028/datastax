@@ -52,22 +52,3 @@ class LinkedList:
     
     def __repr__(self):
         return self.__str__()
-
-
-# __main__
-if __name__ == '__main__':
-    LL = LinkedList()
-    print(LL)
-    LL.insert(10)
-    LL.insert(11)
-    LL.append(90)
-    LL.insert(199)
-    LL.append(109)
-    print(LL)
-    
-    D = LinkedList([*range(5)])
-    D.insert(10)
-    D.insert(20)
-    D.append(199)
-    print(D)
-    # print(D.__str__(True))

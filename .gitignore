@@ -2,6 +2,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
+### MyExtra ###
+.Box_Drawing_Symbols.txt
+desktop.ini
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/

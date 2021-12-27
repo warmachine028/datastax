@@ -132,6 +132,7 @@ class BinaryTree:
     def __str__(self, root: TreeNode = None):
         root = root or self.root
         if not root: return "  NULL"
+        
         lines: list[list[Optional[str]]] = []
         level: list[Optional[TreeNode]] = [root]
         nodes: int = 1
