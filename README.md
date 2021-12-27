@@ -60,7 +60,7 @@
 
 ## Requirements
 
-- Runs on latest Python 3.8+
+- Runs on latest Python 3.7+
 - This Library requires no extra modules
 
 ## Installation
