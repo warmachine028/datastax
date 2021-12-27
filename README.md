@@ -3,16 +3,18 @@
 <div align=center>
     <a href="https://github.com/warmachine028/datastax"><img width=200 src="assets/icon.png" alt="datastax"></a>
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
-    <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
+    <a href="https://pypi.org/project/datastax/0.0.3/" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
     <br>
+    <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
     <a href="https://github.com/warmachine028/datastax/releases/tag/0.0.1"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
     <br>
     <img src="https://img.shields.io/github/stars/warmachine028/datastax">
     <a href= "https://github.com/warmachine028/datastax/blob/main/LICENSE"><img src="https://img.shields.io/github/license/warmachine028/datastax?color=orange"></a>
     <a href="https://github.com/warmachine028/datastax/network/members"><img src="https://img.shields.io/github/forks/warmachine028/datastax?color=cyan"></a>
+    <br>
 </div>
 
-# [Datastax](https://github.com/warmachine028/datastax)
+# [dataStax](https://github.com/warmachine028/datastax)
 
 ## What's New?
 
@@ -60,7 +62,7 @@
 
 ## Requirements
 
-- Runs on latest Python 3.8+
+- Runs on latest Python 3.7+
 - This Library requires no extra modules
 
 ## Installation
@@ -68,7 +70,7 @@
 1. Use the python package manager [pip](https://pip.pypa.io/en/stable/) to install datastax.
 
 ```bash
-pip install -i https://test.pypi.org/simple/ datastax
+pip install datastax
 ```
 
 ## Usage
