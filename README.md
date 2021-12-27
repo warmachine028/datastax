@@ -16,11 +16,11 @@
 
 ## What's New?
 
-- Added terminal demo
-- Improved type hinting using mypy static type checker
-- Removed few bugs and potential errors
-- Purified test_structure
-- Improvised for uploading in PyPI
+- Added Arrays
+    - Included Array Implementation of Stack
+    - Included Array Implementation of Queue
+- Added LinkedList Implementation of Queue
+- Added Heap Trees (Max Heap and Min Heap)
 
 ## Table of Contents
 
@@ -65,12 +65,10 @@
 
 ## Installation
 
-1. Clone this repository locally
-2. Reach base folder _datastax/_
-3. Use the python package manager [pip](https://pip.pypa.io/en/stable/) to install datastax.
+1. Use the python package manager [pip](https://pip.pypa.io/en/stable/) to install datastax.
 
 ```bash
-pip install .
+pip install -i https://test.pypi.org/simple/ datastax
 ```
 
 ## Usage
@@ -93,12 +91,14 @@ pip install .
   Available modules are:
   1. LinkedLists
   2. Trees
-
+  
   Usage
   $ py datastax <data-structure> [data]
   Data Structures:
-    trees          Hierarchical DS
-    linkedlists    Linear DS
+  ->  trees          Hierarchical DS
+  ->  linkedlists    Linear DS
+  ->  arrays         Fixed Size Linear DS
+
   ```
 - Then follow as the instruction guides
 
@@ -130,5 +130,19 @@ print(bt)
    ┌──┴──┐              
    4     5              
 """
-```
+---------------------------------------------------
+from datastax.trees import MinHeapTree
 
+MiHT = MinHeapTree([1, 2, 4, 2, 6, 5, 9, 18, 3, 2])
+print(MiHT)
+## OUTPUT
+"""
+                        1                       
+            ┌───────────┴───────────┐           
+            2                       4           
+      ┌─────┴─────┐           ┌─────┴─────┐     
+      2           2           5           9     
+   ┌──┴──┐     ┌──┘                             
+  18     3     6                                
+"""
+```

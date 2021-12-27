@@ -1,18 +1,28 @@
 import sys
 
-from datastax import linkedlists as ll, trees
+from datastax import linkedlists as ll, trees, arrays
 
 
 def main():
     if len(sys.argv) > 1:
         data_structure = sys.argv[1].lower()
         data = sys.argv[2:] if len(sys.argv) > 2 else [*range(5)]  # take User given data or default
-        if data_structure in ('linkedlist', "linkedlists"):
+        if data_structure in ('array', 'arrays'):
+            queue = arrays.Queue(len(data))
+            stack = arrays.Stack(len(data))
+            for i in data:
+                stack.push(i)
+                queue.enqueue(i)
+            print("Visuals for Arrays:\n\n"
+                  f"1. Stack: \n{stack}\n\n"
+                  f"2. Queue: \n{queue}\n\n")
+        elif data_structure in ('linkedlist', "linkedlists"):
             print("Visuals for LinkedLists:\n\n"
                   f"1. Singly Linked List: \n{ll.LinkedList(data)}\n\n"
                   f"2. Doubly Linked List: \n{ll.DoublyLinkedList(data)}\n\n"
                   f"3. Circular Linked List: \n{ll.CircularLinkedList(data)}\n\n"
-                  f"4. Doubly Circular List: \n{ll.DoublyCircularList(data)}\n\n")
+                  f"4. Doubly Circular List: \n{ll.DoublyCircularList(data)}\n\n"
+                  f"5. Queue: \n{ll.Queue(data)}\n\n")
         elif data_structure in ('tree', 'trees'):
             print("Visuals for Trees:\n\n"
                   f"1. Binary Tree \n{trees.BinaryTree(data)}\n\n"
@@ -27,8 +37,9 @@ def main():
               "\nUsage\n"
               "$ py datastax <data-structure> [data]\n"
               "Data Structures: \n"
-              "  trees          Hierarchical DS\n"
-              "  linkedlists    Linear DS")
+              "->  trees          Hierarchical DS\n"
+              "->  linkedlists    Linear DS\n"
+              "->  arrays         Fixed Size Linear DS")
 
 
 if __name__ == '__main__':
