@@ -3,7 +3,7 @@
 <div align=center>
     <a href="https://github.com/warmachine028/datastax"><img width=200 src="assets/icon.png" alt="datastax"></a>
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
-    <a href=" " ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
+    <a href="https://pypi.org/project/datastax/0.0.3/" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
     <br>
     <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
     <a href="https://github.com/warmachine028/datastax/releases/tag/0.0.1"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
