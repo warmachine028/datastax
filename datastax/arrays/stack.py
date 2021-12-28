@@ -2,6 +2,8 @@
 import math
 from typing import Any, Union
 
+from datastax.errors import UnderFlowError, OverFlowError
+
 
 class Stack:
     def __init__(self, capacity: int = None):
@@ -9,7 +11,7 @@ class Stack:
         self._array: list[Any] = []
     
     @property
-    def array(self):
+    def array(self) -> list[Any]:
         return self._array
     
     def is_full(self) -> bool:
@@ -20,15 +22,15 @@ class Stack:
     
     def push(self, item: Any) -> int:
         if self.is_full():  # Overflow Condition
-            print('OVERFLOW WARNING: ATTEMPTED PUSH OPERATION IN FULL STACK')
-            return -1
+            raise OverFlowError(self)
+        
         self._array.append(item)
         return 0
     
     def pop(self) -> Union[int, Any]:
         if self.is_empty():  # Underflow Condition handled
-            print('UNDERFLOW WARNING: ATTEMPTED POP OPERATION FROM EMPTY STACK')
-            return -1
+            raise UnderFlowError(self)
+        
         return self._array.pop()
     
     def peek(self) -> str:

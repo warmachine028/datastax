@@ -1,7 +1,7 @@
-from datastax.trees import MinHeapTree
+from datastax.trees import HeapTree
 
 items = ['E', 'A', 'G', 'X', 'F', 'D', 'Z', 'B']
-h = MinHeapTree()
+h = HeapTree()
 for item in items:
     h.heappush(item)
     print(h)
@@ -19,7 +19,7 @@ print(my)
 
 # print(H)
 
-MiHT = MinHeapTree()
+MiHT = HeapTree()
 print(MiHT)
 MiHT.heappush(30)
 print(MiHT)

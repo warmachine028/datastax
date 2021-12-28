@@ -51,4 +51,4 @@ insert(q, LinkedList([1, 2]).head)  # inserting a singly node
 insert(q, LinkedList([1, 2]))  # inserting singly linked list
 q.dequeue()
 print(q)
-print(q.array_repr)
+print(q.array)
