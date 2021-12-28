@@ -2,6 +2,8 @@
 import math
 from typing import Any, Union
 
+from datastax.errors import OverFlowError, UnderFlowError
+
 
 class Queue:
     def __init__(self, capacity: int = None):
@@ -10,27 +12,26 @@ class Queue:
         self._front = self._rear = 0
     
     @property
-    def array_repr(self) -> list[Any]:
+    def array(self) -> list[Any]:
         return self._array[self._front:self._rear]
     
     def is_full(self) -> bool:
         return len(self._array) == self._capacity
     
     def is_empty(self) -> bool:
-        return not len(self._array)
+        return not self._array
     
     def enqueue(self, item: Any) -> int:
         if self.is_full():
-            print("WARNING: THE QUEUE IS ALREADY FULL, CANT ENQUEUE ANY FURTHER")
-            return -1
+            raise OverFlowError(self)
+        
         self._array.append(item)
         self._rear += 1
         return 0
     
     def dequeue(self) -> Union[int, Any]:
         if self.is_empty() or self._front >= self._rear:
-            print("WARNING: THE QUEUE IS ALREADY EMPTY, CANT DEQUEUE ANY FURTHER")
-            return -1
+            raise UnderFlowError(self)
         deleted_item = self._array[self._front]
         self._front += 1
         return deleted_item
@@ -65,5 +66,4 @@ class Queue:
         lower_part = f"{lower_part[:-1]}{'╜' if len(self._array) == self._front else '┘'}\n"
         return upper_part + middle_part + lower_part
     
-    def __repr__(self):
-        return self.__str__()
+    def __repr__(self): return self.__str__()

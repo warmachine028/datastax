@@ -10,12 +10,15 @@ def main():
         if data_structure in ('array', 'arrays'):
             queue = arrays.Queue(len(data))
             stack = arrays.Stack(len(data))
+            pqueue = arrays.PriorityQueue(len(data))
             for i in data:
                 stack.push(i)
                 queue.enqueue(i)
+                pqueue.enqueue(i)
             print("Visuals for Arrays:\n\n"
                   f"1. Stack: \n{stack}\n\n"
-                  f"2. Queue: \n{queue}\n\n")
+                  f"2. Queue: \n{queue}\n\n"
+                  f"3. Priority Queue: \n{pqueue}\n\n")
         elif data_structure in ('linkedlist', "linkedlists"):
             print("Visuals for LinkedLists:\n\n"
                   f"1. Singly Linked List: \n{ll.LinkedList(data)}\n\n"
@@ -34,6 +37,7 @@ def main():
         print("Available modules are:\n"
               "1. LinkedLists\n"
               "2. Trees\n"
+              "3. Arrays\n"
               "\nUsage\n"
               "$ py datastax <data-structure> [data]\n"
               "Data Structures: \n"

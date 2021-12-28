@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 from sys import maxsize
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
+from datastax.errors import OverFlowError, UnderFlowError
 from datastax.linkedlists.linked_list import LinkedList, Node
 
 
@@ -27,16 +28,14 @@ class Queue(LinkedList):
     
     def enqueue(self, data: Any) -> int:
         if self.is_full():
-            print("WARNING: THE QUEUE IS ALREADY FULL, CANT ENQUEUE ANY FURTHER")
-            return -1
+            raise OverFlowError(self)
         super().append(data)
         self._rear += 1
         return 0
     
-    def dequeue(self) -> Union[int, Any]:
+    def dequeue(self) -> Any:
         if self.is_empty():
-            print("WARNING: THE QUEUE IS ALREADY EMPTY, CANT DEQUEUE ANY FURTHER")
-            return -1
+            raise UnderFlowError(self)
         # Dequeue Operation
         deleted_node = self.head
         deleted_item = deleted_node.data

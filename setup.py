@@ -5,7 +5,7 @@ from setuptools import setup
 
 try:
     # https://stackoverflow.com/questions/30700166/python-open-file-error
-    with codecs.open("README.md", 'r', errors='ignore') as file:
+    with codecs.open("README.md", 'r', errors='ignore', encoding='utf8') as file:
         readme_contents = file.read()
 
 except Exception as error:
@@ -17,6 +17,7 @@ except Exception as error:
                       '1. Arrays:\n' \
                       '   a. Queue\n' \
                       '   b. Stack\n\n' \
+                      '   c. Priority Queue\n\n' \
                       '2. LinkedLists:\n' \
                       '   a. Singly Linked List\n' \
                       '   b. Doubly Linked List\n' \
@@ -27,13 +28,13 @@ except Exception as error:
                       '   a. Binary Tree\n' \
                       '   b. Binary Search Tree\n' \
                       '   c. AVL Tree\n' \
-                      '   d. Min Heap Tree\n' \
-                      '   e. Max Heap Tree'
+                      '   d. Heap Tree\n' \
+                      '   e. Min Heap Tree'
     sys.stderr.write("Warning: Could not open README.md due %s\n" % error)
 
 setup(
     name='datastax',
-    version='0.0.3',
+    version='0.1.0',
     packages=[
         'datastax',
         'datastax/arrays',

@@ -1,12 +1,12 @@
-    updated: Friday, 17th December 2021
+    updated: Wednesday, 29th December 2021
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax"><img width=200 src="assets/icon.png" alt="datastax"></a>
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
-    <a href="https://pypi.org/project/datastax/0.0.3/" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
+    <a href="https://pypi.org/project/datastax" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
     <br>
     <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
-    <a href="https://github.com/warmachine028/datastax/releases/tag/0.0.1"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
+    <a href="https://github.com/warmachine028/datastax/releases/tag/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
     <br>
     <img src="https://img.shields.io/github/stars/warmachine028/datastax">
     <a href= "https://github.com/warmachine028/datastax/blob/main/LICENSE"><img src="https://img.shields.io/github/license/warmachine028/datastax?color=orange"></a>
@@ -18,11 +18,10 @@
 
 ## What's New?
 
-- Added Arrays
-    - Included Array Implementation of Stack
-    - Included Array Implementation of Queue
-- Added LinkedList Implementation of Queue
-- Added Heap Trees (Max Heap and Min Heap)
+- Included Priority Queue
+- Replaced Bad Implementation of max heap with arrays to true tree implementation
+- Added Proper MinHeap DataStructure
+- OverFlow and UnderFlow Errors
 
 ## Table of Contents
 
@@ -32,6 +31,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Whats Next](#what's-next)
 
 ## Introduction
 
@@ -93,6 +93,7 @@ pip install datastax
   Available modules are:
   1. LinkedLists
   2. Trees
+  3. Arrays
   
   Usage
   $ py datastax <data-structure> [data]
@@ -146,5 +147,31 @@ print(MiHT)
       2           2           5           9     
    ┌──┴──┐     ┌──┘                             
   18     3     6                                
+"""
+```
+
+## What's Next
+
+- Implementation of **Sum Segment Tree, Expression Tree**
+- Proper tests using UnitTest Lib
+- Enhanced Documentation
+- Implementation of Other Abstract data types like **LRU_CACHE, LFU_CACHE, SKIP_LIST**
+- If things go accordingly I am planning to implement **threaded binary tree**. Seems a completely impossible task to
+  show threads nut I'll try my best
+- Beautification of [README.md](README.md)
+
+### Upcoming
+
+```py
+from datastax.trees import ThreadedBinaryTree as Tbt
+
+tbt = Tbt(['a', 'b', 'c', 'd', 'e'])
+"""
+Example 3:                    
+                                a
+                          ┌─────┴─────┐
+                          b    │ └────c
+                       ┌──┴──┐ │
+                       d─┘ └─e─┘
 """
 ```
