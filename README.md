@@ -1,7 +1,8 @@
     updated: Wednesday, 29th December 2021
 
 <div align=center>
-    <a href="https://github.com/warmachine028/datastax"><img width=200 src="assets/icon.png" alt="datastax"></a>
+    <a href="https://github.com/warmachine028/datastax">
+    <img width=200 src="https://github.com/warmachine028/datastax/blob/main/assets/icon.png" alt="datastax"></a>
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
     <a href="https://pypi.org/project/datastax" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
     <br>
@@ -14,14 +15,14 @@
     <br>
 </div>
 
-# [dataStax](https://github.com/warmachine028/datastax)
-
 ## What's New?
 
 - Included Priority Queue
 - Replaced Bad Implementation of max heap with arrays to true tree implementation
 - Added Proper MinHeap DataStructure
-- OverFlow and UnderFlow Errors
+- Added OverFlow and UnderFlow Errors
+- Added and configured Linting with flake8 in GitHub Actions
+- Added and configured Static TypeChecking with mypy
 
 ## Table of Contents
 
@@ -31,12 +32,13 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Whats Next](#what's-next)
+- [What's Next](#whats-next)
 
 ## Introduction
 
-- This is a very simple yet powerful project to implement day to day abstract data structures.
-- A pure implementation of Python in representing Trees and Linkedlists in basic command prompt
+- This is a very simple yet powerful project to implement day to day abstract data structures
+- A pure implementation of Python in representing Tree, Linkedlist and Array based datastructures in basic command
+  prompt
 
 - It helps visualize each data structure for better understanding
 - Students can be beneficial in using this Package
@@ -124,30 +126,38 @@ from datastax.trees import BinaryTree
 
 bt = BinaryTree([1, 2, 3, 4, 5])
 print(bt)
+```
 
-## OUTPUT:
-"""
-              1           
+```shell
+$ OUTPUT:
+
+             1           
        ┌─────┴─────┐     
-       2             3     
-   ┌──┴──┐              
-   4      5              
-"""
+       2           3     
+    ┌──┴──┐              
+    4     5              
+```
+
 ---------------------------------------------------
+
+```py
 from datastax.trees import MinHeapTree
 
 MiHT = MinHeapTree([1, 2, 4, 2, 6, 5, 9, 18, 3, 2])
 print(MiHT)
-## OUTPUT
-"""
-                           1                       
-             ┌───────────┴───────────┐           
-             2                           4           
-      ┌─────┴─────┐             ┌─────┴─────┐     
-      2             2             5              9     
+```
+
+```shell
+$ OUTPUT
+
+                        1                       
+            ┌───────────┴───────────┐           
+            2                       4           
+      ┌─────┴─────┐           ┌─────┴─────┐     
+      2           2           5           9     
    ┌──┴──┐     ┌──┘                             
-  18      3     6                                
-"""
+  18     3     6    
+
 ```
 
 ## What's Next
@@ -166,12 +176,15 @@ print(MiHT)
 from datastax.trees import ThreadedBinaryTree as Tbt
 
 tbt = Tbt(['a', 'b', 'c', 'd', 'e'])
-"""
-Example 3:                    
+print(tbt)
+```
+
+```shell
+$ OUTPUT               
                                 a
                           ┌─────┴─────┐
-                          b     │ └────c
+                          b    │ └────c
                        ┌──┴──┐ │
                        d─┘ └─e─┘
-"""
+
 ```

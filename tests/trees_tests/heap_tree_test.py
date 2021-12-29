@@ -27,11 +27,12 @@ x = MiHT.heappop()
 print(x)
 print("HEAP MUST BE EMPTY")
 print(MiHT)
-for item in [*range(9, -1, -1)][::-1]: MiHT.heappush(item)
+for item in [*range(9, -1, -1)][::-1]:
+    MiHT.heappush(item)
 print(MiHT.preorder_print())
 print(MiHT.array_repr)
-items = [1, 3, 4, 6, 3, 8, 9, 12, 14, 2]
-for item in items:
+
+for item in [1, 3, 4, 6, 3, 8, 9, 12, 14, 2]:
     MiHT.heappush(item)
     print(MiHT)
     print(MiHT.array_repr)

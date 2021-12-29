@@ -3,7 +3,7 @@ from datastax.linkedlists import LinkedList
 
 #
 q = Queue(2)  # Fixed Size Queue
-q.dequeue()  # deletion from empty queue
+# q.dequeue()  # deletion from empty queue
 print(q)
 q.enqueue(50)  # inserting in empty queue
 print(q)
@@ -34,7 +34,7 @@ q.enqueue(10)  # inserting in queue with all garbage values
 print(q)
 
 
-# inserting miscellaneos items in queue
+# inserting miscellaneous items in queue
 def insert(queue: Queue, item) -> None:
     queue.enqueue(item)
     print(queue)

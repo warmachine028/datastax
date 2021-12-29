@@ -9,7 +9,7 @@ class MinHeapTree(HeapTree):
         if node.parent and node.parent.data > node.data:
             node.parent.data, node.data = node.data, node.parent.data
             self.heapify(node.parent)
-    
+
     def shift_up(self, node: HeapTreeNode) -> None:
         root = node
         left_child = root.left
@@ -18,6 +18,7 @@ class MinHeapTree(HeapTree):
             root = left_child
         if right_child and right_child.data < root.data:
             root = right_child
-        if root is node: return
+        if root is node:
+            return
         root.data, node.data = node.data, root.data
         self.shift_up(root)
