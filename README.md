@@ -15,6 +15,8 @@
     <br>
 </div>
 
+# [dataStax](https://github.com/warmachine028/datastax)
+
 ## What's New?
 
 - Included Priority Queue
@@ -88,7 +90,7 @@ pip install datastax
     - **Unix based systems**:
 
   ```bash
-  $ python -m datastax
+  $ python3 -m datastax
   ```
     - _Result_
   ```bash
@@ -98,7 +100,7 @@ pip install datastax
   3. Arrays
   
   Usage
-  $ py datastax <data-structure> [data]
+  > py datastax <data-structure> [data]
   Data Structures:
   ->  trees          Hierarchical DS
   ->  linkedlists    Linear DS
