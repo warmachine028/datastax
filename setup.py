@@ -51,7 +51,8 @@ setup(
     download_url="https://pypi.python.org/pypi/datastax",
     project_urls={
         "Bug Tracker": "https://github.com/warmachine028/datastax/issues",
-        "Source Code": "https://github.com/warmachine028/datastax"
+        "Documentation": "https://github.com/warmachine028/datastax#readme",
+        "Source Code": "https://github.com/warmachine028/datastax",
     },
     license='MIT',
     classifiers=[
