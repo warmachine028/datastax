@@ -23,6 +23,7 @@
 - Added Threaded Binary Trees
 - Added LRU Cache
 - Added Proper and effective testcases
+- Added Search Functionality for BST and AVLTree
 
 ## Table of Contents
 
