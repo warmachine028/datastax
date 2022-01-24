@@ -1,10 +1,11 @@
-    updated: Wednesday, 29th December 2021
+    updated: Monday, 24th January 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
     <img width=200 src="https://github.com/warmachine028/datastax/blob/main/assets/icon.png" alt="datastax"></a>
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
     <a href="https://pypi.org/project/datastax" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
+    <a href="https://pypi.org/project/datastax/#files"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/datastax.svg?label=Pypi%20downloads"></a>
     <br>
     <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
     <a href="https://github.com/warmachine028/datastax/releases/tag/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
@@ -19,12 +20,9 @@
 
 ## What's New?
 
-- Included Priority Queue
-- Replaced Bad Implementation of max heap with arrays to true tree implementation
-- Added Proper MinHeap DataStructure
-- Added OverFlow and UnderFlow Errors
-- Added and configured Linting with flake8 in GitHub Actions
-- Added and configured Static TypeChecking with mypy
+- Added Threaded Binary Trees
+- Added LRU Cache
+- Added Proper and effective testcases
 
 ## Table of Contents
 
@@ -41,17 +39,17 @@
 - This is a very simple yet powerful project to implement day to day abstract data structures
 - A pure implementation of Python in representing Tree, Linkedlist and Array based datastructures in basic command
   prompt
-
 - It helps visualize each data structure for better understanding
 - Students can be beneficial in using this Package
 - This project is still under construction
 
 ## Problem Statement
 
-- Often in the beginning CS students face problems in understanding the internal architecture of ADTs
+- Often at the beginning of B.Tech Course, CS students face a lot of problems understanding the internal architecture of
+  complex ADTs.
 - While solving coding challenges locally where test cases have to be written using these ADTs, it becomes really
   cumbersome to write these data structures from scratch.
-- Often while writing a programs implementing these ADS we encounter lots of errors just because we are unable to
+- Also, when writing programs which implements these ADS, we encounter lots of errors just because we are unable to
   preview what's actually going on under the hood.
 
 ## Benefits
@@ -123,6 +121,38 @@ pip install datastax
 
 ### Practical Usage
 
+- **Queue**
+
+```py
+from datastax.arrays import Queue
+
+# Building a Queue Data Structure with fixed capacity
+queue = Queue(capacity=5)
+
+# Enqueueing items inside queue
+for item in ('item 1', 'item 2'):
+    queue.enqueue(item)
+
+# Performing Dequeue Operation 
+queue.dequeue()
+
+queue.enqueue('item 3')
+print(queue)
+```
+
+```shell
+$ OUTPUT:
+
+         ┌──────────╥──────────┬──────────┐
+FRONT -> │    ╳     ║  item 2  │  item 3  │ <- REAR
+         └──────────╨──────────┴──────────┘
+      
+```
+
+---------------------------------------------------
+
+- **BinaryTree**
+
 ```py
 from datastax.trees import BinaryTree
 
@@ -141,6 +171,8 @@ $ OUTPUT:
 ```
 
 ---------------------------------------------------
+
+- **MinHeapTree**
 
 ```py
 from datastax.trees import MinHeapTree
@@ -162,31 +194,56 @@ $ OUTPUT
 
 ```
 
-## What's Next
+---------------------------------------------------
 
-- Implementation of **Sum Segment Tree, Expression Tree**
-- Proper tests using UnitTest Lib
-- Enhanced Documentation
-- Implementation of Other Abstract data types like **LRU_CACHE, LFU_CACHE, SKIP_LIST**
-- If things go accordingly I am planning to implement **threaded binary tree**. Seems a completely impossible task to
-  show threads nut I'll try my best
-- Beautification of [README.md](README.md)
-
-### Upcoming
+- **ThreadedBinaryTree**
 
 ```py
 from datastax.trees import ThreadedBinaryTree as Tbt
 
-tbt = Tbt(['a', 'b', 'c', 'd', 'e'])
+tbt = Tbt(['a', 'b', 'c', 'd', 'e'], insertion_logic="BinaryTree")
 print(tbt)
 ```
 
 ```shell
 $ OUTPUT               
-                                a
-                          ┌─────┴─────┐
-                          b    │ └────c
-                       ┌──┴──┐ │
-                       d─┘ └─e─┘
+                                   ┌───┐
+   ┌───────────────────────────> DUMMY │<──────────────┐
+   │                           ┌───┴───┘               │
+   │                           a                       │        
+   │           ┌───────────────┴───────────────┐       │        
+   │           b           │           │       c       │        
+   │   ┌───────┴───────┐   │           └───────┴───────┘        
+   │   d   │       │   e   │                                    
+   └───┴───┘       └───┴───┘                                    
 
+```
+
+## What's Next
+
+- Implementation of **Segment Trees**
+- Proper tests using UnitTest Lib
+- Enhanced Documentation
+- Implementation of Other Abstract data types like **LFU_CACHE, SKIP_LIST**
+- Beautification of [README.md](README.md)
+
+### Upcoming
+
+```py
+from datastax.trees import SumSegmentTree
+
+st = St([1, 3, 5, 7, 9, 11])
+print(st)
+```
+
+```shell
+$ OUTPUT               
+                       36                       
+            ┌───────────┴───────────┐           
+            9                      27           
+      ┌─────┴─────┐           ┌─────┴─────┐     
+      4           5          16          11     
+   ┌──┴──┐     ┌──┴──┐                          
+   1     3     7     9                          
+                          
 ```

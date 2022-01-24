@@ -1,12 +1,128 @@
+import unittest
+from typing import Optional, Any
+
 from datastax.linkedlists import DoublyLinkedList
 
-DLL = DoublyLinkedList([*range(5)])
-print("head -> ", DLL.head)  # head ->  NULL ⟺ Node[0] ⟺ Node[1]
 
-DLL.insert(10)
-DLL.insert(20)
-DLL.append(199)
-print(DLL)
-# NULL <-> Node[20] <-> Node[10] <-> Node[0] <-> Node[1] <-> Node[2] <-> Node[3] <-> Node[4] <-> Node[199] <-> NULL
-print(DLL.__str__(True))
-# NULL <-> Node[199] <-> Node[4] <-> Node[3] <-> Node[2] <-> Node[1] <-> Node[0] <-> Node[10] <-> Node[20] <-> NULL
+class TestDoublyLinkedList(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.d_linkedList = DoublyLinkedList()
+
+    def test_append(self):
+        # testing appending
+        for i in range(1, 6):
+            self.d_linkedList.append(i)
+        self.assertEqual([*range(1, 6)], self.items_in())
+        self.assertEqual([*range(1, 6)][::-1], self.items_from_tail())
+
+        # testing insert after appending
+        self.d_linkedList.insert(9)
+        self.assertEqual([9, *range(1, 6)], self.items_in())
+        self.assertEqual([9, *range(1, 6)][::-1], self.items_from_tail())
+
+    def test_building_from_existing_node(self):
+        existing_linked_list = DoublyLinkedList([*range(10)])
+        ll = DoublyLinkedList([*range(10, 20)], existing_linked_list.tail)
+
+        # might be able to construct
+        self.assertEqual([*range(20)], self.items_in(existing_linked_list))
+
+        # but the tail of existing_linked_list will remain same
+        self.assertNotEqual([*range(20)][::-1],
+                            self.items_from_tail(existing_linked_list))
+        self.assertNotEqual(existing_linked_list.tail, ll.tail)
+
+        # the tail must be manually updated
+        existing_linked_list._tail = ll.tail
+        self.assertEqual(existing_linked_list.tail, ll.tail)
+        self.assertEqual([*range(20)][::-1], self.items_from_tail(
+            existing_linked_list))
+
+    def test_construction(self):
+        items = [
+            [1, 2, 3, 4, 5, 6],  # <- Using general list of ints
+            [*range(10)],  # <- Using range object unpacking in list
+            [],  # <- Using Empty list
+            [None],  # <- Using only None item passed through list
+            [None, 1, 2, 3, 4, 5],  # <- Using First item as None
+            None,  # <- Using None passed directly
+        ]
+        results = [
+            [[1, 2, 3, 4, 5, 6], 1, 6],
+            [[*range(10)], 0, 9],
+            [[], None, None],
+            [[], None, None],
+            [[], None, None],
+            [[], None, None]
+        ]
+        for item, result in zip(items, results):
+            dll = DoublyLinkedList(item)
+            # checking linkedlist items
+            self.assertEqual(result[0], self.items_in(dll))
+            # checking items from the end
+            self.assertEqual(result[0][::-1], self.items_from_tail(dll))
+            # checking head
+            self.assertEqual(result[1], dll.head.data if dll.head else None)
+            # checking tail
+            self.assertEqual(result[2], dll.tail.data if dll.tail else None)
+
+    def test_insert(self):
+        # testing inserting
+        for i in range(1, 6):
+            self.d_linkedList.insert(i)
+        self.assertEqual([[*range(5, 0, -1)], [*range(1, 6)]],
+                         [self.items_in(), self.items_from_tail()])
+
+        # testing append after inserting
+        self.d_linkedList.append(9)
+        self.assertEqual([[*range(5, 0, -1), 9], [9, *range(1, 6)]],
+                         [self.items_in(), self.items_from_tail()])
+
+    def test_inserting_heterogeneous_items(self):
+        # inserting miscellaneous items
+        items = [
+            {1: 2, 2: 3, 3: 4},  # -> dictionary
+            {1, 2, 3, 4, 5, 6, 7},  # -> set
+            [1, 2, 3, 4, 5],  # -> list
+            1234567890,  # -> integer
+            "string",  # -> string
+            'A',  # -> char
+
+            # Inserting Uncommon items
+            DoublyLinkedList([1, 2]).head,  # -> DoublyNode
+            DoublyLinkedList([1, 2]),  # ->  self referential type
+            None  # -> * can't be inserted as first item but otherwise okay...
+            # entire list will be discarded if Node as first element
+        ]
+        for item in items:
+            self.d_linkedList.append(item)
+
+        self.assertEqual(items, self.items_in())
+        self.assertEqual(items[::-1], self.items_from_tail())
+
+    def items_in(self, d_linked_list: DoublyLinkedList = None
+                 ) -> list[Optional[Any]]:
+        if d_linked_list is None:
+            d_linked_list = self.d_linkedList
+        result: list[Optional[Any]] = []
+        head = d_linked_list.head
+        while head:
+            result.append(head.data)
+            head = head.next
+        return result
+
+    def items_from_tail(self, d_linked_list: DoublyLinkedList = None
+                        ) -> list[Optional[Any]]:
+        if d_linked_list is None:
+            d_linked_list = self.d_linkedList
+        result: list[Optional[Any]] = []
+        tail = d_linked_list.tail
+        while tail:
+            result.append(tail.data)
+            tail = tail.prev
+        return result
+
+
+if __name__ == '__main__':
+    unittest.main()

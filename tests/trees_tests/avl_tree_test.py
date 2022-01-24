@@ -1,18 +1,223 @@
-from datastax.trees import AVLTree
+import random
+import string
+import unittest
 
-avl = AVLTree()
-for item in [*range(10)]:
-    avl.insert(item)
-    print(avl)
-# print(avl)
-print(AVLTree([10, 9, 8, 7, 2, 1, 99, 18, 17, 25, 23]))
-print(AVLTree([10, [1, 2, 3]]))
-print(AVLTree([[2, 3], [1, 2, 3], [1, 3, 2]]))
-print(AVLTree([1, 1, 1]))
+from datastax.errors import DuplicateNodeWarning
+from datastax.trees import AVLTree, AVLNode
+from tests.trees_tests.common_helper_functions import (
+    level_wise_items,
+    inorder_items
+)
 
-avt = AVLTree([*range(1, 8)])
-avt.insert(9)
-avt.insert(7.5)
-avt.insert(8.5)
-print(avt)
-print(avt.array_repr)
+
+class TestAVLTree(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.avt = AVLTree()
+        self.test_cases = 10
+        self.max_sample_size = 10
+        self.print_test_cases = [
+            [1],
+            [None, 10],
+            [10, None, None],
+            ['root', None, None, 'child'],
+            ["1", "B", "Baxy", "D"],
+            [1, None, 2, 3, None, None, 4, 5]
+        ]
+
+    def test_array_representation(self):
+        testcases = [
+            [*range(10)],
+            [None, 10],
+            [10, None, None],
+            ['root', None, None, 'child']
+        ]
+        results = [
+            [3, 1, 7, 0, 2, 5, 8, 4, 6, 9],
+            [],
+            [10],
+            ['root', 'child']
+        ]
+        for testcase, result in zip(testcases, results):
+            tree = AVLTree(testcase)
+            self.assertEqual(result, tree.array_repr)
+
+    def test_balance_factor(self):
+        numbers = range(-100, 100)
+        for _ in range(self.test_cases):
+            sample_size = random.randint(1, self.max_sample_size)
+            sample = random.sample(numbers, sample_size)
+
+            # Constructing tree with random numbers
+            tree = AVLTree(sample)
+            self.assertIn(tree.balance_factor(tree.root), range(-1, 2))
+
+    def test_construction(self):
+        items = [
+            [*range(1, 7)],  # <- Using general list of ints
+            [*range(10)],  # <- Using range object unpacking in list
+            [],  # <- Using Empty list
+            [None],  # <- Using only None item passed through list
+            [None, 1, 2, 3, 4, 5],  # <- Using First item as None
+            None,  # <- Using None passed directly
+        ]
+        results = [
+            [[4, 2, 5, 1, 3, 6], 4],
+            [[3, 1, 7, 0, 2, 5, 8, 4, 6, 9], 3],
+            [[], None],
+            [[], None],
+            [[], None],
+            [[], None]
+        ]
+        for item, result in zip(items, results):
+            tree = AVLTree(item)
+            # checking tree items
+            self.assertEqual(result[0], level_wise_items(tree))
+            # checking root
+            self.assertEqual(result[1], tree.root.data if tree.root else None)
+
+        # Construct with existing root
+        root_node = AVLNode(6)
+        with self.assertWarns(DuplicateNodeWarning):
+            tree = AVLTree([*range(9, 0, -1)], root_node)
+            self.assertEqual([6, 4, 8, 2, 5, 7, 9, 1, 3],
+                             level_wise_items(tree))
+
+    def test_insert(self):
+        # inserting using insert_path
+        with self.assertRaises(NotImplementedError):
+            self.avt.insert_path(10)
+        self.assertEqual([], level_wise_items(self.avt))
+
+        # testing insertion
+        data = [4, 3, 1, 2, 5, 3, 2, 1, 9]
+        results = [
+            [4],
+            [4, 3],
+            [3, 1, 4],
+            [3, 1, 4, 2],
+            [3, 1, 4, 2, 5],
+            [3, 1, 5, 2, 4, 9]
+        ]
+        # Normal inserting
+        for item, result in zip(data[:5], results[:5]):
+            self.avt.insert(item)
+            self.assertEqual(result, level_wise_items(self.avt))
+
+        # Testing warnings
+        for item in data[5:-1]:
+            with self.assertWarns(DuplicateNodeWarning):
+                self.avt.insert(item)
+
+        self.avt.insert(data[-1])
+        self.assertEqual(results[-1], level_wise_items(self.avt))
+
+    def test_inserting_heterogeneous_items(self):
+        # inserting miscellaneous items
+        items = [
+            {1: 2, 2: 3, 3: 4},  # -> dictionary
+            {1, 2, 3, 4, 5, 6, 7},  # -> set
+            [1, 2, 3, 4, 5],  # -> list
+            1234567890,  # -> integer
+            "string",  # -> string
+            'A',  # -> char
+            # Inserting Uncommon items
+            AVLTree([1, 2]).root,  # -> Node
+            AVLTree([1, 2]),  # ->  self referential type
+            None  # -> * can't be inserted anywhere
+            # entire list will be discarded if Node as first element
+        ]  # Can't even insert the rest of the items
+
+        # Can't perform comparison operation between heterogeneous items
+        with self.assertRaises(TypeError):
+            AVLTree(items)
+
+    def test_preorder_print(self):
+        results = [
+            '\n1', 'NULL', '\n10', '\nroot'
+                                   '\n└─▶ child',
+
+            '\nB'
+            '\n├─▶ 1'
+            '\n└─▶ Baxy'  # Normal AVLTree Repr
+            '\n   └─▶ D',
+
+            '\n2'
+            '\n├─▶ 1'
+            '\n└─▶ 4'  # An example of a perfectly balanced binary tree
+            '\n   ├─▶ 3'
+            '\n   └─▶ 5'
+        ]
+
+        for testcase, result in zip(self.print_test_cases, results):
+            tree = AVLTree(testcase)
+            self.assertEqual(result, tree.preorder_print())
+
+    def test_search(self):
+        sample = random.sample(range(10), 10)
+        item = random.choice(sample)
+        tree = AVLTree(sample)
+        self.assertEqual(item, tree.search(item).data)
+        self.assertEqual(None, tree.search(11))
+        items = [3, 1, 0, 6, 4, 7, 8, 9, 2, 5]
+        tree = AVLTree(items)
+        self.assertEqual(False, bool(tree.search(1, tree.root.right)))
+        self.assertEqual(True, bool(tree.search(9, tree.root.right)))
+
+    def test_string_representation(self):
+        results = [
+            '   1  \n', '  NULL', '  10  \n',
+            '        root        \n'
+            '     ┌────┘         \n'
+            '   child            \n',
+
+            '                B               \n'
+            '        ┌───────┴───────┐       \n'
+            '        1             Baxy      \n'  # Normal AVLTree Repr
+            '                        └───┐   \n'
+            '                            D   \n',
+
+            # An example of a perfectly balanced binary Tree
+            '            2           \n'
+            '      ┌─────┴─────┐     \n'
+            '      1           4     \n'
+            '               ┌──┴──┐  \n'
+            '               3     5  \n'
+        ]
+
+        for testcase, result in zip(self.print_test_cases, results):
+            tree = AVLTree(testcase)
+            self.assertEqual(result, tree.__str__())
+
+    def test_with_random_inputs(self):
+        numbers = range(-100, 100)
+        characters = string.ascii_uppercase + string.ascii_lowercase
+        # To avoid terminal explosion please avoid printing these trees
+        # after construction
+        for _ in range(self.test_cases):
+            sample_size = random.randint(1, self.max_sample_size)
+            sample = random.sample(numbers, sample_size)
+
+            # Constructing tree with random numbers
+            tree = AVLTree(sample)
+            self.assertEqual(sorted(sample), inorder_items(tree))
+
+            sample_size = random.randint(1, len(characters))
+            sample = random.sample(characters, sample_size)
+
+            # Constructing tree with random character set
+            tree = AVLTree(sample)
+            self.assertEqual(sorted(sample), inorder_items(tree))
+
+        # Try insertion with duplicates
+        sample_size = random.randint(1, self.max_sample_size)
+        random_sample = random.sample(numbers, sample_size)
+        for _ in range(1, random.randint(2, 10)):
+            random_sample.append(random.choice(random_sample))
+        with self.assertWarns(DuplicateNodeWarning):
+            tree = AVLTree(random_sample)
+            self.assertEqual(sorted(set(random_sample)), inorder_items(tree))
+
+
+if __name__ == '__main__':
+    unittest.main()

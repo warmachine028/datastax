@@ -34,7 +34,7 @@ def main():
                   f"4. Doubly Circular List: \n"
                   f"{ll.DoublyCircularList(data)}\n\n"
                   f"5. Queue: \n"
-                  f"{ll.Queue(data)}\n\n")
+                  f"{ll.Queue(None, data)}\n\n")
         elif data_structure in ('tree', 'trees'):
             print("Visuals for Trees:\n\n"
                   f"1. Binary Tree \n"

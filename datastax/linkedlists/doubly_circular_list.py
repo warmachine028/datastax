@@ -7,6 +7,7 @@ from datastax.linkedlists.doubly_linked_list import (
 
 
 class DoublyCircularList(DoublyLinkedList):
+
     def append(self, data: Any) -> None:
         super().append(data)
         self.head.prev, self.tail.next = self.tail, self.head
@@ -21,7 +22,7 @@ class DoublyCircularList(DoublyLinkedList):
             return "NULL"
         string = "┌->"
         ref = head
-        while True:
+        while ref:
             string += f' Node[{str(ref.data)}] <->'
             ref = ref.prev if reverse else ref.next
             if ref is head:

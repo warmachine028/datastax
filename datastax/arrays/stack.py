@@ -33,6 +33,9 @@ class Stack:
 
         return self._array.pop()
 
+    def __len__(self):
+        return len(self._array)
+
     def peek(self) -> str:
         return 'STACK EMPTY' if self.is_empty() else self._array[-1]
 
@@ -57,8 +60,8 @@ class Stack:
         for n, item in enumerate(self._array[::-1]):
             top = '' if self.is_full() and not n \
                 else f"├{'─' * maximum_breadth}┤\n"
-            bottom = f"│{str(item).center(maximum_breadth)}│ " \
-                     f"{'<- TOP' if not n else ''}\n"
+            bottom = f"│{str(item).center(maximum_breadth)}│" \
+                     f"{' <- TOP' if not n else ''}\n"
             string += top + bottom
         string += f"╰{'─' * maximum_breadth}╯\n"
         return string

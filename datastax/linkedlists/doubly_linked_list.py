@@ -8,8 +8,8 @@ from datastax.linkedlists.linked_list import Node, LinkedList
 class DoublyNode(Node):
     def __init__(self, data: Any, nex: DoublyNode = None,
                  prev: DoublyNode = None):
-        super().__init__(data)
-        self.next = nex
+        super().__init__(data, nex)
+        self.next: Optional[DoublyNode] = nex
         self.prev = prev
 
     def __str__(self):
@@ -19,10 +19,10 @@ class DoublyNode(Node):
 
 
 class DoublyLinkedList(LinkedList):
-    def __init__(self, array: list[Any], head: DoublyNode = None):
-        self._head: Optional[DoublyNode] = head
-        self._tail = head
+    def __init__(self, array: list[Any] = None, head: DoublyNode = None):
         super().__init__(array, head)
+        self._head: DoublyNode = self.head
+        self._tail: DoublyNode = self.tail
 
     def append(self, data) -> None:
         node = DoublyNode(data, None, self.tail)

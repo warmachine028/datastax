@@ -42,5 +42,8 @@ class PriorityQueue(Queue):
         self._rear += 1
         n = len(self.array)
         for i in range(n // 2 - 1, -1, -1):
-            self.heapify(i, n)
+            try:
+                self.heapify(i, n)
+            except TypeError:
+                raise TypeError
         return 0

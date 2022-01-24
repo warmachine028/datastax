@@ -1,12 +1,17 @@
 from .avl_tree import AVLTree, AVLNode
 from .binary_search_tree import BinarySearchTree
 from .binary_tree import BinaryTree, TreeNode
-from .heap_tree import HeapTree
+from .expression_tree import ExpressionTree
+from .heap_tree import HeapTree, HeapTreeNode
 from .min_heap_tree import MinHeapTree
+from .threaded_binary_tree import ThreadedBinaryTree, ThreadedTreeNode
 
 __all__ = [
     "BinaryTree", "TreeNode",
     "BinarySearchTree",
     "AVLTree", "AVLNode",
-    "HeapTree", "MinHeapTree"
+    "HeapTree", "HeapTreeNode",
+    "MinHeapTree",
+    "ExpressionTree",
+    "ThreadedBinaryTree", "ThreadedTreeNode"
 ]

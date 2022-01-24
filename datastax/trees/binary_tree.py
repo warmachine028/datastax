@@ -2,11 +2,18 @@
 from __future__ import annotations
 
 import math
+import warnings
 from queue import Queue
 from typing import Any, Optional
 
+from datastax.errors import (
+    PathNotGivenError,
+    PathNotFoundError,
+    PathAlreadyOccupiedWarning
+)
 
-def node_builder(data: Optional[str], piece_width: int) -> str:
+
+def _node_builder(data: Optional[str], piece_width: int) -> str:
     value: str = data or ''
     gap1 = int(math.ceil(piece_width / 2 - len(value) / 2))
     gap2 = int(math.floor(piece_width / 2 - len(value) / 2))
@@ -22,32 +29,35 @@ class TreeNode:
         self.right = right
 
     def __str__(self):
-        values = [self.data, self.left.data if self.left else None,
+        values = [self.data,
+                  self.left.data if self.left else None,
                   self.right.data if self.right else None]
-        values = list(map(lambda value: str(value) if value else "", values))
+        values = list(map(
+            lambda value: str(value) if value is not None else "", values)
+        )
         max_width = max(len(data) for data in values if data)
         if max_width % 2:
             max_width += 1  # To make max_width even
 
         "Building string from calculated values"
         per_piece = 2 * (max_width + 4)
-        string_builder = f"{node_builder(values[0], per_piece)}\n"
+        string_builder = f"{_node_builder(values[0], per_piece)}\n"
         per_piece //= 2
         hpw = int(per_piece // 2 - 1)
         if any(values[1:]):
             if all(values[1:]):
                 string_builder += f"{' ' * (hpw + 1)}" \
                                   f"┌{'─' * hpw}┴{'─' * hpw}┐\n"
-                string_builder += node_builder(values[1],
-                                               per_piece) + node_builder(
-                    values[2], per_piece)
+                string_builder += _node_builder(values[1], per_piece
+                                                ) + _node_builder(values[2],
+                                                                  per_piece)
             elif values[1]:
                 string_builder += f"{' ' * (hpw + 1)}┌{'─' * hpw}┘\n"
-                string_builder += node_builder(values[1], per_piece)
+                string_builder += _node_builder(values[1], per_piece)
             else:
                 string_builder += f"{' ' * (per_piece - 1)} └{'─' * hpw}┐\n"
                 string_builder += f"{' ' * (per_piece - 1)} " \
-                                  f"{node_builder(values[2], per_piece)}"
+                                  f"{_node_builder(values[2], per_piece)}"
 
         return string_builder
 
@@ -71,7 +81,7 @@ class TreeNode:
 
 
 class BinaryTree:
-    def __init__(self, array: list[Any] = None, root=None):
+    def __init__(self, array=None, root=None):
         self._root = root
         self._construct(array)
         self.__string: Optional[str] = None
@@ -102,8 +112,7 @@ class BinaryTree:
             self._root = node
             return
         if not path:
-            print("Path required for non root nodes")
-            return
+            raise PathNotGivenError(self)
         parent = self._root
         for direction in path[:-1]:  # Reaching
             if direction == 'left' and parent.left:
@@ -111,14 +120,16 @@ class BinaryTree:
             elif direction == 'right' and parent.right:
                 parent = parent.right
             else:
-                print("Path doesn't exist")
-                return
+                raise PathNotFoundError(self)
         if path[-1] == 'right' and not parent.right:
             parent.right = node
         elif path[-1] == 'left' and not parent.left:
             parent.left = node
         else:
-            print("Place already occupied")
+            occupied_node = parent.left if path[-1] == 'left' else parent.right
+            warnings.warn("Insertion unsuccessful. Path already occupied by "
+                          f"TreeNode [{occupied_node.data}]",
+                          PathAlreadyOccupiedWarning)
 
     # Helper function to construct tree by level order -> Array to tree
     def _construct(self, array: list[Any] = None) -> Optional[BinaryTree]:
@@ -126,8 +137,11 @@ class BinaryTree:
             return None
 
         queue: Queue[TreeNode] = Queue(len(array))
-        current = 1
-        root = TreeNode(array[0])
+        current = 0
+        root = self.root
+        if not root:
+            root = TreeNode(array[0])
+            current = 1
         queue.put(root)
         while not queue.empty() and current < len(array):
             node = queue.get()
@@ -149,7 +163,7 @@ class BinaryTree:
         return self
 
     # Level order Traversal of Tree
-    def __str__(self, root: TreeNode = None):  # noqa: C901
+    def __str__(self, root=None):  # noqa: C901
         root = root or self.root
         if not root:
             return "  NULL"
@@ -179,11 +193,11 @@ class BinaryTree:
                 max_width += 1
             lines.append(line)
             level = next_level
-
         ##################################################################
         "Building string from calculated values"
         per_piece = len(lines[-1]) * (max_width + 4)
-        string_builder = f"{node_builder(lines[0][0], per_piece)}\n"
+
+        string_builder = f"{_node_builder(lines[0][0], per_piece)}\n"
         per_piece //= 2
         for _, line in enumerate(lines[1:], 1):
             hpw = int(math.floor(per_piece / 2) - 1)
@@ -196,20 +210,22 @@ class BinaryTree:
                 if not value:
                     string_builder += ' ' * (per_piece - 1)
                     continue
-                string_builder += f"{'─' * hpw}┐{' ' * hpw}" if j % 2 \
-                    else f"{' ' * hpw}┌{'─' * hpw}"
+                if j % 2:
+                    string_builder += f"{'─' * hpw}┐{' ' * hpw}"
+                else:
+                    string_builder += f"{' ' * hpw}┌{'─' * hpw}"
             string_builder += '\n'
 
             # Printing the value of each Node
             for value in line:
-                string_builder += node_builder(value, per_piece)
+                string_builder += _node_builder(value, per_piece)
             string_builder += '\n'
             per_piece //= 2
 
         return string_builder
 
     # Pre Order Traversal of Tree
-    def preorder_print(self, root: TreeNode = None) -> str:
+    def preorder_print(self, root=None) -> str:
         def string_builder(parent: Optional[TreeNode], has_right_child: bool,
                            padding="", component="") -> None:
             if not parent:
@@ -233,12 +249,3 @@ class BinaryTree:
 
     def __repr__(self):
         return self.__str__()
-
-
-if __name__ == '__main__':
-    # Usage
-    Tree = BinaryTree([1, 2, 3, 4])
-    print(Tree)
-    print(Tree.preorder_print())
-    print(Tree.array_repr)
-    print(Tree.root)

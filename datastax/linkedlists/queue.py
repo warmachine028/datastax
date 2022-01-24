@@ -9,7 +9,7 @@ from datastax.linkedlists.linked_list import LinkedList, Node
 
 
 class Queue(LinkedList):
-    def __init__(self, array: list[Any] = None, capacity: int = None):
+    def __init__(self, capacity: int = None, array: list[Any] = None):
         super().__init__()
         self._rear = 0
         if capacity is not None and capacity < 0:
@@ -38,7 +38,6 @@ class Queue(LinkedList):
     def dequeue(self) -> Any:
         if self.is_empty():
             raise UnderFlowError(self)
-        # Dequeue Operation
         deleted_node = self.head
         deleted_item = deleted_node.data
         self._head = self.head.next
@@ -51,11 +50,10 @@ class Queue(LinkedList):
         return str(self._tail.data if self._tail else None)
 
     def append(self, data: Any) -> None:
-        print("WARNING: Method not available here.")
+        raise NotImplementedError
 
     def insert(self, data: Any) -> None:
-        print("WARNING: Method not implemented here."
-              "Please use enqueue method to insert")
+        raise NotImplementedError
 
     def __str__(self, head: Node = None):
         def maximum_breadth(ref: Optional[Node]) -> int:
@@ -77,9 +75,9 @@ class Queue(LinkedList):
         temp = self.head
         while temp:
             item = temp.data
-            upper_part += f"╔{'═' * max_breadth}╗   "
-            middle_part += f'║{str(item).center(max_breadth)}║ <-'
-            lower_part += f"╚{'═' * max_breadth}╝   "
+            upper_part += f"┌{'─' * max_breadth}┐   "
+            middle_part += f'|{str(item).center(max_breadth)}│ <-'
+            lower_part += f"└{'─' * max_breadth}┘   "
             temp = temp.next
         upper_part = f"{upper_part[:-1]}\n"
         middle_part += ' REAR\n'

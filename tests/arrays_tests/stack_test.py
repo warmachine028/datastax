@@ -1,19 +1,168 @@
-from datastax.arrays import Stack
+import unittest
+from typing import Optional, Any
 
-s = Stack(2)  # Fixed size stack
-print(s)  # printing empty stack
-s.pop()  # deleting from empty stack
-for i in range(2):
-    s.push(10)
-print(s)
-s.push(1)  # inserting inside full stack
-s.pop()  # deleting from full stack
-s = Stack()
-for i in range(10):
-    print(f"Stack is {len(s.array) / s.capacity:.2%} full")
-    print(s)
-    s.push(i)
-print(s)
-for i in range(19):
-    s.pop()
-    print("AFTER POPPING\n", s, sep='')
+from datastax.arrays import Stack
+from datastax.errors import UnderFlowError, OverFlowError
+from datastax.linkedlists import LinkedList
+
+
+class TestStack(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.limitedStack = Stack(2)  # With fixed size Stack
+        self.unlimitedStack = Stack()  # With dynamic Stack
+
+    def test_complete_fill_complete_empty(self):
+        # Completely Filled
+        self.limitedStack.push(10)
+        self.limitedStack.push(20)
+
+        # Should raise overflow error
+        with self.assertRaises(OverFlowError):
+            self.limitedStack.push(30)
+
+        # Completely Emptied
+        self.limitedStack.pop()
+        self.limitedStack.pop()
+        self.assertEqual([], self.items_in(self.limitedStack))
+
+    def test_construction(self):
+        stack = Stack(5)  # With capacity more than Array size
+        list(map(lambda item: stack.push(item), [1, 2, 3]))
+        self.assertEqual([1, 2, 3], self.items_in(stack))
+        stack.push(10)  # Then performing Enqueue Operation
+        stack.push(20)  # Again performing Enqueue Operation
+        stack.pop()  # Performing Dequeue Operation
+        self.assertEqual([1, 2, 3, 10], self.items_in(stack))
+        stack = Stack()  # With first array element as None
+        list(map(lambda item: stack.push(item), [None, 1, 2]))
+        self.assertEqual([None, 1, 2], self.items_in(stack))
+        stack = Stack(None)  # With both arguments as None
+        self.assertEqual([], self.items_in(stack))
+
+    def test_dequeue_from_empty_queue(self):
+        with self.assertRaises(UnderFlowError):
+            self.limitedStack.pop()
+            self.unlimitedStack.pop()
+
+    def test_enqueue_in_empty_queue(self):
+        self.limitedStack.push(50)
+        self.assertEqual([50], self.items_in(self.limitedStack))
+        self.unlimitedStack.push(50)
+        self.assertEqual([50], self.items_in(self.unlimitedStack))
+
+    def test_enqueue_in_full_queue(self):
+        self.limitedStack.push(30)
+        self.limitedStack.push(40)
+        self.assertEqual([30, 40], self.items_in(self.limitedStack))
+        with self.assertRaises(OverFlowError):
+            self.limitedStack.push(50)
+
+        self.unlimitedStack.push(30)
+        self.unlimitedStack.push(40)
+        self.unlimitedStack.push(50)  # unlimited Stack, can't be full
+        self.assertEqual([30, 40, 50], self.items_in(self.unlimitedStack))
+
+    def test_enqueueing_heterogeneous_items(self):
+        # inserting miscellaneous items
+        items = [
+            {1: 2, 2: 3, 3: 4},  # -> dictionary
+            {1, 2, 3, 4, 5, 6, 7},  # -> set
+            [1, 2, 3, 4, 5],  # -> list
+            1234567890,  # -> integer
+            "string",  # -> string
+            'A',  # -> char
+            # Inserting Uncommon items
+            LinkedList([1, 2]).head,  # -> Node
+            LinkedList([1, 2]),  # ->  LinkedList
+            Stack(3),  # -> self referential type
+            None
+        ]
+        for item in items:
+            self.unlimitedStack.push(item)
+
+        self.assertEqual(items, self.items_in(self.unlimitedStack))
+
+    def test_string_repr(self):
+        stack = Stack(3)
+        operations = [
+            'display',
+            ['push', 30],
+            ['push', 20],
+            ['push', 40],
+            'pop',
+            'pop',
+            ['push', 50],
+            'pop',
+        ]
+        results = [
+            '│STACK EMPTY│\n'
+            '╰───────────╯\n',
+
+            '│           │\n'
+            ':           :\n'
+            '├───────────┤\n'
+            '│     30    │ <- TOP\n'
+            '╰───────────╯\n',
+
+            '│           │\n'
+            ':           :\n'
+            '├───────────┤\n'
+            '│     20    │ <- TOP\n'
+            '├───────────┤\n'
+            '│     30    │\n'
+            '╰───────────╯\n',
+
+            '┌───────────┐\n'
+            '│     40    │ <- TOP\n'
+            '├───────────┤\n'
+            '│     20    │\n'
+            '├───────────┤\n'
+            '│     30    │\n'
+            '╰───────────╯\n',
+
+            '│           │\n'
+            ':           :\n'
+            '├───────────┤\n'
+            '│     20    │ <- TOP\n'
+            '├───────────┤\n'
+            '│     30    │\n'
+            '╰───────────╯\n',
+
+            '│           │\n'
+            ':           :\n'
+            '├───────────┤\n'
+            '│     30    │ <- TOP\n'
+            '╰───────────╯\n',
+
+            '│           │\n'
+            ':           :\n'
+            '├───────────┤\n'
+            '│     50    │ <- TOP\n'
+            '├───────────┤\n'
+            '│     30    │\n'
+            '╰───────────╯\n',
+
+            '│           │\n'
+            ':           :\n'
+            '├───────────┤\n'
+            '│     30    │ <- TOP\n'
+            '╰───────────╯\n',
+        ]
+        operate = {
+            'push': lambda i: stack.push(i),
+            'pop': lambda _: stack.pop(),
+            'display': lambda _: None
+        }
+        for item, result in zip(operations, results):
+            operation, items = item if item[0] == 'push' else (item, 0)
+            operate[operation](items)
+            self.assertEqual(result, stack.__str__())
+
+    @staticmethod
+    def items_in(stack: Stack) -> list[Optional[Any]]:
+        return stack.array
+
+
+if __name__ == '__main__':
+    unittest.main()

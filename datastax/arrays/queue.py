@@ -15,6 +15,14 @@ class Queue:
     def array(self) -> list[Any]:
         return self._array[self._front:self._rear]
 
+    @property
+    def front(self) -> int:
+        return self._front
+
+    @property
+    def rear(self) -> int:
+        return self._rear
+
     def is_full(self) -> bool:
         return len(self._array) == self._capacity
 
@@ -49,7 +57,7 @@ class Queue:
         padding = 4
         max_breadth = max(len(str(item)) for item in self._array) + padding
         middle_part = 'FRONT -> │'
-        upper_part = f"{' ' * (len(middle_part) - 1)}┌"
+        upper_part = f"\n{' ' * (len(middle_part) - 1)}┌"
         lower_part = f"{' ' * (len(middle_part) - 1)}└"
         if self._front:  # Representing Garbage Values with '╳'
             for _ in self._array[:self._front]:
@@ -70,4 +78,5 @@ class Queue:
         lower_part += f"{'╜' if len(self._array) == self._front else '┘'}\n"
         return upper_part + middle_part + lower_part
 
-    def __repr__(self): return self.__str__()
+    def __repr__(self):
+        return self.__str__()
