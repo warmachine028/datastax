@@ -65,6 +65,8 @@
 ## Requirements
 
 - Runs on latest Python 3.7+
+- (WARNING: Though the module might run on py 3.7 error free, but it has been tested for 3.9+)
+- (Suggesting you to always update to the latest python version)
 - This Library requires no extra modules
 
 ## Installation
@@ -230,7 +232,7 @@ $ OUTPUT
 ### Upcoming
 
 ```py
-from datastax.trees import SumSegmentTree
+from datastax.trees import SumSegmentTree as St
 
 st = St([1, 3, 5, 7, 9, 11])
 print(st)
