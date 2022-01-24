@@ -49,11 +49,11 @@ setup(
     url='https://github.com/warmachine028/datastax',
     author='Pritam K',
     download_url="https://pypi.python.org/pypi/datastax",
-    project_urls={
-        "Bug Tracker": "https://github.com/warmachine028/datastax/issues",
-        "Documentation": "https://github.com/warmachine028/datastax#readme",
-        "Source Code": "https://github.com/warmachine028/datastax",
-    },
+#     project_urls={
+#         'Bug Tracker': 'https://github.com/warmachine028/datastax/issues',
+#         'Documentation': 'https://github.com/warmachine028/datastax#readme',
+#         'Source': 'https://github.com/warmachine028/datastax',
+#     },
     license='MIT',
     classifiers=[
         "Development Status :: 4 - Beta",
