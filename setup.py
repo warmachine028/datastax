@@ -58,8 +58,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
 
-        "Documentation :: Pending",
-
         "Intended Audience :: Education",
         "Intended Audience :: Developers",
         "Intended Audience :: End Users/Desktop",
