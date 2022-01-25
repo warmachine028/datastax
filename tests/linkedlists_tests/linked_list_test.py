@@ -1,3 +1,4 @@
+import random
 import unittest
 from typing import Optional, Any
 
@@ -8,6 +9,14 @@ class TestLinkedList(unittest.TestCase):
 
     def setUp(self) -> None:
         self.linkedList = LinkedList()
+        self.print_test_cases = [
+            None,
+            [1],
+            [{1, 2, 3}, 1],
+            [1, 'B', "C"],
+            [[1, 2, 3], [1], 4]
+
+        ]
 
     def test_append(self):
         # testing appending
@@ -86,6 +95,39 @@ class TestLinkedList(unittest.TestCase):
             self.linkedList.append(item)
 
         self.assertEqual(items, self.items_in())
+
+    def test_iter(self):
+        items = random.sample(range(100), 10)
+        list_ = LinkedList(items)
+        for list_item, actual_item in zip(items, list_):
+            self.assertEqual(list_item, actual_item)
+
+    def _test_string(self):
+        results = [
+            '        \nHEAD -> NULL\n        \n',
+
+            '        ┌─────╥────┐   \n'
+            'HEAD -> │  1  ║ ------> NULL\n'
+            '        └─────╨────┘   \n',
+
+            '        ┌─────────────╥────┐   ┌─────────────╥────┐   \n'
+            'HEAD -> │  {1, 2, 3}  ║ ------>│      1      ║ ------> NULL\n'
+            '        └─────────────╨────┘   └─────────────╨────┘   \n',
+
+            '        ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐   \n'
+            'HEAD -> │  1  ║ ------>│  B  ║ ------>│  C  ║ ------> NULL\n'
+            '        └─────╨────┘   └─────╨────┘   └─────╨────┘   \n',
+
+            '        ┌─────────────╥────┐   ┌─────────────╥────┐   ┌───────'
+            '──────╥────┐   \n'
+            'HEAD -> │  [1, 2, 3]  ║ ------>│     [1]     ║ ------>│      4'
+            '      ║ ------> NULL\n'
+            '        └─────────────╨────┘   └─────────────╨────┘   └───────'
+            '──────╨────┘   \n'
+        ]
+        for testcase, result in zip(self.print_test_cases, results):
+            list_ = LinkedList(testcase)
+            self.assertEqual(result, list_.__str__())
 
     def items_in(self, linked_list: LinkedList = None) -> list[Optional[Any]]:
         if linked_list is None:

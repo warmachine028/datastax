@@ -1,4 +1,4 @@
-    updated: Monday, 24th January 2022
+    updated: Tuesday, 25th January 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -20,10 +20,8 @@
 
 ## What's New?
 
-- Added Threaded Binary Trees
-- Added LRU Cache
-- Added Proper and effective testcases
-- Added Search Functionality for BST and AVLTree
+- Added Sum Segment Tree
+- Added Min Segment Tree
 
 ## Table of Contents
 
@@ -222,31 +220,46 @@ $ OUTPUT
 
 ```
 
+```py
+from datastax.trees import SumSegmentTree
+
+sst = SumSegmentTree([1, 3, 5, 7, 9, 11])
+print(sst)
+print(sst.preorder_print())
+```
+
+```shell
+$ OUTPUT        
+                                                
+                       36                       
+                      [0:5]                     
+            ┌───────────┴───────────┐           
+            9                      27           
+          [0:2]                   [3:5]         
+      ┌─────┴─────┐           ┌─────┴─────┐     
+      4           5          16          11     
+    [0:1]                   [3:4]               
+   ┌──┴──┐                 ┌──┴──┐              
+   1     3                 7     9              
+
+
+36 [0:5]
+├─▶ 9 [0:2]
+│   ├─▶ 4 [0:1]
+│   │   ├─▶ 1 
+│   │   └─▶ 3 
+│   └─▶ 5 
+└─▶ 27 [3:5]
+    ├─▶ 16 [3:4]
+    │   ├─▶ 7 
+    │   └─▶ 9 
+    └─▶ 11             
+                  
+```
+
 ## What's Next
 
-- Implementation of **Segment Trees**
-- Proper tests using UnitTest Lib
 - Enhanced Documentation
 - Implementation of Other Abstract data types like **LFU_CACHE, SKIP_LIST**
 - Beautification of [README.md](README.md)
 
-### Upcoming
-
-```py
-from datastax.trees import SumSegmentTree as St
-
-st = St([1, 3, 5, 7, 9, 11])
-print(st)
-```
-
-```shell
-$ OUTPUT               
-                       36                       
-            ┌───────────┴───────────┐           
-            9                      27           
-      ┌─────┴─────┐           ┌─────┴─────┐     
-      4           5          16          11     
-   ┌──┴──┐     ┌──┴──┐                          
-   1     3     7     9                          
-                          
-```

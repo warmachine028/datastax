@@ -104,6 +104,3 @@ class AVLTree(BinarySearchTree):
             right.height = 1 + max(self.height(right.left),
                                    self.height(right.right))
         return right
-
-    def insert_path(self, data: Any, path: list[str] = None) -> None:
-        raise NotImplementedError

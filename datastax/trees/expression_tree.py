@@ -8,7 +8,7 @@ from datastax.errors import (
     UnmatchedBracketPairError, InvalidExpressionError,
     UnderFlowError, OverFlowError
 )
-from datastax.trees.binary_tree import BinaryTree, TreeNode
+from datastax.trees.private_trees.binary_tree import TreeNode, BinaryTree
 
 
 class ExpressionTree(BinaryTree):
@@ -99,5 +99,5 @@ class ExpressionTree(BinaryTree):
 
         return postfix_expression
 
-    def insert_path(self, data: Any, path: list[str] = None) -> None:
+    def insert(self, item: Any):
         raise NotImplementedError

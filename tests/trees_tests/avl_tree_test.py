@@ -84,9 +84,6 @@ class TestAVLTree(unittest.TestCase):
                              level_wise_items(tree))
 
     def test_insert(self):
-        # inserting using insert_path
-        with self.assertRaises(NotImplementedError):
-            self.avt.insert_path(10)
         self.assertEqual([], level_wise_items(self.avt))
 
         # testing insertion

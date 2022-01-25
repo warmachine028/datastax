@@ -104,9 +104,6 @@ class TestThreadedBinaryTree(unittest.TestCase):
             tree.insert(10)
 
     def test_insert(self):
-        # Testing with ThreadedBinaryTree itself
-        with self.assertRaises(NotImplementedError):
-            self.tbt.insert_path(10)
         self.assertEqual([], self.level_wise_items(self.tbt))
 
         # testing insertion

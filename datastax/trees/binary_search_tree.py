@@ -5,20 +5,10 @@ import warnings
 from typing import Optional, Any
 
 from datastax.errors import DuplicateNodeWarning
-from datastax.trees.binary_tree import BinaryTree, TreeNode
+from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
 
 
 class BinarySearchTree(BinaryTree):
-    def _construct(self, array: list[Any] = None
-                   ) -> Optional[BinarySearchTree]:
-        if not array or array[0] is None:
-            return None
-        for item in array:
-            try:
-                self.insert(item)
-            except TypeError as error:
-                raise error
-        return self
 
     def insert(self, data: Any, root=None) -> None:
         root = root or self.root
@@ -54,6 +44,3 @@ class BinarySearchTree(BinaryTree):
                 f"Insertion unsuccessful. Item '{data}' already exists "
                 "in Tree", DuplicateNodeWarning)
         return parent
-
-    def insert_path(self, data: Any, path: list[str] = None) -> None:
-        raise NotImplementedError

@@ -5,7 +5,7 @@ import warnings
 from typing import Optional, Any
 
 from datastax.errors import DeletionFromEmptyTree
-from datastax.trees import BinaryTree, TreeNode
+from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
 
 
 class HeapTreeNode(TreeNode):
@@ -116,5 +116,5 @@ class HeapTree(BinaryTree):
         root.data, node.data = node.data, root.data
         self._shift_up(root)
 
-    def insert_path(self, data: Any, path: list[str] = None) -> None:
+    def insert(self, item: Any):
         raise NotImplementedError

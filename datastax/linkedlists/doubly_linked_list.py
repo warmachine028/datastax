@@ -2,27 +2,16 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from datastax.linkedlists.linked_list import Node, LinkedList
+from datastax.linkedlists.private_lists import doubly_linked_list
+from datastax.linkedlists.private_lists.doubly_linked_list import DoublyNode
 
 
-class DoublyNode(Node):
-    def __init__(self, data: Any, nex: DoublyNode = None,
-                 prev: DoublyNode = None):
-        super().__init__(data, nex)
-        self.next: Optional[DoublyNode] = nex
-        self.prev = prev
-
-    def __str__(self):
-        return (f'Node[{self.prev.data}]' if self.prev else "NULL") + \
-               f' ⟺ Node[{self.data}] ⟺ ' + \
-               (f'Node[{self.next.data}]' if self.next else "NULL")
-
-
-class DoublyLinkedList(LinkedList):
-    def __init__(self, array: list[Any] = None, head: DoublyNode = None):
-        super().__init__(array, head)
-        self._head: DoublyNode = self.head
-        self._tail: DoublyNode = self.tail
+class DoublyLinkedList(doubly_linked_list.DoublyLinkedList):
+    def _construct(self, array: Optional[list[Any]]) -> DoublyLinkedList:
+        if array and array[0] is not None:
+            for item in array:
+                self.append(item)
+        return self
 
     def append(self, data) -> None:
         node = DoublyNode(data, None, self.tail)
@@ -40,13 +29,25 @@ class DoublyLinkedList(LinkedList):
             self._tail = node
         self._head = node
 
-    def __str__(self, reverse=False, node: DoublyNode = None):
-        string = "NULL"
-        if not self.head:
-            return string
-        head = node or (self.tail if reverse else self.head)
-        while head:
-            string += f" <-> Node[{head.data}]"
-            head = head.prev if reverse else head.next
-        string += " <-> NULL"
-        return string
+
+if __name__ == '__main__':
+    x = DoublyNode('one', DoublyNode(20), DoublyNode(30))
+    y = DoublyNode('two', DoublyNode(20))
+    z = DoublyNode('three', None, DoublyNode(20))
+    a = DoublyNode('four')
+    print(x,
+          y,
+          z,
+          a, sep='\n')
+    print_test_cases = [
+        None,
+        [1],
+        [{1, 2, 3}, 1],
+        [1, 'B', "C"],
+        [[1, 2, 3], [1], 4],
+
+    ]
+    for item in print_test_cases:
+        ll = DoublyLinkedList(item)
+        print(ll)
+        print(ll.head)

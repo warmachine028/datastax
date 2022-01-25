@@ -1,12 +1,19 @@
-from typing import Any
+from __future__ import annotations
 
-from datastax.linkedlists.doubly_linked_list import (
-    DoublyLinkedList,
-    DoublyNode
-)
+from typing import Any, Optional
+
+from datastax.linkedlists.doubly_linked_list import DoublyLinkedList
+from datastax.linkedlists.private_lists import doubly_circular_llist
 
 
-class DoublyCircularList(DoublyLinkedList):
+class DoublyCircularList(doubly_circular_llist.DoublyCircularList,
+                         DoublyLinkedList):
+
+    def _construct(self, array: Optional[list[Any]]) -> DoublyCircularList:
+        if array and array[0] is not None:
+            for item in array:
+                self.append(item)
+        return self
 
     def append(self, data: Any) -> None:
         super().append(data)
@@ -16,16 +23,17 @@ class DoublyCircularList(DoublyLinkedList):
         super().insert(data)
         self.head.prev, self.tail.next = self.tail, self.head
 
-    def __str__(self, reverse=False, node: DoublyNode = None):
-        head = node or (self.tail if reverse else self.head)
-        if not head:
-            return "NULL"
-        string = "┌->"
-        ref = head
-        while ref:
-            string += f' Node[{str(ref.data)}] <->'
-            ref = ref.prev if reverse else ref.next
-            if ref is head:
-                break
-        string = f"{string[:-1]}┐\n└{'<-->'.center(len(string) - 2, '─')}┘"
-        return string
+
+if __name__ == '__main__':
+    print_test_cases = [
+        None,
+        [1],
+        [{1, 2, 3}, 1],
+        [1, 'B', "C"],
+        [[1, 2, 3], [1], 4],
+
+    ]
+    for item in print_test_cases:
+        ll = DoublyCircularList(item)
+        print(ll)
+        print(ll.head)

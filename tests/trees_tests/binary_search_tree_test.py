@@ -76,9 +76,6 @@ class TestBinarySearchTree(unittest.TestCase):
                              level_wise_items(tree))
 
     def test_insert(self):
-        # inserting using insert_path
-        with self.assertRaises(NotImplementedError):
-            self.bst.insert_path(10)
         self.assertEqual([], level_wise_items(self.bst))
 
         # testing insertion

@@ -66,7 +66,7 @@ class TestHeapTree(unittest.TestCase):
     def test_heappush(self):
         # inserting using insert_path
         with self.assertRaises(NotImplementedError):
-            self.ht.insert_path(10)
+            self.ht.insert(10)
         self.assertEqual([], level_wise_items(self.ht))
 
         # testing heappush

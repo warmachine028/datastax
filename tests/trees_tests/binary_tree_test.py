@@ -77,6 +77,8 @@ class TestBinaryTree(unittest.TestCase):
     def test_insert_path(self):
         # inserting root without path
         tree = BinaryTree()
+        with self.assertRaises(NotImplementedError):
+            tree.insert(10)
         tree.insert_path(10)
         self.assertEqual([10], level_wise_items(tree))
         # testing inserting

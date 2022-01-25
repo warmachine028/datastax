@@ -25,5 +25,5 @@ class MinHeapTree(HeapTree):
         root.data, node.data = node.data, root.data
         self._shift_up(root)
 
-    def insert_path(self, data: Any, path: list[str] = None) -> None:
+    def insert(self, item: Any):
         raise NotImplementedError

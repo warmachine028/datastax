@@ -142,7 +142,7 @@ class TestExpressionTree(unittest.TestCase):
     def test_insert_path(self):
         # inserting using insert_path
         with self.assertRaises(NotImplementedError):
-            self.expt.insert_path(10)
+            self.expt.insert(10)
         self.assertEqual([], level_wise_items(self.expt))
 
     def test_precedence(self):
