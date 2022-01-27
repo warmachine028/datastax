@@ -12,7 +12,7 @@ from datastax.trees import (
     MinHeapTree
 )
 from datastax.trees.private_trees import binary_tree
-from datastax.trees.private_trees.binary_tree import TreeNode
+from datastax.trees.private_trees.binary_tree import TreeNode, _mangled
 
 
 class ThreadedTreeNode(TreeNode):
@@ -25,10 +25,10 @@ class ThreadedTreeNode(TreeNode):
 
     def __str__(self):
         values = [self.data, self.left.data, self.right.data]
-        values = list(map(
-            lambda value: str(value) if value is not None else "", values)
+        values = list(
+            map(lambda value: "" if value is None else _mangled(value), values)
         )
-        max_width = max(len(data) for data in values if data)
+        max_width = max(len(_mangled(data)) for data in values if data)
         max_width = (max_width + 1) if max_width % 2 else max_width
         # To make max_width even
         padding = 6
@@ -46,28 +46,37 @@ class ThreadedTreeNode(TreeNode):
         right = f"{values[2].center(wpn)}\n"
         if self.left_is_child:
             if self.right_is_child:
-                _string = f"{root.center(wpn - 1)}".center(per_piece) + '\n'
-                _string += piece + left + right
+                _string = (
+                        f"{root.center(wpn - 1)}".center(per_piece) +
+                        f"\n{piece}{left}{right}"
+                )
             else:
-                _string = ' ' * len(left) + right
-                _string += f"{root.center(wpn)}│".center(per_piece) + '\n'
-                _string += piece + left
+                _string = (
+                        f"{' ' * len(left)}{right}"
+                        f"{root.center(wpn)}│".center(per_piece) +
+                        f"\n{piece}{left}"
+                )
         else:
             _string = left
             if self.right_is_child:
-                _string += '\n'
-                _string += f"│{root.center(wpn)}".center(per_piece) + '\n'
-                _string += f"{piece}{' ' * len(left)}{right}"
+                _string += (
+                        f"\n│{root.center(wpn)}".center(per_piece) +
+                        f"\n{piece}{' ' * len(left)}{right}"
+                )
             else:
-                _string += right
-                _string += f"│{root.center(wpn - 1)}│".center(per_piece) + '\n'
-                _string += piece
+                _string += (
+                        f"{right}"
+                        f"│{root.center(wpn - 1)}│".center(per_piece) +
+                        f"\n{piece}"
+                )
         return _string
 
     def preorder_print(self) -> str:
         values = [self.data, self.left.data if self.left_is_child else None,
                   self.right.data if self.right_is_child else None]
-        values = list(map(lambda value: str(value) if value else "", values))
+        values = list(
+            map(lambda value: "" if value is None else _mangled(value), values)
+        )
 
         string_builder = f'{values[0]}\n'
         if any(values[1:]):
@@ -113,7 +122,7 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
     @property  # Level Order Traversal -> Tree to array
     def array_repr(self) -> list[Any]:
         array = []
-        queue: Queue = Queue()
+        queue = Queue()
         if self.root:
             queue.enqueue(self.root)
         while not queue.is_empty():
@@ -143,7 +152,7 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
             # Constructing the data line
             data_string = ""
             for node in level:
-                data = str(node.data) if node else ''
+                data = _mangled(node.data) if node else ''
                 data = data.center(per_piece)
                 data_string += data
 
@@ -176,9 +185,12 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
             if not parent:
                 return
             if self.__string is not None:
-                self.__string += f"\n{padding}{component}{parent.data}"
+                self.__string += (
+                    f"\n{padding}{component}"
+                    f"{_mangled(parent.data)}"
+                )
             if parent is not root:
-                padding += "│   " if has_right_child else "   "
+                padding += "│   " if has_right_child else "    "
             left_pointer = "├─▶ " if parent.right_is_child else "└─▶ "
             right_pointer = '└─▶ '
             string_builder(parent.left if parent.left_is_child else None,
@@ -197,12 +209,12 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
     @staticmethod
     def _nodes_level_wise(root: ThreadedTreeNode
                           ) -> list[list]:
-        level: list[Optional[ThreadedTreeNode]] = [root]
+        level: list = [root]
         nodes: int = 1
         levels: list[list] = []
         while nodes:
             current_level: list[Optional[ThreadedTreeNode]] = []
-            next_level: list[Optional[ThreadedTreeNode]] = []
+            next_level = []
             nodes = 0
             for node in level:
                 if not node:
@@ -225,7 +237,7 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
 
     @staticmethod
     def _maximum_width(levels: list[list]) -> int:
-        data = [str(node.data) for node in filter(bool, chain(*levels))]
+        data = [_mangled(node.data) for node in filter(bool, chain(*levels))]
         max_width = max(map(len, data))
         return max_width + 1 if max_width % 2 else max_width
 

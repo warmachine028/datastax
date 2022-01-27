@@ -184,16 +184,16 @@ class TestThreadedBinaryTree(unittest.TestCase):
             '\n│   ├─▶ 4'
             '\n│   └─▶ 3'
             '\n└─▶ 4'
-            '\n   └─▶ [\'1\']',
+            '\n    └─▶ [\'1\']',
 
             '\n(10, 20)'
             '\n└─▶ [10, 20]',
 
             '\n1'
             '\n└─▶ 2'
-            '\n   └─▶ 3'  # An example of a right skewed tree
-            '\n      └─▶ 4'
-            '\n         └─▶ 5'
+            '\n    └─▶ 3'  # An example of a right skewed tree
+            '\n        └─▶ 4'
+            '\n            └─▶ 5'
         ]
 
         for testcase, result in zip(self.print_test_cases[:-3] +

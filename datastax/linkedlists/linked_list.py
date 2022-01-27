@@ -26,18 +26,3 @@ class LinkedList(linked_list.LinkedList):
         if not self.tail:
             self._tail = node
         self._head = node
-
-
-if __name__ == '__main__':
-    print_test_cases = [
-        None,
-        [1],
-        [{1, 2, 3}, 1],
-        [1, 'B', "C"],
-        [[1, 2, 3], [1], 4],
-
-    ]
-    for item in print_test_cases:
-        ll = LinkedList(item)
-        print(ll)
-        print(ll.head)

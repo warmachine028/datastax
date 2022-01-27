@@ -11,14 +11,12 @@ try:  # https://stackoverflow.com/questions/30700166/python-open-file-error
 
 except Exception as error:
     readme_contents = (
-        'This library which supports ADTs like Linkedlists '
-        'and Trees and its types. This instant library is '
-        'solely written from scratch and requires no '
-        'additional libraries to be installed. It solves the '
-        'purpose of writing programs for complex data '
-        'structures from scratch, visualizing ADTs and '
-        'simplify  writing its inner architectures. This '
-        'Module Supports the following dataStructures:\n'
+        'This library which supports ADTs like Linkedlists and Trees and its '
+        'types. This instant library is solely written from scratch and '
+        'requires no additional libraries to be installed. It solves the '
+        'purpose of writing programs for complex data structures from scratch,'
+        ' visualizing ADTs and simplify  writing its inner architectures. This'
+        ' Module Supports the following dataStructures:\n'
         '1. Arrays:\n'
         '   a. Queue\n'
         '   b. Stack\n\n'
@@ -37,6 +35,11 @@ except Exception as error:
         '   e. Min Heap Tree\n'
         '   f. Expression Tree\n'
         '   e. Threaded Binary Tree\n'
+        '   f. Segment Trees\n'
+        '       i. Sum Segment Tree\n'
+        '      ii. Min Segment Tree\n'
+        '   g. Huffman Tree\n\n'
+
     )
     sys.stderr.write(f"Warning: Could not open README.md due {error}\n")
 

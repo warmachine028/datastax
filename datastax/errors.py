@@ -81,6 +81,10 @@ class PathAlreadyOccupiedWarning(UserWarning):
     pass
 
 
+class NodeNotFoundWarning(UserWarning):
+    pass
+
+
 class DuplicateNodeWarning(UserWarning):
     pass
 

@@ -1,11 +1,16 @@
 # Priority Queue implementation using Lists (Pseudo Arrays)
-from typing import Any
+from typing import Any, Callable
 
 from datastax.arrays.queue import Queue
 from datastax.errors import OverFlowError, UnderFlowError
 
 
 class PriorityQueue(Queue):
+    def __init__(self, capacity: int = None,
+                 custom_comparator: Callable = None):
+        super().__init__(capacity)
+        self.comparator = custom_comparator or max
+
     def swap(self, index1: int, index2: int) -> None:
         array = self._array
         array[index1], array[index2] = array[index2], array[index1]
@@ -14,9 +19,15 @@ class PriorityQueue(Queue):
         root = index
         left_child = root * 2 + 1
         right_child = root * 2 + 2
-        if left_child < length and self.array[left_child] > self.array[root]:
+        if left_child < length and (
+                self.comparator(self.array[left_child],
+                                self.array[root]) == self.array[left_child]
+        ):
             root = left_child
-        if right_child < length and self.array[right_child] > self.array[root]:
+        if right_child < length and (
+                self.comparator(self.array[right_child],
+                                self.array[root]) == self.array[right_child]
+        ):
             root = right_child
         if root == index:
             return

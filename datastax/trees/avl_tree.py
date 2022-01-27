@@ -35,14 +35,18 @@ class AVLTree(BinarySearchTree):
         else:
             warnings.warn(
                 f"Insertion unsuccessful. Item '{data}' already exists "
-                "in BinarySearchTree", DuplicateNodeWarning)
-        parent.height = 1 + max(self.height(parent.left),
-                                self.height(parent.right))
+                "in AVLTree", DuplicateNodeWarning
+            )
+        parent.height = 1 + max(
+            self.height(parent.left),
+            self.height(parent.right)
+        )
         # Balancing the tree
-        return self.balance(parent, data)
+        return self._balance(parent)
 
     # Function to check balance factor of node
-    def balance_factor(self, parent: Optional[AVLNode]) -> int:
+    def balance_factor(self, parent: Optional[AVLNode] = None) -> int:
+        parent = parent or self.root
         if parent:
             return self.height(parent.left) - self.height(parent.right)
         return 0
@@ -53,14 +57,14 @@ class AVLTree(BinarySearchTree):
         return node.height if node else 0
 
     # Function to balance a node
-    def balance(self, parent: Optional[AVLNode],
-                data: Any) -> Optional[AVLNode]:
+    def _balance(self, parent: Optional[AVLNode]) -> Optional[AVLNode]:
         if not parent:
             return None
         balance_factor = self.balance_factor(parent)
         if balance_factor < -1:
             # Perform LL Rotation
-            if parent.right and parent.right.data < data:
+            # if parent.right and parent.right.data < data:
+            if parent.right and self.balance_factor(parent.right) <= 0:
                 return self._left_rotate(parent)
             # Perform RL Rotation
             else:
@@ -70,7 +74,8 @@ class AVLTree(BinarySearchTree):
 
         if balance_factor > 1:
             # Perform RR Rotation
-            if parent.left and data < parent.left.data:
+            # if parent.left and data < parent.left.data:
+            if parent.left and self.balance_factor(parent.left) >= 0:
                 return self._right_rotate(parent)
             # Perform LR Rotation
             else:
@@ -79,7 +84,7 @@ class AVLTree(BinarySearchTree):
                 return self._right_rotate(parent)
         return parent
 
-    # Private helper method of _place function to perform RR rotation
+    # Private helper method of balance function to perform RR rotation
     def _right_rotate(self, node: AVLNode) -> Optional[AVLNode]:
         left = node.left
         if left:
@@ -92,7 +97,7 @@ class AVLTree(BinarySearchTree):
                                   self.height(left.right))
         return left
 
-    # Private helper method of _place function to perform LL rotation
+    # Private helper method of balance function to perform LL rotation
     def _left_rotate(self, node: AVLNode) -> Optional[AVLNode]:
         right = node.right
         if right:
@@ -104,3 +109,12 @@ class AVLTree(BinarySearchTree):
             right.height = 1 + max(self.height(right.left),
                                    self.height(right.right))
         return right
+
+    def _delete(self, root: Optional[AVLNode], item: Any) -> Optional[AVLNode]:
+        root = super()._delete(root, item)
+        if root:
+            root.height = 1 + max(
+                self.height(root.left),
+                self.height(root.right)
+            )
+        return self._balance(root)

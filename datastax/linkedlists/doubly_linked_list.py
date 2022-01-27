@@ -28,26 +28,3 @@ class DoublyLinkedList(doubly_linked_list.DoublyLinkedList):
         if not self.tail:
             self._tail = node
         self._head = node
-
-
-if __name__ == '__main__':
-    x = DoublyNode('one', DoublyNode(20), DoublyNode(30))
-    y = DoublyNode('two', DoublyNode(20))
-    z = DoublyNode('three', None, DoublyNode(20))
-    a = DoublyNode('four')
-    print(x,
-          y,
-          z,
-          a, sep='\n')
-    print_test_cases = [
-        None,
-        [1],
-        [{1, 2, 3}, 1],
-        [1, 'B', "C"],
-        [[1, 2, 3], [1], 4],
-
-    ]
-    for item in print_test_cases:
-        ll = DoublyLinkedList(item)
-        print(ll)
-        print(ll.head)

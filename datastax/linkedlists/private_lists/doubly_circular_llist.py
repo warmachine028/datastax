@@ -6,7 +6,8 @@ from datastax.linkedlists.private_lists.circular_linked_list import (
     CircularLinkedList
 )
 from datastax.linkedlists.private_lists.doubly_linked_list import (
-    DoublyLinkedList
+    DoublyLinkedList,
+    _mangled
 )
 
 
@@ -26,7 +27,11 @@ class DoublyCircularList(DoublyLinkedList, CircularLinkedList):
         nodes = 0
         while ref:
             top += f" ┌────╥{'─' * max_width}╥────┐  "
-            mid += f"---->  ║{f'{ref.data}'.center(max_width)}║  <---"
+            mid += (
+                f"---->  ║"
+                f"{f'{_mangled(ref.data)}'.center(max_width)}"
+                f"║  <---"
+            )
             dow += f" └────╨{'─' * max_width}╨────┘  "
             ref = ref.next
             nodes += 1

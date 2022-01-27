@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from datastax.linkedlists.private_lists.linked_list import Node, LinkedList
+from datastax.linkedlists.private_lists.linked_list import (
+    Node,
+    LinkedList,
+    _mangled
+)
 
 
 class CircularLinkedList(LinkedList):
@@ -14,7 +18,7 @@ class CircularLinkedList(LinkedList):
         max_width = 0
         ref = node
         while ref:
-            max_width = max(max_width, len(str(ref.data)))
+            max_width = max(max_width, len(_mangled(ref.data)))
             ref = ref.next
             if ref is node:
                 break
@@ -33,7 +37,7 @@ class CircularLinkedList(LinkedList):
         while ref:
             top += f"┌{'─' * max_width}╥────┐   "
             mid += (
-                f"│{f'{ref.data}'.center(max_width)}║  "
+                f"│{f'{_mangled(ref.data)}'.center(max_width)}║  "
                 f"{('-' if ref.next != self.head else '─') * 5}>"
             )
             dow += f"└{'─' * max_width}╨────┘   "
@@ -55,5 +59,15 @@ class CircularLinkedList(LinkedList):
         if n == 0:
             return ' '
         spaces = '─' * 3
-        return f" ╰{'─' * (start_padding - 2)}{'─' * lpn * n}" \
-               f"{spaces * (n - 1)}──╯\n"
+        return (
+            f" ╰{'─' * (start_padding - 2)}{'─' * lpn * n}"
+            f"{spaces * (n - 1)}──╯\n"
+        )
+
+    def __iter__(self):
+        ref = self.head
+        while ref:
+            yield ref.data
+            ref = ref.next
+            if ref is self.head:
+                break

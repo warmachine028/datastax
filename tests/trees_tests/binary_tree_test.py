@@ -5,7 +5,9 @@ import unittest
 from datastax.errors import (
     PathNotGivenError,
     PathNotFoundError,
-    PathAlreadyOccupiedWarning
+    PathAlreadyOccupiedWarning,
+    DeletionFromEmptyTree,
+    NodeNotFoundWarning
 )
 from datastax.trees import BinaryTree, TreeNode
 from tests.trees_tests.common_helper_functions import level_wise_items
@@ -74,11 +76,76 @@ class TestBinaryTree(unittest.TestCase):
         tree = BinaryTree([*range(9, 0, -1)], root_node)
         self.assertEqual([*range(10, 0, -1)], level_wise_items(tree))
 
+    def test_delete(self):
+        # Test deletion from empty Tree
+        with self.assertWarns(DeletionFromEmptyTree):
+            tree = BinaryTree()
+            self.assertEqual(tree.delete(), None)
+            self.assertEqual([], level_wise_items(tree))
+
+        sample = random.sample(range(100), self.max_sample_size)
+        tree = BinaryTree(sample)
+        # Attempting deletion of invalid item from empty tree
+        with self.assertWarns(NodeNotFoundWarning):
+            tree.delete(404)
+        for i in sample:
+            self.assertEqual(i, tree.delete(i))
+        # checking Emptiness
+        self.assertTrue([] == tree.array_repr == level_wise_items(tree))
+        # Attempting deletion from empty tree
+        with self.assertWarns(DeletionFromEmptyTree):
+            tree.delete(404)
+
+        tree.insert(10)
+        self.assertEqual(10, tree.root.data)
+        self.assertEqual([10], level_wise_items(tree))
+
+    def test_delete_deepest(self):
+        # Test deletion from empty Tree
+        with self.assertWarns(DeletionFromEmptyTree):
+            tree = BinaryTree()
+            self.assertEqual(tree.delete_deepest(), None)
+            self.assertEqual([], level_wise_items(tree))
+
+        # Test deletion with only Root
+        tree = BinaryTree([1])
+        self.assertEqual(tree.delete_deepest(), 1)
+        self.assertEqual([], level_wise_items(tree))
+
+        # Test deletion with root and both children
+        tree = BinaryTree([1, 2, 3])
+        self.assertEqual(tree.delete_deepest(), 3)
+        self.assertEqual([1, 2], level_wise_items(tree))
+
+        # Test deletion with root and left child only
+        tree = BinaryTree([1, 2])
+        self.assertEqual(tree.delete_deepest(), 2)
+        self.assertEqual([1], level_wise_items(tree))
+
+        # Test deletion with root and right child only
+        tree = BinaryTree([1, None, 3])
+        self.assertEqual(tree.delete_deepest(), 3)
+        self.assertEqual([1], level_wise_items(tree))
+
+        # Test deletion from a perfect BinaryTree
+        tree = BinaryTree([*range(2 ** 3 - 1)])
+        self.assertEqual(tree.delete_deepest(), 2 ** 3 - 2)
+        self.assertEqual([*range(2 ** 3 - 2)], level_wise_items(tree))
+
+    def test_insert(self):
+        tree = BinaryTree([10, None, 20, None, 50])
+        tree.insert(None)
+        self.assertEqual([10, 20, 50], level_wise_items(tree))
+        tree.insert(10)
+        tree.insert(20)
+        tree.insert(50)
+        self.assertEqual([10, 10, 20, 20, 50, 50], level_wise_items(tree))
+        tree.insert_path(30, ['left', 'right', 'left'])
+        self.assertEqual([10, 10, 20, 20, 50, 50, 30], level_wise_items(tree))
+
     def test_insert_path(self):
         # inserting root without path
         tree = BinaryTree()
-        with self.assertRaises(NotImplementedError):
-            tree.insert(10)
         tree.insert_path(10)
         self.assertEqual([10], level_wise_items(tree))
         # testing inserting
@@ -140,16 +207,16 @@ class TestBinaryTree(unittest.TestCase):
             '\n│   ├─▶ 4'
             '\n│   └─▶ 3'
             '\n└─▶ 4'
-            '\n   └─▶ [\'1\']',
+            '\n    └─▶ [\'1\']',
 
             '\n(10, 20)'
             '\n└─▶ [10, 20]',
 
             '\n1'
             '\n└─▶ 2'
-            '\n   └─▶ 3'  # An example of a degenerate tree
-            '\n      └─▶ 4'
-            '\n         └─▶ 5'
+            '\n    └─▶ 3'  # An example of a degenerate tree
+            '\n        └─▶ 4'
+            '\n            └─▶ 5'
 
         ]
 

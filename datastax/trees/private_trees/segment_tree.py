@@ -4,7 +4,7 @@ import math
 from typing import Any, Optional
 
 from datastax.trees.private_trees.binary_tree import (
-    BinaryTree, TreeNode, _node_builder
+    BinaryTree, TreeNode, _node_builder, _mangled
 )
 
 
@@ -36,11 +36,10 @@ class SegmentTree(BinaryTree):
             nodes = 0
             for node in level:
                 if node:
-                    data = str(node.data)
+                    data = _mangled(node.data)
+                    _range = None
                     if node.left_index != node.right_index:
                         _range = f"[{node.left_index}:{node.right_index}]"
-                    else:
-                        _range = None
                     max_width = max(len(data), max_width)
                     line.append([data, _range])
                     next_level += [node.left, node.right]
@@ -100,10 +99,14 @@ class SegmentTree(BinaryTree):
             if not parent:
                 return
             if self.__string is not None:
-                self.__string += f"\n{padding}{component}{parent.data} "
+                self.__string += (
+                    f"\n{padding}{component}"
+                    f"{_mangled(parent.data)} "
+                )
                 if parent.left_index != parent.right_index:
-                    self.__string += f"[{parent.left_index}:" \
-                                     f"{parent.right_index}]"
+                    self.__string += (
+                        f"[{parent.left_index}:{parent.right_index}]"
+                    )
 
             if parent is not root:
                 padding += "│   " if has_right_child else "    "

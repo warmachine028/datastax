@@ -44,10 +44,17 @@ class Queue:
         self._front += 1
         return deleted_item
 
-    def peek(self) -> str:
+    def peek(self) -> Any:
         if self.is_empty() or self._front >= self._rear:
             return "QUEUE EMPTY"
-        return str(self._array[self._front])
+        return self._array[self._front]
+
+    # private method to mangle string __repr__
+    @staticmethod
+    def _mangled(item: Any) -> str:
+        if '\n' in str(item):
+            return f"{str(type(item))[8:-2].split('.')[-1]}@{id(item)}"
+        return str(item)
 
     def __str__(self):
         if self.is_empty():
@@ -55,7 +62,9 @@ class Queue:
                    '│    QUEUE EMPTY    │\n' \
                    '└───────────────────┘'
         padding = 4
-        max_breadth = max(len(str(item)) for item in self._array) + padding
+        max_breadth = max(
+            len((self._mangled(item))) for item in self._array
+        ) + padding
         middle_part = 'FRONT -> │'
         upper_part = f"\n{' ' * (len(middle_part) - 1)}┌"
         lower_part = f"{' ' * (len(middle_part) - 1)}└"
@@ -68,7 +77,7 @@ class Queue:
             middle_part = middle_part[:-1] + '║'
             lower_part = lower_part[:-1] + '╨'
         for item in self._array[self._front:]:
-            middle_part += f'{str(item).center(max_breadth)}│'
+            middle_part += f'{self._mangled(item).center(max_breadth)}│'
             upper_part += f"{'─' * max_breadth}┬"
             lower_part += f"{'─' * max_breadth}┴"
         upper_part = f"{upper_part[:-1]}"

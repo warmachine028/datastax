@@ -1,4 +1,4 @@
-# Sum Segment Tree implementation
+# Min Segment Tree implementation
 from __future__ import annotations
 
 from sys import maxsize
@@ -44,7 +44,7 @@ class MinSegmentTree(SegmentTree):
             if isinstance(root.data, int):
                 return maxsize
             if isinstance(root.data, str):
-                return "z"  # chr(1114099)
+                return chr(1114099)
             return [maxsize]
         return min(
             self.get_min(left, right, root.left),

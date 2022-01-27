@@ -3,6 +3,13 @@ from __future__ import annotations
 from typing import Any, Optional
 
 
+# private method to mangle string __repr__
+def _mangled(item: Any) -> str:
+    if '\n' in str(item):
+        return f"{str(type(item))[8:-2].split('.')[-1]}@{id(item)}"
+    return str(item)
+
+
 class Node:
     def __init__(self, data: Any, _next: Node = None):
         self.data = data
@@ -12,7 +19,7 @@ class Node:
         width = len(str(self.data)) + 4
         top = f" ┌{'─' * width}╥────┐\n"
         mid = (
-            f" │{f'{self.data}'.center(width)}║ ------> "
+            f" │{f'{_mangled(self.data)}'.center(width)}║ ------> "
             f"{'next' if self.next else 'NULL'}\n"
         )
         dow = f" └{'─' * width}╨────┘\n"
@@ -43,7 +50,7 @@ class LinkedList:
     def _max_width(node: Optional[Node]):
         max_width = 0
         while node:
-            max_width = max(max_width, len(str(node.data)))
+            max_width = max(max_width, len(_mangled(node.data)))
             node = node.next
         return max_width
 
@@ -55,7 +62,7 @@ class LinkedList:
         nodes = 0
         while ref:
             top += f"┌{'─' * max_width}╥────┐   "
-            mid += f"│{f'{ref.data}'.center(max_width)}║  ----->"
+            mid += f"│{f'{_mangled(ref.data)}'.center(max_width)}║  ----->"
             dow += f"└{'─' * max_width}╨────┘   "
             ref = ref.next
             nodes += 1
@@ -71,8 +78,7 @@ class LinkedList:
     def _draw_heading(self, n: int, lpn: int, start_padding: int) -> str:
         if n == 0:
             return ' '
-        head = 'HEAD'.center(lpn)
-        tail = 'TAIL'.center(lpn)
+        head, tail = 'HEAD'.center(lpn), 'TAIL'.center(lpn)
         spaces = ' ' * 3
         if self.head is self.tail:
             return (

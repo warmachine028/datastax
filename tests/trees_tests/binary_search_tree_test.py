@@ -2,7 +2,12 @@ import random
 import string
 import unittest
 
-from datastax.errors import DuplicateNodeWarning
+from datastax.errors import (
+    DuplicateNodeWarning,
+    DeletionFromEmptyTree,
+    NodeNotFoundWarning
+
+)
 from datastax.trees import TreeNode, BinarySearchTree
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
@@ -75,6 +80,36 @@ class TestBinarySearchTree(unittest.TestCase):
             self.assertEqual([6, 5, 9, 4, 8, 3, 7, 2, 1],
                              level_wise_items(tree))
 
+    def test_delete(self):
+        # Test deletion from empty Tree
+        with self.assertWarns(DeletionFromEmptyTree):
+            tree = BinarySearchTree()
+            self.assertEqual(tree.delete(), None)
+            self.assertEqual([], level_wise_items(tree))
+
+        sample = random.sample(range(100), self.max_sample_size)
+        tree = BinarySearchTree(sample)
+        # Attempting deletion of invalid item from empty tree
+        with self.assertWarns(NodeNotFoundWarning):
+            tree.delete(404)
+
+        temp = list(sample)
+        for item in sample:
+            tree.delete(item)
+            temp.remove(item)
+            self.assertEqual(sorted(temp), inorder_items(tree))
+
+        # Attempting deletion from empty tree
+        with self.assertWarns(DeletionFromEmptyTree):
+            tree.delete(404)
+
+        # Attempt insertion after deletion
+        insertion_order = random.sample(range(10), self.max_sample_size)
+        for i, item in enumerate(insertion_order):
+            tree.insert(item)
+            self.assertEqual(sorted(insertion_order[:i + 1]),
+                             inorder_items(tree))
+
     def test_insert(self):
         self.assertEqual([], level_wise_items(self.bst))
 
@@ -128,14 +163,14 @@ class TestBinarySearchTree(unittest.TestCase):
 
             '\n1'
             '\n└─▶ B'  # Normal BinarySearchTree Repr
-            '\n   └─▶ Baxy'
-            '\n      └─▶ D',
+            '\n    └─▶ Baxy'
+            '\n        └─▶ D',
 
             '\n1'
             '\n└─▶ 2'
-            '\n   └─▶ 3'  # An example of a right skewed tree
-            '\n      └─▶ 4'
-            '\n         └─▶ 5'
+            '\n    └─▶ 3'  # An example of a right skewed tree
+            '\n        └─▶ 4'
+            '\n            └─▶ 5'
 
         ]
 
@@ -151,8 +186,8 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(None, tree.search(11))
         items = [3, 1, 0, 6, 4, 7, 8, 9, 2, 5]
         tree = BinarySearchTree(items)
-        self.assertEqual(False, bool(tree.search(1, tree.root.right)))
-        self.assertEqual(True, bool(tree.search(9, tree.root.right)))
+        self.assertEqual(True, bool(tree.search(1)))
+        self.assertEqual(True, bool(tree.search(9)))
 
     def test_string_representation(self):
         results = [

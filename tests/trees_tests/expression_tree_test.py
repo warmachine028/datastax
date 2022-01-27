@@ -178,8 +178,8 @@ class TestExpressionTree(unittest.TestCase):
             '\n├─▶ %'
             '\n│   ├─▶ 1'
             '\n│   └─▶ +'  # Normal ExpressionTree Repr
-            '\n│      ├─▶ B'
-            '\n│      └─▶ Baxy'
+            '\n│       ├─▶ B'
+            '\n│       └─▶ Baxy'
             '\n└─▶ D',
 
             '\n+'
@@ -190,8 +190,8 @@ class TestExpressionTree(unittest.TestCase):
             '\n├─▶ *'
             '\n│   ├─▶ D'
             '\n│   └─▶ +'
-            '\n│      ├─▶ 6'
-            '\n│      └─▶ A'
+            '\n│       ├─▶ 6'
+            '\n│       └─▶ A'
             '\n└─▶ C',
 
             '\n/'

@@ -1,4 +1,4 @@
-    updated: Tuesday, 25th January 2022
+    updated: Friday, 28th January 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -22,6 +22,14 @@
 
 - Added Sum Segment Tree
 - Added Min Segment Tree
+- Added Huffman Tree
+- Added Delete methods in:
+    - BinaryTree
+    - BinarySearchTree
+    - AVLTree
+- Enhanced string representation of all LinkedLists
+- Added Custom Comparator for PriorityQueue
+- Added name-mangler function for items with multiline string representations
 
 ## Table of Contents
 
@@ -220,6 +228,10 @@ $ OUTPUT
 
 ```
 
+---------------------------------------------------
+
+- **SumSegmentTree**
+
 ```py
 from datastax.trees import SumSegmentTree
 
@@ -257,9 +269,40 @@ $ OUTPUT
                   
 ```
 
+---------------------------------------------------
+
+- **SumSegmentTree**
+
+```py
+from datastax.trees import HuffmanTree
+
+hft = HuffmanTree("Espresso Express")
+print(hft)
+```
+
+```shell
+$ OUTPUT
+                                               16                                               
+                         0                      │                      1                        
+                        ┌───────────────────────┴───────────────────────┐                       
+                        7                                               9                       
+             0          │          1                         0          │          1            
+            ┌───────────┴───────────┐                       ┌───────────┴───────────┐           
+            3                       4                       4                       s           
+       0    │    1             0    │    1             0    │    1                  5           
+      ┌─────┴─────┐           ┌─────┴─────┐           ┌─────┴─────┐                             
+      x           2           e           r           E           p                             
+      1         0 │ 1         2           2           2           2                             
+               ┌──┴──┐                                                                          
+               o                                                                                
+               1     1       
+```
+
 ## What's Next
 
 - Enhanced Documentation
-- Implementation of Other Abstract data types like **LFU_CACHE, SKIP_LIST**
+- Better TestCases for Huffman Tree
+- Better TestCases for Segment Trees
+- Implementation of compression ratio and huffman code functions in Huffman Tree
 - Beautification of [README.md](README.md)
 

@@ -3,6 +3,7 @@ from .binary_search_tree import BinarySearchTree
 from .binary_tree import BinaryTree, TreeNode
 from .expression_tree import ExpressionTree
 from .heap_tree import HeapTree, HeapTreeNode
+from .huffman_tree import HuffmanTree, HuffmanNode
 from .min_heap_tree import MinHeapTree
 from .min_segment_tree import MinSegmentTree
 from .sum_segment_tree import SumSegmentTree, SegmentNode
@@ -17,5 +18,6 @@ __all__ = [
     "ExpressionTree",
     "ThreadedBinaryTree", "ThreadedTreeNode",
     "SumSegmentTree", "SegmentNode",
-    "MinSegmentTree"
+    "MinSegmentTree",
+    "HuffmanTree", "HuffmanNode"
 ]

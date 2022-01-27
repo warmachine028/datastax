@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from datastax.linkedlists.private_lists.linked_list import Node, LinkedList
+from datastax.linkedlists.private_lists.linked_list import (
+    Node, LinkedList,
+    _mangled
+)
 
 
 class DoublyNode(Node):
@@ -17,7 +20,7 @@ class DoublyNode(Node):
         top = f"        ┌────╥{'─' * width}╥────┐\n"
         mid = (
             f"{' prev' if self.next else ' NULL'}"
-            f" <----  ║{f'{self.data}'.center(width)}║  ----> "
+            f" <----  ║{f'{_mangled(self.data)}'.center(width)}║  ----> "
             f"{' next' if self.next else ' NULL'}\n"
         )
         dow = f"        └────╨{'─' * width}╨────┘  "
@@ -47,9 +50,11 @@ class DoublyLinkedList(LinkedList):
             top += f" ┌────╥{'─' * max_width}╥────┐  "
             next_ptr = '<' if ref.next else '-'
             prev_ptr = '>' if ref.prev else '-'
-            string += f"----{prev_ptr}" \
-                      f"  ║{str(ref.data).center(max_width)}║  " \
-                      f"{next_ptr}---"
+            string += (
+                f"----{prev_ptr}"
+                f"  ║{_mangled(ref.data).center(max_width)}║  "
+                f"{next_ptr}---"
+            )
             bottom += f" └────╨{'─' * max_width}╨────┘  "
             ref = ref.next
             nodes += 1

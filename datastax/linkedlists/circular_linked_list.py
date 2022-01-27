@@ -21,17 +21,3 @@ class CircularLinkedList(circular_linked_list.CircularLinkedList,
     def insert(self, data: Any):
         super().insert(data)
         self.tail.next = self.head
-
-
-if __name__ == '__main__':
-    print_test_cases = [
-        None,
-        [1],
-        [{1, 2, 3}, 1],
-        [1, 'B', "C"],
-        [[1, 2, 3], [1], 4],
-    ]
-    for item in print_test_cases:
-        ll = CircularLinkedList(item)
-        print(ll)
-        print(ll.head)

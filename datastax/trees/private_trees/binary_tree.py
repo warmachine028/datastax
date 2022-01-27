@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 import math
-from queue import Queue
 from typing import Any, Optional
+
+from datastax.linkedlists import Queue
 
 
 def _node_builder(data: Optional[str], piece_width: int) -> str:
@@ -11,6 +12,13 @@ def _node_builder(data: Optional[str], piece_width: int) -> str:
     gap1 = int(math.ceil(piece_width / 2 - len(value) / 2))
     gap2 = int(math.floor(piece_width / 2 - len(value) / 2))
     return f"{' ' * gap1}{value}{' ' * gap2}"
+
+
+# private method to mangle string __repr__
+def _mangled(item: Any) -> str:
+    if '\n' in str(item):
+        return f"{str(type(item))[8:-2].split('.')[-1]}@{id(item)}"
+    return str(item)
 
 
 class TreeNode:
@@ -25,10 +33,10 @@ class TreeNode:
         values = [self.data,
                   self.left.data if self.left else None,
                   self.right.data if self.right else None]
-        values = list(map(
-            lambda value: str(value) if value is not None else "", values)
+        values = list(
+            map(lambda value: "" if value is None else _mangled(value), values)
         )
-        max_width = max(len(data) for data in values if data)
+        max_width = max(len(_mangled(data)) for data in values if data)
         if max_width % 2:
             max_width += 1  # To make max_width even
 
@@ -39,25 +47,31 @@ class TreeNode:
         hpw = int(per_piece // 2 - 1)
         if any(values[1:]):
             if all(values[1:]):
-                string_builder += f"{' ' * (hpw + 1)}" \
-                                  f"┌{'─' * hpw}┴{'─' * hpw}┐\n"
-                string_builder += _node_builder(values[1], per_piece
-                                                ) + _node_builder(values[2],
-                                                                  per_piece)
+                string_builder += (
+                    f"{' ' * (hpw + 1)}"
+                    f"┌{'─' * hpw}┴{'─' * hpw}┐\n"
+                )
+                string_builder += _node_builder(
+                    values[1], per_piece
+                ) + _node_builder(values[2], per_piece)
             elif values[1]:
                 string_builder += f"{' ' * (hpw + 1)}┌{'─' * hpw}┘\n"
                 string_builder += _node_builder(values[1], per_piece)
             else:
                 string_builder += f"{' ' * (per_piece - 1)} └{'─' * hpw}┐\n"
-                string_builder += f"{' ' * (per_piece - 1)} " \
-                                  f"{_node_builder(values[2], per_piece)}"
+                string_builder += (
+                    f"{' ' * (per_piece - 1)} "
+                    f"{_node_builder(values[2], per_piece)}"
+                )
 
         return string_builder
 
     def preorder_print(self) -> str:
         values = [self.data, self.left.data if self.left else None,
                   self.right.data if self.right else None]
-        values = list(map(lambda value: str(value) if value else "", values))
+        values = list(
+            map(lambda value: "" if value is None else _mangled(value), values)
+        )
 
         string_builder = f'{values[0]}\n'
         if any(values[1:]):
@@ -99,16 +113,16 @@ class BinaryTree:
     @property  # Level Order Traversal -> Tree to array
     def array_repr(self) -> list[Any]:
         array = []
-        queue: Queue[TreeNode] = Queue()
+        queue = Queue()
         if self.root:
-            queue.put(self.root)
-        while not queue.empty():
-            node = queue.get()
+            queue.enqueue(self.root)
+        while not queue.is_empty():
+            node = queue.dequeue()
             array.append(node.data)
             if node.left:
-                queue.put(node.left)
+                queue.enqueue(node.left)
             if node.right:
-                queue.put(node.right)
+                queue.enqueue(node.right)
 
         return array
 
@@ -128,7 +142,7 @@ class BinaryTree:
             nodes = 0
             for node in level:
                 if node:
-                    data = str(node.data)
+                    data = _mangled(node.data)
                     max_width = max(len(data), max_width)
                     line.append(data)
                     next_level += [node.left, node.right]
@@ -181,9 +195,12 @@ class BinaryTree:
             if not parent:
                 return
             if self.__string is not None:
-                self.__string += f"\n{padding}{component}{parent.data}"
+                self.__string += (
+                    f"\n{padding}{component}"
+                    f"{_mangled(parent.data)}"
+                )
             if parent is not root:
-                padding += "│   " if has_right_child else "   "
+                padding += "│   " if has_right_child else "    "
             left_pointer = "├─▶ " if parent.right else "└─▶ "
             right_pointer = "└─▶ "
             string_builder(parent.left, bool(parent.right), padding,
