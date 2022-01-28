@@ -23,6 +23,12 @@
 - Added Sum Segment Tree
 - Added Min Segment Tree
 - Added Huffman Tree
+    - data encoder
+    - data decoder
+    - Huffman Code
+    - Huffman Table
+    - compression ratio
+    - space saved
 - Added Delete methods in:
     - BinaryTree
     - BinarySearchTree
@@ -30,6 +36,7 @@
 - Enhanced string representation of all LinkedLists
 - Added Custom Comparator for PriorityQueue
 - Added name-mangler function for items with multiline string representations
+- Added HuffmanTable for storing and visualizing Huffman Table
 
 ## Table of Contents
 
@@ -271,7 +278,7 @@ $ OUTPUT
 
 ---------------------------------------------------
 
-- **SumSegmentTree**
+- **HuffmanTree**
 
 ```py
 from datastax.trees import HuffmanTree
@@ -303,6 +310,5 @@ $ OUTPUT
 - Enhanced Documentation
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
-- Implementation of compression ratio and huffman code functions in Huffman Tree
 - Beautification of [README.md](README.md)
 

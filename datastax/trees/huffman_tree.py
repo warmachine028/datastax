@@ -1,3 +1,4 @@
+# Implementation of Variable size huffman coding
 from __future__ import annotations
 
 from collections import Counter
@@ -5,21 +6,23 @@ from typing import Any, Optional, Union
 
 from datastax.arrays import PriorityQueue
 from datastax.trees.private_trees import huffman_tree
-from datastax.trees.private_trees.huffman_tree import HuffmanNode
+from datastax.trees.private_trees.huffman_tree import (
+    HuffmanNode,
+)
+
+
+class HuffmanTable(huffman_tree.HuffmanTable):
+    def _calculate_size(self):
+        size = 0
+        for char, huff_code in self.data.items():
+            size += ord(char).bit_length() + len(huff_code)
+        self._size = size
 
 
 class HuffmanTree(huffman_tree.HuffmanTree):
-    def __init__(self, string: Union[list, str] = None):
-        self.string = string
-        self._huffman_code = None
-        super().__init__(string)
-
-    def insert(self, item: Any):
-        raise NotImplementedError
-
-    def _construct(self, string: Union[list, str] = None
+    def _construct(self, data: Union[list[str], str] = None
                    ) -> Optional[HuffmanTree]:
-        if not string or string[0] is None:
+        if not data or data[0] is None:
             return None
 
         def comparator(n1: HuffmanNode, n2: HuffmanNode) -> HuffmanNode:
@@ -27,39 +30,109 @@ class HuffmanTree(huffman_tree.HuffmanTree):
                 return n2
             return n1
 
-        nodes = [
+        nodes = (
             HuffmanNode(
-                data, None, None, frequency
-            ) for data, frequency in Counter(string).items()
-        ]
+                _data, None, None, frequency
+            ) for _data, frequency in Counter(data).items()
+        )
         p_queue = PriorityQueue(None, comparator)
         for node in nodes:
             p_queue.enqueue(node)
 
-        while not p_queue.is_empty():
-            print([node.frequency for node in p_queue.array])
-            print(p_queue.peek())
+        while len(p_queue.array) >= 2:
             node1 = p_queue.dequeue()
-            if p_queue.is_empty():
-                break
             node2 = p_queue.dequeue()
             root_freq = sum((node1.frequency, node2.frequency))
             root = HuffmanNode(None, node1, node2, root_freq)
-            print(root)
             p_queue.enqueue(root)
-            self._root = p_queue.array[0]
 
+        self._root = p_queue.dequeue()
         self._calculate_huffman_code()
+        self._create_huffman_table()
         return self
 
-    @property
-    def huffman_code(self):
-        return self._huffman_code
+    def huffman_code_of(self, character: str) -> Optional[str]:
+        def find(node: HuffmanNode, path=None):
+            if not node:
+                return None
+            path = path or []
+            if node.data == character:
+                return path
+            path.append(0)
+            if find(node.left, path) is not None:
+                return path
+            path.pop()
+            path.append(1)
+            if find(node.right, path) is not None:
+                return path
+            path.pop()
+
+        result = find(self.root)
+        return ''.join(map(str, result)) if result else None
+
+    # Private method to build data dictionary for HuffmanTable
+    def _create_huffman_table(self):
+        items = {}
+        for item in self._string:
+            items[item] = self.huffman_code_of(item)
+        self._table = HuffmanTable(items, Counter(self._string))
 
     def _calculate_huffman_code(self):
-        result = ''
-        self._huffman_code = result
+        self._huffman_code = ''.join(
+            self.huffman_code_of(character) for character in self._string
+        )
         pass
 
-    def compression_ratio(self):
-        pass
+    def size_calculator(self) -> Optional[tuple[int, int]]:
+        if not self.root or not self.huffman_table:
+            return None
+        fixed_encoding = huffman_encoding = 0
+        frequency = self.huffman_table.frequency
+
+        for char, huff_code in self.huffman_table.data.items():
+            # Converting item to ascii finding bit_length and multiplying
+            # it with frequency
+            total_bit_length = ord(char).bit_length() * frequency[char]
+            fixed_encoding += total_bit_length  # Adding to fixed_encoding
+
+            # Already in Binary so no conversion to ascii
+            total_bit_length = len(huff_code) * frequency[char]
+            huffman_encoding += total_bit_length  # Adding to huffman_encoding
+
+        return fixed_encoding, huffman_encoding + self.huffman_table.size
+
+    def compression_ratio(self) -> Optional[str]:
+        if not self.root:
+            return None
+        result = self.size_calculator()
+        if not result:
+            return None
+        fixed_encoding, huffman_encoding = result
+        compression_ratio = huffman_encoding / fixed_encoding
+        return f"{compression_ratio :.2%}"
+
+    def space_saved(self) -> Optional[str]:
+        if not self.root:
+            return None
+        result = self.size_calculator()
+        if not result:
+            return None
+        fixed_encoding, huffman_encoding = result
+        space_saved = (fixed_encoding - huffman_encoding) / fixed_encoding
+        return f"{space_saved :.2%}"
+
+    @staticmethod
+    def decode_from_table(huffman_code: str,
+                          huffman_table: dict[str, str]) -> str:
+        huffman_table = {code: char for char, code in huffman_table.items()}
+        decoded_message = ''
+        per_character = ''
+        for item in huffman_code:
+            if per_character in huffman_table:
+                decoded_message += huffman_table[per_character]
+                per_character = ''
+            per_character += item
+        return decoded_message
+
+    def insert(self, item: Any):
+        raise NotImplementedError

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from datastax.trees.private_trees.binary_tree import (
     BinaryTree, TreeNode,
@@ -58,8 +58,19 @@ class HuffmanNode(TreeNode):
 
 
 class HuffmanTree(BinaryTree):
-    def insert(self, item: Any):
-        raise NotImplementedError
+    def __init__(self, data: Union[list[str], str] = None):
+        self._string = data
+        self._huffman_code = ''
+        self._table = None
+        super().__init__(data)
+
+    @property
+    def huffman_table(self) -> Optional[HuffmanTable]:
+        return self._table
+
+    @property
+    def huffman_code(self):
+        return self._huffman_code
 
     # Level order Traversal of Tree
     def __str__(self, root=None):  # noqa: C901
@@ -145,3 +156,60 @@ class HuffmanTree(BinaryTree):
             per_piece //= 2
 
         return string_builder
+
+    def insert(self, item: Any):
+        raise NotImplementedError
+
+
+class HuffmanTable:
+    def __init__(self, table: dict[str, str],
+                 frequencies: dict[str, int]):
+        self._huffman_table = table
+        self.frequency = frequencies
+        self._size = 0
+        self._calculate_size()
+
+    @property
+    def data(self) -> dict[str, str]:
+        return self._huffman_table
+
+    @property
+    def size(self):
+        return self._size
+
+    def _calculate_size(self):
+        raise NotImplementedError
+
+    def __str__(self):
+        items = self.data
+        padding = 4
+        max_width = max(len(code) for *_, code in items.values()) + padding * 2
+        if max_width < 10:
+            max_width = 12
+        mid_width = max_width * 2 - (4 if max_width > 12 else 0)
+
+        h_border = f"╔{'═' * max_width}╤{'═' * mid_width}╤{'═' * max_width}╗\n"
+        header = (
+            f"║{'Unique'.center(max_width)}"
+            f"│{'Occurrence /'.center(mid_width)}│"
+            f"{'Huffman'.center(max_width)}║\n"
+
+            f"║{'Characters'.center(max_width)}"
+            f"│{'Frequency'.center(mid_width)}│"
+            f"{'Code'.center(max_width)}║\n"
+        )
+        sep = f"╟{'─' * max_width}┼{'─' * mid_width}┼{'─' * max_width}╢\n"
+        data_template = "║{}│{}│{}║\n"
+
+        body = ''
+        for character, huffman_code in items.items():
+            body += sep
+            body += data_template.format(character.center(max_width),
+                                         str(
+                                             self.frequency[character]
+                                         ).center(mid_width),
+                                         huffman_code.rjust(
+                                             max_width - padding).center(
+                                             max_width))
+        f_border = f"╚{'═' * max_width}╧{'═' * mid_width}╧{'═' * max_width}╝"
+        return h_border + header + body + f_border
