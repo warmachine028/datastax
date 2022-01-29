@@ -11,12 +11,9 @@ from datastax.trees.binary_search_tree import BinarySearchTree, TreeNode
 class AVLNode(TreeNode):
     def __init__(self, data: Any,
                  left: AVLNode = None,
-                 right: AVLNode = None,
-                 height: int = 1):
+                 right: AVLNode = None):
         super().__init__(data, left, right)
-        self.left = left
-        self.right = right
-        self.height = height
+        self.height = 1
 
 
 class AVLTree(BinarySearchTree):

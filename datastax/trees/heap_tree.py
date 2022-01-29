@@ -8,17 +8,19 @@ from datastax.errors import DeletionFromEmptyTree
 from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
 
 
-class HeapTreeNode(TreeNode):
-    def __init__(self, data: Any, left=None, right=None) -> None:
-        self.parent: Optional[HeapTreeNode] = None
-        self.prev_leaf: Optional[HeapTreeNode] = None
+class HeapNode(TreeNode):
+    def __init__(self, data: Any,
+                 left: HeapNode = None,
+                 right: HeapNode = None):
         super().__init__(data, left, right)
+        self.parent: Optional[HeapNode] = None
+        self.prev_leaf: Optional[HeapNode] = None
 
 
 class HeapTree(BinaryTree):
-    def __init__(self, array: list[Any] = None, root=None):
-        self._root: Optional[HeapTreeNode] = root
-        self._leaf: Optional[HeapTreeNode] = root
+    def __init__(self, array: list[Any] = None, root: HeapNode = None):
+        self._root: Optional[HeapNode] = root
+        self._leaf: Optional[HeapNode] = root
         super().__init__(array, root)
 
     def _construct(self, array: list[Any] = None) -> Optional[HeapTree]:
@@ -40,7 +42,7 @@ class HeapTree(BinaryTree):
         root = root or self.root
         if data is None:
             return
-        node = HeapTreeNode(data)
+        node = HeapNode(data)
         if root is None:  # Heap Tree is Empty
             self._root = self._leaf = node
         # Heap tree has nodes. So inserting new node
@@ -59,14 +61,14 @@ class HeapTree(BinaryTree):
         self._heapify(node)
 
     # Private function to convert a subtree to heap
-    def _heapify(self, node: HeapTreeNode) -> None:
+    def _heapify(self, node: HeapNode) -> None:
         if node.parent and node.parent.data < node.data:
             node.parent.data, node.data = node.data, node.parent.data
             self._heapify(node.parent)
 
     # Private Helper method of heappush function to
     # update rightmost node in deepest level
-    def _update_leaf(self, node: HeapTreeNode) -> None:
+    def _update_leaf(self, node: HeapNode) -> None:
         # reach extreme left of next level if current level is full
         if node.parent is None:
             self._leaf = node
@@ -103,7 +105,7 @@ class HeapTree(BinaryTree):
         return deleted_data
 
     # Private helper method of heappop function
-    def _shift_up(self, node: HeapTreeNode) -> None:
+    def _shift_up(self, node: HeapNode) -> None:
         root = node
         left_child = root.left
         right_child = root.right

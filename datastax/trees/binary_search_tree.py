@@ -14,8 +14,8 @@ from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
 
 class BinarySearchTree(BinaryTree):
 
-    def insert(self, data: Any, root=None) -> None:
-        root = root or self.root
+    def insert(self, data: Any) -> None:
+        root = self.root
         if data is None:
             return
         result = self._place(root, data)

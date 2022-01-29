@@ -3,16 +3,16 @@ from __future__ import annotations
 
 from typing import Any
 
-from datastax.trees.heap_tree import HeapTree, HeapTreeNode
+from datastax.trees.heap_tree import HeapTree, HeapNode
 
 
 class MinHeapTree(HeapTree):
-    def _heapify(self, node: HeapTreeNode) -> None:
+    def _heapify(self, node: HeapNode) -> None:
         if node.parent and node.parent.data > node.data:
             node.parent.data, node.data = node.data, node.parent.data
             self._heapify(node.parent)
 
-    def _shift_up(self, node: HeapTreeNode) -> None:
+    def _shift_up(self, node: HeapNode) -> None:
         root = node
         left_child = root.left
         right_child = root.right

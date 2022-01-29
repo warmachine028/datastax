@@ -5,7 +5,7 @@ from typing import Optional, Any
 
 from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
 from datastax.linkedlists import Queue
-from datastax.trees import ThreadedBinaryTree, ThreadedTreeNode
+from datastax.trees import ThreadedBinaryTree, ThreadedNode
 
 
 class TestThreadedBinaryTree(unittest.TestCase):
@@ -83,7 +83,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
             self.assertEqual(result[1], tree.root.data if tree.root else None)
 
         # Construct with existing root
-        root_node = ThreadedTreeNode(10)
+        root_node = ThreadedNode(10)
         tree = ThreadedBinaryTree([*range(9, 0, -1)], None, root_node)
         self.assertEqual([*range(10, 0, -1)], tree.array_repr)
 
@@ -278,7 +278,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
 
     @staticmethod
     def inorder(tree: ThreadedBinaryTree):
-        def insert_inorder(node: Optional[ThreadedTreeNode]) -> None:
+        def insert_inorder(node: Optional[ThreadedNode]) -> None:
             if node:
                 insert_inorder(node.left if node.left_is_child else None)
                 array.append(node.data)
@@ -299,7 +299,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
         if tree.root:
             queue.enqueue(tree.root)
         while not queue.is_empty():
-            node: ThreadedTreeNode = queue.dequeue()
+            node: ThreadedNode = queue.dequeue()
             result.append(node.data)
             if node.left_is_child:
                 queue.enqueue(node.left)

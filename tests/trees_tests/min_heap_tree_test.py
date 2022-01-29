@@ -6,7 +6,7 @@ import unittest
 from typing import Any
 
 from datastax.errors import DeletionFromEmptyTree
-from datastax.trees import MinHeapTree, HeapTreeNode
+from datastax.trees import MinHeapTree, HeapNode
 from tests.trees_tests.common_helper_functions import level_wise_items
 
 
@@ -57,7 +57,7 @@ class TestMinHeapTree(unittest.TestCase):
             self.assertEqual(result[1], tree.root.data if tree.root else None)
 
         # Construct with existing root
-        root_node = HeapTreeNode(10)
+        root_node = HeapNode(10)
         tree = MinHeapTree([*range(9, 0, -1)], root=root_node)
         self.assertEqual(self.min_heapify([10, *range(9, 0, -1)]),
                          level_wise_items(tree))

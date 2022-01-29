@@ -1,4 +1,4 @@
-# Implementation of Variable size huffman coding
+# Implementation of Variable size Huffman Coding Tree
 from __future__ import annotations
 
 from collections import Counter
@@ -6,9 +6,7 @@ from typing import Any, Optional, Union
 
 from datastax.arrays import PriorityQueue
 from datastax.trees.private_trees import huffman_tree
-from datastax.trees.private_trees.huffman_tree import (
-    HuffmanNode,
-)
+from datastax.trees.private_trees.huffman_tree import HuffmanNode
 
 
 class HuffmanTable(huffman_tree.HuffmanTable):

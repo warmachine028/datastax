@@ -15,10 +15,10 @@ from datastax.trees.private_trees import binary_tree
 from datastax.trees.private_trees.binary_tree import TreeNode, _mangled
 
 
-class ThreadedTreeNode(TreeNode):
+class ThreadedNode(TreeNode):
     def __init__(self, data: Any,
-                 left: ThreadedTreeNode = None,
-                 right: ThreadedTreeNode = None) -> None:
+                 left: ThreadedNode = None,
+                 right: ThreadedNode = None) -> None:
         super().__init__(data, left, right)
         self.left_is_child = bool(self.left)
         self.right_is_child = bool(self.right)
@@ -91,10 +91,10 @@ class ThreadedTreeNode(TreeNode):
 
 class ThreadedBinaryTree(binary_tree.BinaryTree):
     def __init__(self, array=None, insertion_logic: str = None,
-                 root: ThreadedTreeNode = None):
-        self._root: Optional[ThreadedTreeNode] = root
+                 root: ThreadedNode = None):
+        self._root: Optional[ThreadedNode] = root
         self.head = self.tail = self.root
-        self.dummy_node = ThreadedTreeNode(None, self.root)
+        self.dummy_node = ThreadedNode(None, self.root)
         self.dummy_node.right = self.dummy_node
 
         self.tree: Any = self
@@ -135,12 +135,12 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
 
         return array
 
-    def insert(self, data: Any, root: ThreadedTreeNode = None) -> None:
+    def insert(self, data: Any, root: ThreadedNode = None) -> None:
         raise NotImplementedError
 
     # Level order Traversal of Tree
-    def __str__(self, root: ThreadedTreeNode = None):  # noqa: C901
-        root = root or self.root
+    def __str__(self):  # noqa: C901
+        root = self.root
         if not root:
             return "  NULL"
         levels = self._nodes_level_wise(root)  # get all the levels
@@ -178,8 +178,8 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
 
         return '\n'.join(string.rstrip() for string in strings)
 
-    def preorder_print(self, root: ThreadedTreeNode = None) -> str:
-        def string_builder(parent: Optional[ThreadedTreeNode],
+    def preorder_print(self, root: ThreadedNode = None) -> str:
+        def string_builder(parent: Optional[ThreadedNode],
                            has_right_child: bool,
                            padding="", component="") -> None:
             if not parent:
@@ -207,13 +207,13 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
 
     # private helper methods for __str__() method
     @staticmethod
-    def _nodes_level_wise(root: ThreadedTreeNode
+    def _nodes_level_wise(root: ThreadedNode
                           ) -> list[list]:
         level: list = [root]
         nodes: int = 1
         levels: list[list] = []
         while nodes:
-            current_level: list[Optional[ThreadedTreeNode]] = []
+            current_level: list[Optional[ThreadedNode]] = []
             next_level = []
             nodes = 0
             for node in level:

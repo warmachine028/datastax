@@ -1,4 +1,4 @@
-    updated: Friday, 28th January 2022
+    updated: Sunday, 30th January 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -128,10 +128,16 @@ pip install datastax
   Visuals for LinkedLists:
 
   1. Singly Linked List:
-  Node[1] -> Node[2] -> Node[3] -> Node[4] -> NULL
+       HEAD                                         TAIL
+ ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐
+ │  1  ║  ----->│  2  ║  ----->│  3  ║  ----->│  4  ║  -----> NULL
+ └─────╨────┘   └─────╨────┘   └─────╨────┘   └─────╨────┘
 
-  2. Doubly Linked List:
-  NULL <-> Node[1] <-> Node[2] <-> Node[3] <-> Node[4] <-> NULL
+
+  2. Doubly Linked List:               HEAD                                                        TAIL
+         ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥────┐
+ NULL <-----  ║  1  ║  <------->  ║  2  ║  <------->  ║  3  ║  <------->  ║  4  ║  -----> NULL
+         └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨────┘
   ...
 ```
 
@@ -307,6 +313,7 @@ $ OUTPUT
 
 ## What's Next
 
+- Red Black Trees
 - Enhanced Documentation
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees

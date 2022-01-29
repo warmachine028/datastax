@@ -5,30 +5,30 @@ import warnings
 from typing import Optional, Any, Union
 
 from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
-from datastax.trees import TreeNode, AVLNode, HeapTreeNode
+from datastax.trees import TreeNode, AVLNode, HeapNode
 from datastax.trees.private_trees import threaded_binary_tree
-from datastax.trees.private_trees.threaded_binary_tree import ThreadedTreeNode
+from datastax.trees.private_trees.threaded_binary_tree import ThreadedNode
 
-rootNode = Union[TreeNode, AVLNode, HeapTreeNode]
+rootNode = Union[TreeNode, AVLNode, HeapNode]
 
 
 class ThreadedBinaryTree(threaded_binary_tree.ThreadedBinaryTree):
     def convert_to_tbt(self, root: rootNode) -> None:
-        def insert_inorder(node: Optional[ThreadedTreeNode]) -> None:
+        def insert_inorder(node: Optional[ThreadedNode]) -> None:
             if not node:
                 return
             insert_inorder(node.left)
             array.append(node)
             insert_inorder(node.right)
 
-        def clone_binary_tree(node: rootNode) -> Optional[ThreadedTreeNode]:
+        def clone_binary_tree(node: rootNode) -> Optional[ThreadedNode]:
             if not node:
                 return None
-            return ThreadedTreeNode(node.data,
-                                    clone_binary_tree(node.left),
-                                    clone_binary_tree(node.right))
+            return ThreadedNode(node.data,
+                                clone_binary_tree(node.left),
+                                clone_binary_tree(node.right))
 
-        array: list[ThreadedTreeNode] = []
+        array: list[ThreadedNode] = []
         self._root = clone_binary_tree(root)
 
         # Storing inorder traversal in queue
@@ -44,7 +44,7 @@ class ThreadedBinaryTree(threaded_binary_tree.ThreadedBinaryTree):
         self.dummy_node.left = self.root
         self.dummy_node.left_is_child = True
 
-    def insert(self, data: Any, root: ThreadedTreeNode = None) -> None:
+    def insert(self, data: Any, root: ThreadedNode = None) -> None:
         if not isinstance(self.tree, ThreadedBinaryTree):
             warnings.warn(
                 "Can't insert in Threaded Tree with explicit insertion logic"
@@ -53,7 +53,7 @@ class ThreadedBinaryTree(threaded_binary_tree.ThreadedBinaryTree):
             )
             return
         root = root or self.root
-        node = ThreadedTreeNode(data)
+        node = ThreadedNode(data)
         if not root:
             self._root = node
             node.left = node.right = self.dummy_node
@@ -107,7 +107,7 @@ class ThreadedBinaryTree(threaded_binary_tree.ThreadedBinaryTree):
 
     # DFS Traversal without using stack
     def inorder(self) -> list[Any]:
-        ref: ThreadedTreeNode = self.head
+        ref: ThreadedNode = self.head
         array: list[Any] = []
         while ref is not self.dummy_node:
             array.append(ref.data)

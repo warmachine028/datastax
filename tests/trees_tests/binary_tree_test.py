@@ -85,6 +85,7 @@ class TestBinaryTree(unittest.TestCase):
 
         sample = random.sample(range(100), self.max_sample_size)
         tree = BinaryTree(sample)
+        random.shuffle(sample)
         # Attempting deletion of invalid item from empty tree
         with self.assertWarns(NodeNotFoundWarning):
             tree.delete(404)

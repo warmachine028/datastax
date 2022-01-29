@@ -1,3 +1,4 @@
+# Private module to separate print logic from main logic of HuffmanTree
 from __future__ import annotations
 
 import math
@@ -56,6 +57,26 @@ class HuffmanNode(TreeNode):
 
         return string_builder
 
+    def preorder_print(self) -> str:
+        values = [
+            self.data or self.frequency,
+            self.left.data or self.left.frequency if self.left else None,
+            self.right.data or self.right.frequency if self.right else None
+        ]
+        values = list(
+            map(lambda value: "" if value is None else _mangled(value), values)
+        )
+
+        string_builder = f'{values[0]}\n'
+        if any(values[1:]):
+            if all(values[1:]):
+                string_builder += f"├─▶ {values[1]}\n"
+                string_builder += f"└─▶ {values[2]}"
+            else:
+                string_builder += f"└─▶ {values[1] or values[2]}"
+
+        return string_builder
+
 
 class HuffmanTree(BinaryTree):
     def __init__(self, data: Union[list[str], str] = None):
@@ -73,8 +94,8 @@ class HuffmanTree(BinaryTree):
         return self._huffman_code
 
     # Level order Traversal of Tree
-    def __str__(self, root=None):  # noqa: C901
-        root = root or self.root
+    def __str__(self):  # noqa: C901
+        root = self.root
         if not root:
             return "  NULL"
 
@@ -213,3 +234,6 @@ class HuffmanTable:
                                              max_width))
         f_border = f"╚{'═' * max_width}╧{'═' * mid_width}╧{'═' * max_width}╝"
         return h_border + header + body + f_border
+
+    def __repr__(self):
+        return self.__str__()

@@ -96,7 +96,7 @@ class BinaryTree(binary_tree.BinaryTree):
         del_data = None
         if del_node:
             leaf_data = self.delete_deepest()
-            if leaf_data:
+            if leaf_data is not None:
                 del_data, del_node.data = del_node.data, leaf_data
         else:
             warnings.warn(

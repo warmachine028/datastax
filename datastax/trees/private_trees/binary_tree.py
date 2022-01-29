@@ -1,4 +1,4 @@
-# Private module to separate print logic from insertion logic
+# Private module to separate print logic from main logic of BinaryTree
 from __future__ import annotations
 
 import math
@@ -127,8 +127,8 @@ class BinaryTree:
         return array
 
     # Level order Traversal of Tree
-    def __str__(self, root=None):  # noqa: C901
-        root = root or self.root
+    def __str__(self):  # noqa: C901
+        root = self.root
         if not root:
             return "  NULL"
 
