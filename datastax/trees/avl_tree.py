@@ -25,7 +25,7 @@ class AVLTree(BinarySearchTree):
     def _place(self, parent: Optional[AVLNode], data) -> Optional[AVLNode]:
         if not parent:
             return AVLNode(data)
-        elif parent.data < data:
+        if parent.data < data:
             parent.right = self._place(parent.right, data)
         elif data < parent.data:
             parent.left = self._place(parent.left, data)

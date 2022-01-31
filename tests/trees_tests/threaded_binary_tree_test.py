@@ -200,12 +200,14 @@ class TestThreadedBinaryTree(unittest.TestCase):
                                     self.print_test_cases[-1:],
                                     results[:-3] + results[-1:]):
             tree = ThreadedBinaryTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
         for testcase, result in zip(self.print_test_cases[-3:-1],
                                     results[-3:-1]):
             tree = ThreadedBinaryTree(testcase, 'BinaryTree')
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_string_representation(self):
         results = [

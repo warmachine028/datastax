@@ -22,7 +22,7 @@ class BinarySearchTree(BinaryTree):
         if result and result is not root:
             self._root = result
 
-    def search(self, data: Any) -> Optional[TreeNode]:
+    def search(self, data: Any):
         """
         Searches a node in log2(n) time complexity BinarySearch Algorithm
         :param data:
@@ -51,11 +51,12 @@ class BinarySearchTree(BinaryTree):
         else:
             warnings.warn(
                 f"Insertion unsuccessful. Item '{data}' already exists "
-                "in Tree", DuplicateNodeWarning)
+                "in Tree", DuplicateNodeWarning
+            )
         return parent
 
     @staticmethod
-    def inorder_predecessor(node: TreeNode) -> TreeNode:
+    def inorder_predecessor(node):
         node = node.left
         while node.right:
             node = node.right

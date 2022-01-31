@@ -91,7 +91,7 @@ class BinaryTree:
     def __init__(self, array=None, root=None):
         self._root = root
         self._construct(array)
-        self.__string: Optional[str] = None
+        self._string: Optional[str] = None
 
     @property
     def root(self):
@@ -189,13 +189,13 @@ class BinaryTree:
         return string_builder
 
     # Pre Order Traversal of Tree
-    def preorder_print(self, root=None) -> str:
+    def preorder_print(self) -> None:
         def string_builder(parent: Optional[TreeNode], has_right_child: bool,
                            padding="", component="") -> None:
             if not parent:
                 return
-            if self.__string is not None:
-                self.__string += (
+            if self._string is not None:
+                self._string += (
                     f"\n{padding}{component}"
                     f"{_mangled(parent.data)}"
                 )
@@ -207,12 +207,14 @@ class BinaryTree:
                            left_pointer)
             string_builder(parent.right, False, padding, right_pointer)
 
-        root = root or self.root
+        root = self.root
         if not root:
-            return "NULL"
-        self.__string = ""
+            self._string = "NULL"
+            print(self._string)
+            return
+        self._string = ""
         string_builder(root, bool(root.right))
-        return self.__string
+        print(self._string)
 
     def __repr__(self):
         return self.__str__()

@@ -71,13 +71,13 @@ class HuffmanTree(huffman_tree.HuffmanTree):
     # Private method to build data dictionary for HuffmanTable
     def _create_huffman_table(self):
         items = {}
-        for item in self._string:
+        for item in self._data:
             items[item] = self.huffman_code_of(item)
-        self._table = HuffmanTable(items, Counter(self._string))
+        self._table = HuffmanTable(items, Counter(self._data))
 
     def _calculate_huffman_code(self):
         self._huffman_code = ''.join(
-            self.huffman_code_of(character) for character in self._string
+            self.huffman_code_of(character) for character in self._data
         )
         pass
 

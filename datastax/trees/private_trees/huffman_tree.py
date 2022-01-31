@@ -80,7 +80,7 @@ class HuffmanNode(TreeNode):
 
 class HuffmanTree(BinaryTree):
     def __init__(self, data: Union[list[str], str] = None):
-        self._string = data
+        self._data: Union[list[str], str, None] = data
         self._huffman_code = ''
         self._table = None
         super().__init__(data)
@@ -177,6 +177,39 @@ class HuffmanTree(BinaryTree):
             per_piece //= 2
 
         return string_builder
+
+    # Pre Order Traversal of Tree
+    def preorder_print(self) -> None:
+        def string_builder(parent: Optional[HuffmanNode],
+                           has_right_child: bool,
+                           padding="", component="") -> None:
+            if not parent:
+                return
+            if self._string is not None:
+                self._string += f"\n{padding}{component}"
+                data = parent.data
+                if not data:
+                    data = parent.frequency
+                    self._string += str(data)
+                else:
+                    data = _mangled(data)
+                    self._string += f"{data} [{parent.frequency}]"
+            if parent is not root:
+                padding += "│   " if has_right_child else "    "
+            left_pointer = "├─▶ " if parent.right else "└─▶ "
+            right_pointer = "└─▶ "
+            string_builder(parent.left, bool(parent.right), padding,
+                           left_pointer)
+            string_builder(parent.right, False, padding, right_pointer)
+
+        root = self.root
+        if not root:
+            self._string = "NULL"
+            print(self._string)
+            return
+        self._string = ""
+        string_builder(root, bool(root.right))
+        print(self._string)
 
     def insert(self, item: Any):
         raise NotImplementedError

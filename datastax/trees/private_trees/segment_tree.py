@@ -92,7 +92,7 @@ class SegmentTree(BinaryTree):
 
         return string_builder
 
-    def preorder_print(self, root=None) -> str:
+    def preorder_print(self) -> None:
         def string_builder(parent: Optional[SegmentNode],
                            has_right_child: bool,
                            padding="", component="") -> None:
@@ -116,9 +116,10 @@ class SegmentTree(BinaryTree):
                            left_pointer)
             string_builder(parent.right, False, padding, right_pointer)
 
-        root = root or self.root
+        root = self.root
         if not root:
-            return "NULL"
+            print("NULL")
+            return
         self.__string = ""
         string_builder(root, bool(root.right))
-        return self.__string
+        print(self.__string)

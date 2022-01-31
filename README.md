@@ -1,4 +1,4 @@
-    updated: Sunday, 30th January 2022
+    updated: Sunday, 31st January 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -29,6 +29,9 @@
     - Huffman Table
     - compression ratio
     - space saved
+- Added Red Black Tree
+    - insertion
+    - deletion
 - Added Delete methods in:
     - BinaryTree
     - BinarySearchTree
@@ -311,11 +314,36 @@ $ OUTPUT
                1     1       
 ```
 
+---------------------------------------------------
+
+- **RedBlackTree**
+
+```py
+from datastax.trees import RedBlackTree
+
+rbt = RedBlackTree([500, 236, 565, 105, 842, 497, 312, 612, 80])
+rbt.delete(236)
+print(rbt)
+```
+
+```shell
+$ OUTPUT                                                                         
+                                   500                                      
+                  ┌─────────────────┴─────────────────┐                     
+                 105                                 612                    
+         ┌────────┴────────┐                 ┌────────┴────────┐            
+        80                497               565               842           
+                       ┌───┘                                                
+                     312
+                                                                                                                                    
+```
+
 ## What's Next
 
-- Red Black Trees
+- Fibonacci Tree
 - Enhanced Documentation
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
+- Better TestCases for Red Black Tree
 - Beautification of [README.md](README.md)
 

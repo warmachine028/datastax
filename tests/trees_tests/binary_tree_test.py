@@ -223,7 +223,8 @@ class TestBinaryTree(unittest.TestCase):
 
         for testcase, result in zip(self.print_test_cases, results):
             tree = BinaryTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_string_representation(self):
         results = [

@@ -130,7 +130,8 @@ class TestMinHeapTree(unittest.TestCase):
 
         for testcase, result in zip(self.print_test_cases, results):
             tree = MinHeapTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_string_representation(self):
         results = [

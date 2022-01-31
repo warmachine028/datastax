@@ -160,7 +160,7 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
             part_string = ""
             wpn = per_piece // 2 - 1
             wpn = (wpn + 1) if wpn % 2 else wpn
-            for n, node in enumerate(level):
+            for node in level:
                 if node:
                     piece = '┴'.center(wpn, '─')
                     piece = f"{'┌' if node.left_is_child else '└'}{piece[:-1]}"
@@ -178,14 +178,14 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
 
         return '\n'.join(string.rstrip() for string in strings)
 
-    def preorder_print(self, root: ThreadedNode = None) -> str:
+    def preorder_print(self) -> None:
         def string_builder(parent: Optional[ThreadedNode],
                            has_right_child: bool,
                            padding="", component="") -> None:
             if not parent:
                 return
-            if self.__string is not None:
-                self.__string += (
+            if self._string is not None:
+                self._string += (
                     f"\n{padding}{component}"
                     f"{_mangled(parent.data)}"
                 )
@@ -198,17 +198,18 @@ class ThreadedBinaryTree(binary_tree.BinaryTree):
             string_builder(parent.right if parent.right_is_child else None,
                            False, padding, right_pointer)
 
-        root = root or self.root
+        root = self.root
         if not root:
-            return "NULL"
-        self.__string = ''
+            self._string = "NULL"
+            print(self._string)
+            return
+        self._string = ''
         string_builder(root, root.right_is_child)
-        return self.__string
+        print(self._string)
 
     # private helper methods for __str__() method
     @staticmethod
-    def _nodes_level_wise(root: ThreadedNode
-                          ) -> list[list]:
+    def _nodes_level_wise(root: ThreadedNode) -> list[list]:
         level: list = [root]
         nodes: int = 1
         levels: list[list] = []

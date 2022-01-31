@@ -176,7 +176,8 @@ class TestBinarySearchTree(unittest.TestCase):
 
         for testcase, result in zip(self.print_test_cases, results):
             tree = BinarySearchTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_search(self):
         sample = random.sample(range(10), 10)

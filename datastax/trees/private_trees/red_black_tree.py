@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from itertools import chain
 from typing import Any, Optional
 
 from datastax.trees.private_trees.binary_tree import (
@@ -12,10 +13,14 @@ from datastax.trees.private_trees.binary_tree import (
 RED = 0
 BLACK = 1
 
+black, red, grey = '232m', '196m', '237m'
+fore, back, reset = '\x1B[38;5;', '\x1B[48;5;', '\x1b[0m'
 
-def _node_builder(data: Optional[str], piece_width: int) -> str:
+
+def _node_builder(data: Optional[str], piece_width: int, n=0) -> str:
     value: str = data or ''
-    n = len(value) - 27 if value else 0
+    n = n or len(value) - 33 if value else 0
+
     gap1 = int(math.ceil(piece_width / 2 - n / 2))
     gap2 = int(math.floor(piece_width / 2 - n / 2))
     return f"{' ' * gap1}{value}{' ' * gap2}"
@@ -38,88 +43,105 @@ class RedBlackTree(BinaryTree):
 
     @staticmethod
     def _format(color, data):
-        black, red = '232m', '196m'
-        fore, back = '\x1B[38;5;', '\x1B[48;5;'
         if color == BLACK:
-            return f"{fore}{red}{back}{black}  {data}  \x1b[0m"
-        return f"{fore}{black}{back}{red}  {data}  \x1b[0m"
+            return f"{fore}{red}{back}{black}  {data}  {back}{grey}"
+        return f"{fore}{black}{back}{red}  {data}  {back}{grey}"
+
+    @staticmethod
+    def _nodes_level_wise(root: RedBlackNode) -> list[list]:
+        level: list = [root]
+        nodes: int = 1
+        levels: list[list] = []
+        while nodes:
+            current_level: list[Optional[RedBlackNode]] = []
+            next_level = []
+            nodes = 0
+            for node in level:
+                if not node:
+                    current_level.append(None)
+                    next_level += [None] * 2
+                    continue
+                current_level.append(node)
+                next_level += [node.left, node.right]
+                if node.left:
+                    nodes += 1
+                if node.right:
+                    nodes += 1
+            levels.append(current_level)
+            level = next_level
+        return levels
+
+    @staticmethod
+    def _maximum_width(levels: list[list]) -> int:
+        max_width = 0
+        for node in filter(bool, chain(*levels)):
+            data = _mangled(node.data)
+            max_width = max(max_width, len(data) + 4)
+        return max_width + 1 if max_width % 2 else max_width
 
     # Level order Traversal of Tree
     def __str__(self):  # noqa: C901
+        # return super().__str__()
         root = self.root
         if not root:
             return "  NULL"
-
-        lines: list[list[Optional[str]]] = []
-        level: list[Optional[RedBlackNode]] = [root]
-        nodes: int = 1
-        max_width: int = 0
-        while nodes:
-            line: list[Optional[str]] = []
-            next_level: list[Optional[RedBlackNode]] = []
-            nodes = 0
+        levels = self._nodes_level_wise(root)
+        max_width = self._maximum_width(levels) + 1
+        padding = 4
+        per_piece = len(levels[-1]) * max_width
+        extra_line = f"{back}{grey}{' ' * (per_piece + padding)}{reset}"
+        strings: list[str] = [extra_line]
+        for level in levels:
+            # printing the data first
+            data_string = f'{back}{grey}'
             for node in level:
+                data = ''
                 if node:
                     data = _mangled(node.data)
                     data = self._format(node.color, data)
-                    max_width = max(len(data) - 30, max_width)
-                    line.append(data)
-                    next_level += [node.left, node.right]
-                    if node.left:
-                        nodes += 1
-                    if node.right:
-                        nodes += 1
-                    continue
-                line.append(None)
-                next_level += [None] * 2
-            if max_width % 2:
-                max_width += 1
-            lines.append(line)
-            level = next_level
-        ##################################################################
-        "Building string from calculated values"
-        per_piece = len(lines[-1]) * (max_width + 4)
-
-        string_builder = f"{_node_builder(lines[0][0], per_piece)}\n"
-        per_piece //= 2
-        for _, line in enumerate(lines[1:], 1):
-            hpw = int(math.floor(per_piece / 2) - 1)
-            # Printing ┌ ┴ ┐ or ┌ ─ ┘ or └ ─ ┐ components
-            for j, value in enumerate(line):
-                string_builder += (
-                    ('┴' if value else '┘') if line[j - 1] else (
-                        '└' if value else ' ')) if j % 2 else ' '
-
-                if not value:
-                    string_builder += ' ' * (per_piece - 1)
-                    continue
-                if j % 2:
-                    string_builder += f"{'─' * hpw}┐{' ' * hpw}"
-                else:
-                    string_builder += f"{' ' * hpw}┌{'─' * hpw}"
-            string_builder += '\n'
-
-            # Printing the value of each Node
-            for value in line:
-                string_builder += _node_builder(value, per_piece)
-            string_builder += '\n'
+                data = _node_builder(data, per_piece)
+                data_string += data
             per_piece //= 2
+            data_string += f"    {reset}"
 
-        return string_builder
+            # printing the piece
+            piece_string = f'{back}{grey}'
+            per_node = per_piece // 2
+            for node in level:
+                piece = ' ' * max_width
+                if node:
+                    if node.left and node.right:
+                        piece = (
+                            f"┌{'─' * (per_node - 1)}┴{'─' * (per_node - 1)}┐"
+                        )
+                    elif node.left:
+                        piece = (
+                            f" ┌{'─' * (per_node - 1)}┘{' ' * (per_node + 1)}"
+                        )
+                    elif node.right:
+                        piece = (
+                            f"{' ' * (per_node + 1)}└{'─' * (per_node - 1)}┐"
+                        )
+                piece = _node_builder(piece, per_piece * 2, len(piece))
+                piece_string += piece
+
+            piece_string += f"    {reset}"
+            strings += [data_string, piece_string]
+        return '\n'.join(strings)
 
     # Pre Order Traversal of Tree
-    def preorder_print(self, root=None) -> str:
+    def preorder_print(self) -> None:
         def string_builder(parent: Optional[RedBlackNode],
                            has_right_child: bool,
                            padding="", component="") -> None:
             if not parent:
                 return
-            if self.__string is not None:
-                data = parent.data
-                if parent.color == RED:
-                    data = "\x1B[48;5;196m\x1B[38;5;232m{}\x1B[0m".format(
-                        data)
-                self.__string += f"\n{padding}{component}{_mangled(data)}"
+            data = f'{back}{grey}'
+            padding += f'{back}{grey}'
+            if self._string is not None:
+                data += self._format(parent.color, _mangled(parent.data))
+                data += f"  {reset}"
+                self._string += f"\n{padding}{component}{_mangled(data)}"
             if parent is not root:
                 padding += "│   " if has_right_child else "    "
             left_pointer = "├─▶ " if parent.right else "└─▶ "
@@ -128,9 +150,11 @@ class RedBlackTree(BinaryTree):
                            left_pointer)
             string_builder(parent.right, False, padding, right_pointer)
 
-        root = root or self.root
+        root = self.root
         if not root:
-            return "NULL"
-        self.__string = ""
+            self._string = "NULL"
+            print("NULL")
+            return
+        self._string = ""
         string_builder(root, bool(root.right))
-        return self.__string
+        print(self._string)
