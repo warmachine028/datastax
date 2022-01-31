@@ -177,8 +177,6 @@ class RedBlackTree(BinarySearchTree,
         return self.root
 
     def _post_delete(self, node: Optional[RedBlackNode]):
-        # if not node:
-        #     return
         # ! Resolve Double Black sentinel Conflict
         while node and node is not self.root and node.color == BLACK:
             parent = node.parent

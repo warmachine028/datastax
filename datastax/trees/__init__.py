@@ -2,6 +2,7 @@ from .avl_tree import AVLTree, AVLNode
 from .binary_search_tree import BinarySearchTree
 from .binary_tree import BinaryTree, TreeNode
 from .expression_tree import ExpressionTree
+from .fibonacci_tree import FibonacciTree
 from .heap_tree import HeapTree, HeapNode
 from .huffman_tree import HuffmanTree, HuffmanNode, HuffmanTable
 from .min_heap_tree import MinHeapTree
@@ -21,5 +22,6 @@ __all__ = [
     "SumSegmentTree", "SegmentNode",
     "MinSegmentTree",
     "HuffmanTree", "HuffmanNode", "HuffmanTable",
-    "RedBlackTree", "RedBlackNode"
+    "RedBlackTree", "RedBlackNode",
+    "FibonacciTree"
 ]

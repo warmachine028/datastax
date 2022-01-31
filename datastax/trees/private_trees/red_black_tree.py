@@ -26,6 +26,12 @@ def _node_builder(data: Optional[str], piece_width: int, n=0) -> str:
     return f"{' ' * gap1}{value}{' ' * gap2}"
 
 
+def _format(color, data):
+    if color == BLACK:
+        return f"{fore}{red}{back}{black}  {data}  {back}{grey}"
+    return f"{fore}{black}{back}{red}  {data}  {back}{grey}"
+
+
 class RedBlackNode(TreeNode):
 
     def __init__(self, data: Any,
@@ -36,16 +42,85 @@ class RedBlackNode(TreeNode):
         self.parent: Optional[RedBlackNode] = None
         self.color = color
 
+    def __str__(self):
+        values = list(
+            map(
+                lambda node: "" if node is None else _format(
+                    node.color, _mangled(node.data)
+                ), [self, self.left, self.right]
+            )
+        )
+        max_width = max(len(_mangled(data)) - 33 for data in values if data)
+        max_width += max_width % 2  # To make max_width even
+        padding = 4
+        per_piece = 2 * (max_width + padding)
+        extra_line = f"{back}{grey}{' ' * (per_piece + 1)}{reset}\n"
+
+        string_builder = (
+            f"{extra_line}"
+            f"{back}{grey}{_node_builder(values[0], per_piece)} "
+            f"{reset}\n{back}{grey}"
+        )
+        per_piece //= 2
+        hpw = int(per_piece // 2 - 1)
+        if any(values[1:]):
+            if all(values[1:]):
+                part = f"{' ' * (hpw + 1)}┌{'─' * hpw}┴{'─' * hpw}┐"
+                string_builder += (
+                    f"{part}{' ' * (len(part) - per_piece - 1)}"
+                    f"{reset}\n{back}{grey}"
+                )
+                string_builder += _node_builder(
+                    values[1], per_piece
+                ) + _node_builder(
+                    values[2], per_piece
+                )
+            elif values[1]:
+                part = f"{' ' * (hpw + 1)}┌{'─' * hpw}┘ {' ' * hpw}"
+                string_builder += (
+                    f"{part}{' ' * (len(part) - per_piece - 1)}"
+                    f"{reset}\n{back}{grey}"
+                )
+                string = _node_builder(values[1], per_piece)
+                string_builder += f"{string}{' ' * (len(string) - 33)}"
+            else:
+                part = f"{' ' * (per_piece - 1)} └{'─' * hpw}┐"
+                string_builder += (
+                    f"{part}{' ' * (len(part) - per_piece - 1)}"
+                    f"{reset}\n{back}{grey}"
+                )
+                string_builder += (
+                    f"{' ' * (per_piece - 1)} "
+                    f"{_node_builder(values[2], per_piece)}"
+                )
+        string_builder += f" {reset}\n{extra_line}"
+        return string_builder
+
+    def preorder_print(self) -> str:
+        values = list(
+            map(
+                lambda node: "" if node is None else _format(
+                    node.color, _mangled(node.data)
+                ), [self, self.left, self.right]
+            )
+        )
+        string_builder = f'\n{back}{grey}{values[0]}  {reset}\n'
+        if any(values[1:]):
+            if all(values[1:]):
+                string_builder += (
+                    f"{back}{grey}├─▶ {values[1]}  {reset}\n"
+                    f"{back}{grey}└─▶ {values[2]}  {reset}\n"
+                )
+            else:
+                data = values[1] or values[2]
+                string_builder += f"{back}{grey}└─▶ {data}  {reset}\n"
+
+        return string_builder
+
 
 class RedBlackTree(BinaryTree):
     def insert(self, item: Any):
         raise NotImplementedError
-
-    @staticmethod
-    def _format(color, data):
-        if color == BLACK:
-            return f"{fore}{red}{back}{black}  {data}  {back}{grey}"
-        return f"{fore}{black}{back}{red}  {data}  {back}{grey}"
 
     @staticmethod
     def _nodes_level_wise(root: RedBlackNode) -> list[list]:
@@ -98,7 +173,7 @@ class RedBlackTree(BinaryTree):
                 data = ''
                 if node:
                     data = _mangled(node.data)
-                    data = self._format(node.color, data)
+                    data = _format(node.color, data)
                 data = _node_builder(data, per_piece)
                 data_string += data
             per_piece //= 2
@@ -139,7 +214,7 @@ class RedBlackTree(BinaryTree):
             data = f'{back}{grey}'
             padding += f'{back}{grey}'
             if self._string is not None:
-                data += self._format(parent.color, _mangled(parent.data))
+                data += _format(parent.color, _mangled(parent.data))
                 data += f"  {reset}"
                 self._string += f"\n{padding}{component}{_mangled(data)}"
             if parent is not root:

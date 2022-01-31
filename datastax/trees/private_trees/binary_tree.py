@@ -97,7 +97,7 @@ class BinaryTree:
     def root(self):
         return self._root
 
-    def _construct(self, array: list[Any] = None):
+    def _construct(self, array=None):
         if not array or array[0] is None:
             return None
         for item in array:

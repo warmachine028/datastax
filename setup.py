@@ -39,7 +39,8 @@ except Exception as error:
         '       i. Sum Segment Tree\n'
         '      ii. Min Segment Tree\n'
         '   g. Huffman Tree\n'
-        '   h. Red Black Tree\n\n'
+        '   h. Red Black Tree\n'
+        '   i. Fibonacci Tree\n\n'
     )
     sys.stderr.write(f"Warning: Could not open README.md due {error}\n")
 

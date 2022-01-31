@@ -226,7 +226,8 @@ $ OUTPUT
 ```py
 from datastax.trees import ThreadedBinaryTree as Tbt
 
-tbt = Tbt(['a', 'b', 'c', 'd', 'e'], insertion_logic="BinaryTree")
+logic = str("BinaryTree")
+tbt = Tbt(['a', 'b', 'c', 'd', 'e'], insertion_logic=logic)
 print(tbt)
 ```
 
@@ -292,7 +293,8 @@ $ OUTPUT
 ```py
 from datastax.trees import HuffmanTree
 
-hft = HuffmanTree("Espresso Express")
+string = str("Espresso Express")
+hft = HuffmanTree(string)
 print(hft)
 ```
 
@@ -340,10 +342,9 @@ $ OUTPUT
 
 ## What's Next
 
-- Fibonacci Tree
 - Enhanced Documentation
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
 - Better TestCases for Red Black Tree
-- Beautification of [README.md](README.md)
+- Test Cases for Fibonacci Tree
 
