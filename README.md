@@ -1,4 +1,4 @@
-    updated: Sunday, 31st January 2022
+    updated: Tuesday, 31st January 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
