@@ -33,18 +33,19 @@ class FibonacciTree(BinaryTree):
         if n is None or n < 0:
             return None
 
-        self._root = self.fibonacci(n)
+        self._root = self._fibonacci(n)
         return self
 
-    def fibonacci(self, n: int):
-        if n == 0:
-            return TreeNode(0)
-        if n == 1:
-            return TreeNode(1)
-        else:
-            left = self.fibonacci(n - 1)
-            right = self.fibonacci(n - 2)
-            return TreeNode(left.data + right.data, left, right)
+    def _fibonacci(self, n: int,
+                   memo: dict[int, TreeNode] = None) -> TreeNode:
+        if memo is None:
+            memo = {0: TreeNode(0), 1: TreeNode(1)}
+        if n in memo:
+            return memo[n]
+
+        left, right = self._fibonacci(n - 1), self._fibonacci(n - 2, memo)
+        memo[n] = TreeNode(left.data + right.data, left, right)
+        return memo[n]
 
     def insert(self, item: Any):
         raise NotImplementedError

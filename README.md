@@ -1,4 +1,4 @@
-    updated: Tuesday, 31st January 2022
+    updated: Tuesday, 1st February 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -30,8 +30,7 @@
     - compression ratio
     - space saved
 - Added Red Black Tree
-    - insertion
-    - deletion
+- Added Splay Tree
 - Added Delete methods in:
     - BinaryTree
     - BinarySearchTree
@@ -347,4 +346,5 @@ $ OUTPUT
 - Better TestCases for Segment Trees
 - Better TestCases for Red Black Tree
 - Test Cases for Fibonacci Tree
+- Test Cases for Splay Tree
 

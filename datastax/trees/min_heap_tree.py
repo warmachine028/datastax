@@ -1,8 +1,6 @@
 # Min Heap Tree Implementation
 from __future__ import annotations
 
-from typing import Any
-
 from datastax.trees.heap_tree import HeapTree, HeapNode
 
 
@@ -24,6 +22,3 @@ class MinHeapTree(HeapTree):
             return
         root.data, node.data = node.data, root.data
         self._shift_up(root)
-
-    def insert(self, item: Any):
-        raise NotImplementedError

@@ -19,13 +19,13 @@ class BinarySearchTree(BinaryTree):
         if data is None:
             return
         result = self._place(root, data)
-        if result and result is not root:
+        if result:
             self._root = result
 
     def search(self, data: Any):
         """
         Searches a node in log2(n) time complexity BinarySearch Algorithm
-        :param data:
+        :param data: Any type of content in BST
         :return: TreeNode if it is found else None
         """
 

@@ -64,10 +64,9 @@ class TestMinHeapTree(unittest.TestCase):
 
     def test_heappush(self):
         # inserting using insert_path
-        with self.assertRaises(NotImplementedError):
-            self.mht.insert(10)
-        self.assertEqual([], level_wise_items(self.mht))
-
+        self.mht.insert(10)
+        self.assertEqual([10], level_wise_items(self.mht))
+        self.mht = MinHeapTree()
         # testing heappush
         data = [4, 3, 1, 2, 5, 3, 2, 1, 9]
 

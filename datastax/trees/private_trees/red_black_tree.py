@@ -33,7 +33,6 @@ def _format(color, data):
 
 
 class RedBlackNode(TreeNode):
-
     def __init__(self, data: Any,
                  left: RedBlackNode = None,
                  right: RedBlackNode = None,

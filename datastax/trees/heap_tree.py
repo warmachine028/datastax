@@ -38,8 +38,8 @@ class HeapTree(BinaryTree):
         return self._leaf
 
     # Function to push an element inside a tree
-    def heappush(self, data: Any, root=None) -> None:
-        root = root or self.root
+    def heappush(self, data: Any) -> None:
+        root = self.root
         if data is None:
             return
         node = HeapNode(data)
@@ -119,4 +119,4 @@ class HeapTree(BinaryTree):
         self._shift_up(root)
 
     def insert(self, item: Any):
-        raise NotImplementedError
+        self.heappush(item)

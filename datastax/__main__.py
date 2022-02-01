@@ -46,12 +46,7 @@ def main():
         else:
             print("This module is not available yet")
     else:
-        print("Available modules are:\n"
-              "1. LinkedLists\n"
-              "2. Trees\n"
-              "3. Arrays\n\n"
-              "Usage\n"
-              "$ py datastax <data-structure> [data]\n"
+        print("$ py datastax <data-structure> [data]\n"
               "Data Structures: \n"
               "->  trees          Hierarchical DS\n"
               "->  linkedlists    Linear DS\n"

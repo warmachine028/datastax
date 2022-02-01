@@ -23,9 +23,6 @@ class RedBlackTree(BinarySearchTree,
                parent: Optional[RedBlackNode],
                data) -> Optional[RedBlackNode]:
         node = RedBlackNode(data)
-        if self.root is None:
-            node.color = BLACK
-            return node
         parent = None
         search = self.root
         while search:
@@ -42,8 +39,10 @@ class RedBlackTree(BinarySearchTree,
                 return None
 
         node.parent = parent
+        # Node to be added is root node
         if not parent:
-            return self.root
+            node.color = BLACK
+            return node
         if parent.data > node.data:
             parent.left = node
         else:
