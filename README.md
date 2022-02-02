@@ -1,4 +1,4 @@
-    updated: Tuesday, 1st February 2022
+    updated: Wednesday, 2nd February 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -29,7 +29,7 @@
     - Huffman Table
     - compression ratio
     - space saved
-- Added Red Black Tree
+- Added Red Black Tree - 🗸 TESTED
 - Added Splay Tree
 - Added Delete methods in:
     - BinaryTree
@@ -344,7 +344,7 @@ $ OUTPUT
 - Enhanced Documentation
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
-- Better TestCases for Red Black Tree
+- Lazy Propagation (Range Sum Queries) for Segment Trees
 - Test Cases for Fibonacci Tree
 - Test Cases for Splay Tree
-
+- Adding of images of trees instead of trees themselves in README 

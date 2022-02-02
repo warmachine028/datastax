@@ -17,7 +17,7 @@ black, red, grey = '232m', '196m', '237m'
 fore, back, reset = '\x1B[38;5;', '\x1B[48;5;', '\x1b[0m'
 
 
-def _node_builder(data: Optional[str], piece_width: int, n=0) -> str:
+def _node_builder(data: Optional[str], piece_width: int, n: int = 0) -> str:
     value: str = data or ''
     n = n or len(value) - 33 if value else 0
 
@@ -27,7 +27,7 @@ def _node_builder(data: Optional[str], piece_width: int, n=0) -> str:
 
 
 def _format(color, data):
-    if color == BLACK:
+    if color is BLACK:
         return f"{fore}{red}{back}{black}  {data}  {back}{grey}"
     return f"{fore}{black}{back}{red}  {data}  {back}{grey}"
 

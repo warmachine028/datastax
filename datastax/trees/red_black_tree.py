@@ -16,8 +16,7 @@ from datastax.trees.private_trees.red_black_tree import (
 
 
 class RedBlackTree(BinarySearchTree,
-                   red_black_tree.RedBlackTree,
-                   ):
+                   red_black_tree.RedBlackTree):
     # Private helper function for inserting
     def _place(self,
                parent: Optional[RedBlackNode],
@@ -61,12 +60,12 @@ class RedBlackTree(BinarySearchTree,
     def _post_place(self, node: Optional[RedBlackNode]):
         if not node or node is self.root:
             return
-        # ** Resolve Red Red Conflict
+        # * Resolve Red Red Conflict
         parent = node.parent
-        if parent and parent.color == RED:
+        if parent and parent.color is RED:
             sibling = self.sibling_of(parent)
             # CASE 1: Recolor and move up to see if more work required.
-            if sibling and sibling.color == RED:
+            if sibling and sibling.color is RED:
                 parent.color = sibling.color = BLACK
                 if parent.parent and parent.parent is not self.root:
                     parent.parent.color = RED
@@ -144,104 +143,110 @@ class RedBlackTree(BinarySearchTree,
             self._root = right
         return right
 
+    # Private helper method for delete to perform exchange of data between node
+    def _transplant(self, node: RedBlackNode,
+                    new_node: Optional[RedBlackNode]):
+        if not node.parent:
+            self._root = new_node
+        elif node is node.parent.left:
+            node.parent.left = new_node
+        else:
+            node.parent.right = new_node
+        if new_node:
+            new_node.parent = node.parent
+
     def _delete(self, root, item: Any):
         node = self.search(item)
-
-        if node and node.left and node.right:
-            predecessor = self.inorder_predecessor(node)
-            node.data = predecessor.data
-            node = predecessor
         if not node:
-            return None
-        pull_up = node.right if not node.left else node.left
-        if pull_up:
-            if node is self.root:
-                self._root = pull_up
-            elif node.parent.left is node:
-                node.parent.left = pull_up
+            return node
+        color = node.color
+        if node.left and node.right:
+            predecessor = self.inorder_predecessor(node)
+            color = predecessor.color
+            pull_up = predecessor.left
+            if predecessor.parent is node and pull_up:
+                pull_up.parent = predecessor
             else:
-                node.parent.right = pull_up
-            if node.color == BLACK:
-                self._post_delete(pull_up)
-        elif node is self.root:
-            self._root = None
+                self._transplant(predecessor, pull_up)
+                predecessor.left = node.left
+                if node.left:
+                    node.left.parent = predecessor
+            self._transplant(node, predecessor)
+            predecessor.right = node.right
+            if node.right:
+                node.right.parent = predecessor
+            predecessor.color = node.color
         else:
-            if node.color == BLACK:
-                self._post_delete(node)
-            if node.parent.left is node:
-                node.parent.left = None
-            else:
-                node.parent.right = None
+            pull_up = node.left if node.left else node.right
+            self._transplant(node, pull_up)
+
+        if color is BLACK:
+            self._post_delete(pull_up)
 
         return self.root
 
+    def _resolve_left_black_conflict(self, node):
+        parent = node.parent
+        sibling = parent.right
+        if sibling.color == RED:
+            sibling.color = BLACK
+            parent.color = RED
+            self._left_rotate(parent)
+            sibling = node.parent.right
+
+        if sibling.left.color == BLACK and sibling.right.color == BLACK:
+            sibling.color = RED
+            node = parent
+        else:
+            if sibling.right.color == BLACK:
+                sibling.left.color = BLACK
+                sibling.color = RED
+                self._right_rotate(sibling)
+                sibling = parent.right
+
+            sibling.color = parent.color
+            parent.color = BLACK
+            sibling.right.color = BLACK
+            self._left_rotate(parent)
+            node = self.root
+
+        return node
+
+    def _resolve_right_black_conflict(self, node):
+        parent = node.parent
+        sibling = parent.left
+        if sibling.color is RED:
+            sibling.color = BLACK
+            parent.color = RED
+            self._right_rotate(parent)
+            sibling = parent.left
+
+        if sibling.right.color is sibling.left.color is BLACK:
+            sibling.color = RED
+            node = parent
+        else:
+            if sibling.left.color is BLACK:
+                sibling.right.color = BLACK
+                sibling.color = RED
+                self._left_rotate(sibling)
+                sibling = parent.left
+
+            sibling.color = parent.color
+            parent.color = BLACK
+            sibling.left.color = BLACK
+            self._right_rotate(parent)
+            node = self.root
+        return node
+
     def _post_delete(self, node: Optional[RedBlackNode]):
         # ! Resolve Double Black sentinel Conflict
-        while node and node is not self.root and node.color == BLACK:
+        while node and node is not self.root and node.color is BLACK:
             parent = node.parent
             if not parent:
                 break
             if node is parent.left:
-                sibling = parent.right
-                if not sibling:
-                    break
-                # CASE 1: Sibling is RED
-                if sibling.color == RED:
-                    sibling.color = BLACK
-                    parent.color = RED
-                    self._left_rotate(parent)
-                    sibling = parent.right
-                # CASE 2: Sibling is Black
-                # CASE A: Both children are also black
-                if sibling.left.color == sibling.right.color == BLACK:
-                    sibling.color = RED
-                    node = parent
-                # CASE B: left child is red
-                elif sibling.right:
-                    # CASE i: right Child Black
-                    if sibling.right.color == BLACK:
-                        sibling.left.color = BLACK
-                        sibling.color = RED
-                        self._right_rotate(sibling)
-                        sibling = parent.right
-                    # CASE ii: right Child is Red
-                    sibling.color = parent.color
-                    parent.color = sibling.right.color = BLACK
-                    self._left_rotate(parent)
-                    node = self.root
-                else:
-                    node.color = BLACK
-                    node = parent
+                node = self._resolve_left_black_conflict(node)
             else:
-                sibling = parent.left
-                if not sibling:
-                    break
-                # CASE 1: Sibling is RED
-                if sibling.color == RED:
-                    sibling.color = BLACK
-                    parent.color = RED
-                    self._right_rotate(parent)
-                    sibling = parent.left
-                # CASE 2: Sibling is Black
-                # CASE A: Both children are also black
-                if sibling.left.color == sibling.right.color == BLACK:
-                    sibling.color = RED
-                    node = parent
-                # CASE B: right child is red
-                elif sibling.left:
-                    # CASE i: left Child Black
-                    if sibling.left.color == BLACK:
-                        sibling.right.color = BLACK
-                        sibling.color = RED
-                        self._left_rotate(sibling)
-                        sibling = parent.left
-                    # CASE ii: left Child is Red
-                    sibling.color = parent.color
-                    parent.color = sibling.left.color = BLACK
-                    self._right_rotate(parent)
-                    node = self.root
-                else:
-                    node.color = BLACK
-                    node = parent
+                node = self._resolve_right_black_conflict(node)
         if node:
             node.color = BLACK

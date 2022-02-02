@@ -93,9 +93,11 @@ class BinarySearchTree(BinaryTree):
                 "Deletion Unsuccessful. Can't delete from empty Tree",
                 DeletionFromEmptyTree
             )
+            return
         if not self.search(data):
             warnings.warn(
                 "Deletion unsuccessful. Node was not found with current "
                 f"data '{data}'", NodeNotFoundWarning
             )
+            return
         self._root = self._delete(self.root, data)
