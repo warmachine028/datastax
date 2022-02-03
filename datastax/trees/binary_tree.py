@@ -9,7 +9,7 @@ from datastax.errors import (
     PathNotFoundError,
     PathAlreadyOccupiedWarning,
     NodeNotFoundWarning,
-    DeletionFromEmptyTree,
+    DeletionFromEmptyTreeWarning,
 )
 from datastax.linkedlists import Queue
 from datastax.trees.private_trees import binary_tree
@@ -139,7 +139,7 @@ class BinaryTree(binary_tree.BinaryTree):
         else:
             warnings.warn(
                 "Deletion Unsuccessful. Can't delete from empty Tree",
-                DeletionFromEmptyTree
+                DeletionFromEmptyTreeWarning
             )
         return data
 

@@ -5,12 +5,12 @@ import unittest
 
 from datastax.errors import (
     NodeNotFoundWarning,
-    DeletionFromEmptyTree
+    DeletionFromEmptyTreeWarning
 )
 from datastax.trees import RedBlackTree, RedBlackNode
 from datastax.trees.red_black_tree import RED, BLACK
 from tests.trees_tests.common_helper_functions import (
-    inorder_items, level_wise_items
+    inorder_items, level_wise_items, check_bst_property
 )
 
 
@@ -56,9 +56,9 @@ class TestRedBlackTree(unittest.TestCase):
 
     def test_delete(self):
         # Test deletion from empty Tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree = RedBlackTree()
-            self.assertEqual(tree.delete(), None)
+            tree.delete()
             self.assertEqual([], level_wise_items(tree))
 
         sample = random.sample(range(100), self.max_sample_size)
@@ -77,7 +77,7 @@ class TestRedBlackTree(unittest.TestCase):
         # checking Emptiness
         self.assertTrue([] == tree.array_repr == level_wise_items(tree))
         # Attempting deletion from empty tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree.delete(404)
 
         # Attempt insertion after deletion
@@ -117,11 +117,11 @@ class TestRedBlackTree(unittest.TestCase):
         item = random.choice(sample)
         tree = RedBlackTree(sample)
         self.assertEqual(item, tree.search(item).data)
-        self.assertFalse(bool(tree.search(11)))
-        items = [3, 1, 0, 6, 4, 7, 8, 9, 2, 5]
-        tree = RedBlackTree(items)
-        self.assertTrue(bool(tree.search(1)))
-        self.assertTrue(bool(tree.search(9)))
+        with self.assertWarns(NodeNotFoundWarning):
+            self.assertIsNone(tree.search(11))
+        self.assertTrue(bool(tree.search(random.choice(sample))))
+        self.assertEqual(sorted(sample), inorder_items(tree))
+        self.assertTrue(check_bst_property(tree.root))
 
     def test_with_rogue_rbt(self):
         # Tree with red Red conflict
@@ -136,9 +136,9 @@ class TestRedBlackTree(unittest.TestCase):
         root.left.left.parent = root.left
         root.right.left.parent = root.right
 
-        self.assertEqual(False, self.check_coloring(root))
-        self.assertEqual(True, self.check_bst_property(root))
-        self.assertEqual(True, self.check_black_height(root))
+        self.assertFalse(self.check_coloring(root))
+        self.assertTrue(check_bst_property(root))
+        self.assertTrue(self.check_black_height(root))
 
         # Tree with Red root node
         root = RedBlackNode(
@@ -146,38 +146,22 @@ class TestRedBlackTree(unittest.TestCase):
             RedBlackNode(400, RedBlackNode(300), None, BLACK),
             RedBlackNode(600, RedBlackNode(550), None, BLACK),
         )
+
         # creating parental links
         root.left.parent = root.right.parent = root
         root.left.left.parent = root.left
         root.right.left.parent = root.right
 
-        self.assertEqual(False, self.check_coloring(root))
-        self.assertEqual(True, self.check_bst_property(root))
-        self.assertEqual(True, self.check_black_height(root))
+        self.assertFalse(self.check_coloring(root))
+        self.assertTrue(check_bst_property(root))
+        self.assertTrue(self.check_black_height(root))
 
     # All 3 Properties of a Red Black Tree must be valid
     def validate_tree(self, tree: RedBlackTree) -> bool:
         color = self.check_coloring(tree.root)
-        bst_property = self.check_bst_property(tree.root)
+        bst_property = check_bst_property(tree.root)
         black_height = self.check_black_height(tree.root)
         return color and bst_property and black_height
-
-    # Property 3
-    def check_bst_property(self, node: RedBlackNode) -> bool:
-        """
-        :param node: Root of red black Tree
-        :return: True if Tree is a valid BST else False
-        """
-        if not node:  # Reached its Leaf node
-            return True
-        if node.left and node.left.data > node.data:  # left must be < node
-            return False
-        if node.right and node.data > node.right.data:  # right must be > node
-            return False
-        # Recursively checking for left and right sub trees
-        left = self.check_bst_property(node.left)
-        right = self.check_bst_property(node.right)
-        return left and right
 
     # Property 2
     def check_coloring(self, node: RedBlackNode) -> bool:

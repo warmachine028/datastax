@@ -5,12 +5,13 @@ import unittest
 from datastax.errors import (
     DuplicateNodeWarning,
     NodeNotFoundWarning,
-    DeletionFromEmptyTree
+    DeletionFromEmptyTreeWarning
 )
 from datastax.trees import AVLTree, AVLNode
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
-    inorder_items
+    inorder_items,
+    check_bst_property
 )
 
 
@@ -79,6 +80,8 @@ class TestAVLTree(unittest.TestCase):
             self.assertEqual(result[0], level_wise_items(tree))
             # checking root
             self.assertEqual(result[1], tree.root.data if tree.root else None)
+            # checking bst property
+            self.assertTrue(check_bst_property(tree.root))
 
         # Construct with existing root
         root_node = AVLNode(6)
@@ -86,12 +89,13 @@ class TestAVLTree(unittest.TestCase):
             tree = AVLTree([*range(9, 0, -1)], root_node)
             self.assertEqual([6, 4, 8, 2, 5, 7, 9, 1, 3],
                              level_wise_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
 
     def test_delete(self):
         # Test deletion from empty Tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree = AVLTree()
-            self.assertEqual(tree.delete(), None)
+            tree.delete()
             self.assertEqual([], level_wise_items(tree))
 
         sample = random.sample(range(100), self.max_sample_size)
@@ -107,10 +111,11 @@ class TestAVLTree(unittest.TestCase):
             temp.remove(item)
             self.assertTrue(-1 <= tree.balance_factor() <= 1)
             self.assertEqual(sorted(temp), inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
         # checking Emptiness
         self.assertTrue([] == tree.array_repr == level_wise_items(tree))
         # Attempting deletion from empty tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree.delete(404)
 
         # Attempt insertion after deletion
@@ -120,6 +125,7 @@ class TestAVLTree(unittest.TestCase):
             self.assertTrue(-1 <= tree.balance_factor() <= 1)
             self.assertEqual(sorted(insertion_order[:i + 1]),
                              inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
 
             if not i:
                 self.assertEqual(item, tree.root.data)
@@ -209,11 +215,11 @@ class TestAVLTree(unittest.TestCase):
         item = random.choice(sample)
         tree = AVLTree(sample)
         self.assertEqual(item, tree.search(item).data)
-        self.assertEqual(None, tree.search(11))
-        items = [3, 1, 0, 6, 4, 7, 8, 9, 2, 5]
-        tree = AVLTree(items)
-        self.assertEqual(True, bool(tree.search(1)))
-        self.assertEqual(True, bool(tree.search(9)))
+        with self.assertWarns(NodeNotFoundWarning):
+            self.assertIsNone(tree.search(11))
+        self.assertTrue(bool(tree.search(random.choice(sample))))
+        self.assertEqual(sorted(sample), inorder_items(tree))
+        self.assertTrue(check_bst_property(tree.root))
 
     def test_string_representation(self):
         results = [
@@ -253,6 +259,7 @@ class TestAVLTree(unittest.TestCase):
             tree = AVLTree(sample)
             self.assertTrue(-1 <= tree.balance_factor() <= 1)
             self.assertEqual(sorted(sample), inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
 
             sample_size = random.randint(1, len(characters))
             sample = random.sample(characters, sample_size)
@@ -261,6 +268,7 @@ class TestAVLTree(unittest.TestCase):
             tree = AVLTree(sample)
             self.assertTrue(-1 <= tree.balance_factor() <= 1)
             self.assertEqual(sorted(sample), inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
 
         # Try insertion with duplicates
         sample_size = random.randint(1, self.max_sample_size)
@@ -269,8 +277,8 @@ class TestAVLTree(unittest.TestCase):
             random_sample.append(random.choice(random_sample))
         with self.assertWarns(DuplicateNodeWarning):
             tree = AVLTree(random_sample)
-            self.assertEqual(sorted(set(random_sample)),
-                             inorder_items(tree))
+            self.assertEqual(sorted(set(random_sample)), inorder_items(tree))
 
-    if __name__ == '__main__':
-        unittest.main()
+
+if __name__ == '__main__':
+    unittest.main()

@@ -6,7 +6,7 @@ from typing import Optional, Any
 
 from datastax.errors import (
     DuplicateNodeWarning,
-    DeletionFromEmptyTree,
+    DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
 from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
@@ -25,9 +25,11 @@ class BinarySearchTree(BinaryTree):
     def search(self, data: Any):
         """
         Searches a node in log2(n) time complexity BinarySearch Algorithm
-        :param data: Any type of content in BST
+        :param data: Any type of content in BST to search
         :return: TreeNode if it is found else None
         """
+        if data is None:
+            return None
 
         def _search(node):
             if not node:
@@ -36,9 +38,19 @@ class BinarySearchTree(BinaryTree):
                 return node
             return _search(node.left if data < node.data else node.right)
 
-        if data is None:
+        if not self.root:
+            warnings.warn(
+                f"Node was not found with current data '{data}'. "
+                f"Tree is empty", NodeNotFoundWarning
+            )
             return None
-        return _search(self.root)
+        result = _search(self.root)
+        if not result:
+            warnings.warn(
+                f"Node was not found with current data '{data}'. ",
+                NodeNotFoundWarning
+            )
+        return result
 
     # Private helper function for inserting
     def _place(self, parent, data) -> Optional[TreeNode]:
@@ -58,7 +70,7 @@ class BinarySearchTree(BinaryTree):
     @staticmethod
     def inorder_predecessor(node):
         node = node.left
-        while node.right:
+        while node and node.right:
             node = node.right
         return node
 
@@ -91,7 +103,7 @@ class BinarySearchTree(BinaryTree):
         if not self.root:
             warnings.warn(
                 "Deletion Unsuccessful. Can't delete from empty Tree",
-                DeletionFromEmptyTree
+                DeletionFromEmptyTreeWarning
             )
             return
         if not self.search(data):

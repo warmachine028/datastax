@@ -89,7 +89,7 @@ class DuplicateNodeWarning(UserWarning):
     pass
 
 
-class DeletionFromEmptyTree(UserWarning):
+class DeletionFromEmptyTreeWarning(UserWarning):
     pass
 
 

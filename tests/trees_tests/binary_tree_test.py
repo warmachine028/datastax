@@ -6,7 +6,7 @@ from datastax.errors import (
     PathNotGivenError,
     PathNotFoundError,
     PathAlreadyOccupiedWarning,
-    DeletionFromEmptyTree,
+    DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
 from datastax.trees import BinaryTree, TreeNode
@@ -78,7 +78,7 @@ class TestBinaryTree(unittest.TestCase):
 
     def test_delete(self):
         # Test deletion from empty Tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree = BinaryTree()
             self.assertEqual(tree.delete(), None)
             self.assertEqual([], level_wise_items(tree))
@@ -94,7 +94,7 @@ class TestBinaryTree(unittest.TestCase):
         # checking Emptiness
         self.assertTrue([] == tree.array_repr == level_wise_items(tree))
         # Attempting deletion from empty tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree.delete(404)
 
         tree.insert(10)
@@ -103,7 +103,7 @@ class TestBinaryTree(unittest.TestCase):
 
     def test_delete_deepest(self):
         # Test deletion from empty Tree
-        with self.assertWarns(DeletionFromEmptyTree):
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
             tree = BinaryTree()
             self.assertEqual(tree.delete_deepest(), None)
             self.assertEqual([], level_wise_items(tree))

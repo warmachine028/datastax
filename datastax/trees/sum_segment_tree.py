@@ -77,8 +77,3 @@ class SumSegmentTree(SegmentTree):
         if not root:
             return
         update(root, index, data)
-
-
-if __name__ == '__main__':
-    arr = [*range(10)]
-    print(SumSegmentTree(arr))

@@ -65,3 +65,18 @@ def max_heapify(test_case: list[Any]) -> list[Any]:
             heapify(j)
 
     return heap
+
+
+def check_bst_property(node) -> bool:
+    """
+    :param node: Root of red black Tree
+    :return: True if Tree is a valid BST else False
+    """
+    if not node:  # Reached its Leaf node
+        return True
+    if node.left and node.left.data > node.data:  # left must be < node
+        return False
+    if node.right and node.data > node.right.data:  # right must be > node
+        return False
+    # Recursively checking for left and right subtrees
+    return check_bst_property(node.left) and check_bst_property(node.right)

@@ -4,7 +4,7 @@ from __future__ import annotations
 import warnings
 from typing import Optional, Any
 
-from datastax.errors import DeletionFromEmptyTree
+from datastax.errors import DeletionFromEmptyTreeWarning
 from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
 
 
@@ -82,8 +82,10 @@ class HeapTree(BinaryTree):
     # Function to pop the largest element in the tree
     def heappop(self) -> Optional[Any]:
         if not self.root:
-            warnings.warn("Deletion Unsuccessful. Can't delete when"
-                          "tree is Already Empty", DeletionFromEmptyTree)
+            warnings.warn(
+                "Deletion Unsuccessful. Can't delete when"
+                "tree is Already Empty", DeletionFromEmptyTreeWarning
+            )
             return None
         deleted_data = self.root.data
         if self.root is self.leaf and not any(

@@ -1,4 +1,4 @@
-    updated: Wednesday, 2nd February 2022
+    updated: Thursday, 3rd February 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -30,7 +30,7 @@
     - compression ratio
     - space saved
 - Added Red Black Tree - 🗸 TESTED
-- Added Splay Tree
+- Added Splay Tree - 🗸 TESTED
 - Added Delete methods in:
     - BinaryTree
     - BinarySearchTree
@@ -38,7 +38,7 @@
 - Enhanced string representation of all LinkedLists
 - Added Custom Comparator for PriorityQueue
 - Added name-mangler function for items with multiline string representations
-- Added HuffmanTable for storing and visualizing Huffman Table
+- Added HuffmanTable object for storing and visualizing huffman-table
 
 ## Table of Contents
 
@@ -130,13 +130,14 @@ pip install datastax
   Visuals for LinkedLists:
 
   1. Singly Linked List:
-       HEAD                                         TAIL
+     HEAD                                         TAIL
  ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐
  │  1  ║  ----->│  2  ║  ----->│  3  ║  ----->│  4  ║  -----> NULL
  └─────╨────┘   └─────╨────┘   └─────╨────┘   └─────╨────┘
 
 
-  2. Doubly Linked List:               HEAD                                                        TAIL
+  2. Doubly Linked List:
+               HEAD                                                        TAIL
          ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥────┐
  NULL <-----  ║  1  ║  <------->  ║  2  ║  <------->  ║  3  ║  <------->  ║  4  ║  -----> NULL
          └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨────┘
@@ -346,5 +347,4 @@ $ OUTPUT
 - Better TestCases for Segment Trees
 - Lazy Propagation (Range Sum Queries) for Segment Trees
 - Test Cases for Fibonacci Tree
-- Test Cases for Splay Tree
 - Adding of images of trees instead of trees themselves in README 

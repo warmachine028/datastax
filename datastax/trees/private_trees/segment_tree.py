@@ -98,13 +98,13 @@ class SegmentTree(BinaryTree):
                            padding="", component="") -> None:
             if not parent:
                 return
-            if self.__string is not None:
-                self.__string += (
+            if self._string is not None:
+                self._string += (
                     f"\n{padding}{component}"
                     f"{_mangled(parent.data)} "
                 )
                 if parent.left_index != parent.right_index:
-                    self.__string += (
+                    self._string += (
                         f"[{parent.left_index}:{parent.right_index}]"
                     )
 
@@ -120,6 +120,6 @@ class SegmentTree(BinaryTree):
         if not root:
             print("NULL")
             return
-        self.__string = ""
+        self._string = ""
         string_builder(root, bool(root.right))
-        print(self.__string)
+        print(self._string)

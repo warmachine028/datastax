@@ -5,7 +5,9 @@ import warnings
 from typing import Any, Optional
 
 from datastax.errors import (
-    DuplicateNodeWarning
+    DuplicateNodeWarning,
+    DeletionFromEmptyTreeWarning,
+    NodeNotFoundWarning
 )
 from datastax.trees.binary_search_tree import BinarySearchTree, TreeNode
 
@@ -33,8 +35,11 @@ class SplayTree(BinarySearchTree):
             else:
                 warnings.warn(
                     f"Insertion unsuccessful. Item '{data}' already exists "
-                    "in Tree", DuplicateNodeWarning
+                    "in Tree. Splaying it",
+                    DuplicateNodeWarning
                 )
+                if parent:
+                    self._splay(parent)
                 return None
         node.parent = parent
         # Node to be added is root node
@@ -44,62 +49,105 @@ class SplayTree(BinarySearchTree):
             parent.left = node
         else:
             parent.right = node
-        self.splay(node)
+        self._splay(node)
         return self.root
 
     def search(self, data: Any):
-        node = super().search(data)
-        if node:
-            self.splay(node)
-        return node
+        """
+        Searches a node in log2(n) time complexity BinarySearch Algorithm
+        :param data: Any type of content in BST to search
+        :return: SplayNode if it is found else None
+        """
+        if data is None:
+            return None
 
-    def _left_rotate(self, node: SplayNode) -> Optional[SplayNode]:
-        right = node.right
-        if not right:
-            return right
-        node.right = right.left
-        if right.left:
-            right.left.parent = node
-
-        right.parent = node.parent
-        if node.parent:
-            if node is node.parent.left:
-                node.parent.left = right
+        root = self.root
+        parent = node = None
+        while root:
+            parent = root
+            if root.data == data:
+                node = root
+                break
+            elif root.data < data:
+                root = root.right
             else:
-                node.parent.right = right
-        else:
-            self._root = right
-        right.left = node
-        node.parent = right
-        return right
+                root = root.left
 
-    def _right_rotate(self, node: SplayNode):
+        if node:
+            self._splay(node)
+        elif parent:
+            warnings.warn(
+                f"Node was not found with current data '{data}'. "
+                f"Splaying last accessed Node '{parent.data}'",
+                NodeNotFoundWarning
+            )
+            self._splay(parent)
+        else:
+            warnings.warn(
+                f"Node was not found with current data '{data}'. "
+                f"Tree is empty", NodeNotFoundWarning
+            )
+        return self.root
+
+    # Private helper method of balance function to perform RR rotation
+    def _zig_rotate(self, node: SplayNode) -> Optional[SplayNode]:
         left = node.left
         if not left:
             return left
-        node.left = left.right
-        if left.right:
-            left.right.parent = node
-
         left.parent = node.parent
-        if not node.parent:
-            self._root = left
-        elif node is node.parent.right:
-            node.parent.right = left
-        else:
-            node.parent.left = left
 
+        node.left = left.right
+        if node.left:
+            node.left.parent = node
         left.right = node
         node.parent = left
+
+        if left.parent:
+            if node is left.parent.left:
+                left.parent.left = left
+            else:
+                left.parent.right = left
+        else:
+            self._root = left
         return left
 
+    # Private helper method of balance function to perform LL rotation
+    def _zag_rotate(self, node: SplayNode) -> Optional[SplayNode]:
+        right = node.right
+        if not right:
+            return right
+        right.parent = node.parent
+
+        node.right = right.left
+        if node.right:
+            node.right.parent = node
+
+        right.left = node
+        node.parent = right
+
+        if right.parent:
+            if node is right.parent.left:
+                right.parent.left = right
+            else:
+                right.parent.right = right
+        else:
+            self._root = right
+        return right
+
     def delete(self, data: Any = None) -> None:
-        super().delete(data)
+        if not self.root:
+            warnings.warn(
+                "Deletion Unsuccessful. Can't delete from empty Tree",
+                DeletionFromEmptyTreeWarning
+            )
+            return
+        self._root = self._delete(self.root, data)
 
     def _delete(self, root, item: Any):
-        node = super().search(item)
-        self.splay(node)
+        node = self.search(item)
 
+        if node.data != item:  # item was not found
+            return self.root
         # Splitting the tree
         # First completing leftSubTree
         left_tree = SplayTree(None, self.root.left)
@@ -111,42 +159,50 @@ class SplayTree(BinarySearchTree):
             right_tree.root.parent = None
 
         if left_tree.root:
-            # Finding the maximum element in left sub tree
-            maximum = left_tree.root
-            while maximum.right:
-                maximum = maximum.right
-            left_tree.splay(maximum)
+            # Finding the maximum element in left subtree
+            predecessor = self.inorder_predecessor(self.root)
+            if predecessor:
+                left_tree._splay(predecessor)
             left_tree.root.right = right_tree.root
+            if right_tree.root:
+                right_tree.root.parent = left_tree.root
             self._root = left_tree.root
         else:
             self._root = right_tree.root
+
         return self.root
 
-    def splay(self, node: SplayNode) -> Any:
+    def _splay(self, node: SplayNode):
+        """
+        Private function that accepts a node and pulls it up to the root
+        :param node: A node to be splayed
+        :return: Nothing
+        """
         while node.parent:
             parent = node.parent
             ancestor = parent.parent
             # Parent is root node
             if not ancestor:
+                # directly perform zig or zag rotation
                 if node is parent.left:
-                    self._right_rotate(parent)
+                    self._zig_rotate(parent)  # zig rotation
                 else:
-                    self._left_rotate(parent)
+                    self._zag_rotate(parent)  # zag rotation
                 continue
 
             # RR Rotation: Both are left children
             if parent.left is node and ancestor.left is parent:
-                self._right_rotate(ancestor)
-                self._right_rotate(parent)
+                self._zig_rotate(ancestor)
+                self._zig_rotate(parent)
             # LL Rotation: Both are right children
             elif parent.right is node and ancestor.right is parent:
-                self._left_rotate(ancestor)
-                self._left_rotate(parent)
+                self._zag_rotate(ancestor)
+                self._zag_rotate(parent)
             # LR Rotation: node is right and parent is left child
             elif parent.right is node and ancestor.left is parent:
-                self._left_rotate(parent)
-                self._right_rotate(ancestor)
+                self._zag_rotate(parent)
+                self._zig_rotate(ancestor)
             # RL Rotation: node is left and parent is right child
-            elif parent.left is node and ancestor.right is parent:
-                self._right_rotate(parent)
-                self._left_rotate(ancestor)
+            else:
+                self._zig_rotate(parent)
+                self._zag_rotate(ancestor)

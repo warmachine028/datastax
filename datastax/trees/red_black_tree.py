@@ -145,7 +145,7 @@ class RedBlackTree(BinarySearchTree,
 
     # Private helper method for delete to perform exchange of data between node
     def _transplant(self, node: RedBlackNode,
-                    new_node: Optional[RedBlackNode]):
+                    new_node: Optional[RedBlackNode]) -> None:
         if not node.parent:
             self._root = new_node
         elif node is node.parent.left:

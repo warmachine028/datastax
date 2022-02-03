@@ -5,7 +5,7 @@ import string
 import unittest
 from typing import Any
 
-from datastax.errors import DeletionFromEmptyTree
+from datastax.errors import DeletionFromEmptyTreeWarning
 from datastax.trees import MinHeapTree, HeapNode
 from tests.trees_tests.common_helper_functions import level_wise_items
 
@@ -85,7 +85,7 @@ class TestMinHeapTree(unittest.TestCase):
             self.assertEqual(sorted(test_case), result)
 
             # Must warn when tree is Empty
-            with self.assertWarns(DeletionFromEmptyTree):
+            with self.assertWarns(DeletionFromEmptyTreeWarning):
                 self.assertEqual(None, tree.heappop())
 
     def test_inserting_heterogeneous_items(self):
