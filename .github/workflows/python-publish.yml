@@ -6,9 +6,10 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: datastax
+name: python-publish
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
