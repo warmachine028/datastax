@@ -98,6 +98,5 @@ setup(
         'datastax/linkedlists',
         'datastax/trees',
     ],
-    author_email='pritamkundu771@gmail.com',
-
+    author_email='pritamkundu771@gmail.com'
 )

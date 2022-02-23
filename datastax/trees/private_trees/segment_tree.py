@@ -21,6 +21,25 @@ class SegmentTree(BinaryTree):
     def insert(self, item: Any):
         raise NotImplementedError
 
+    @property
+    def segment_array(self):
+        segment_array = []
+        self._traverse_leafs(self.root, segment_array)
+        return segment_array
+
+    def _traverse_leafs(self, node, array):
+        if not node:
+            return
+        if not any((node.left, node.right)):
+            array.append(node.data)
+            return
+        # if left child is found, check for leaf node recursively
+        if node.left:
+            self._traverse_leafs(node.left, array)
+        # if right child is found, check for leaf node recursively
+        if node.right:
+            self._traverse_leafs(node.right, array)
+
     def __str__(self):  # noqa: C901
         root = self.root
         if not root:
