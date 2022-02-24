@@ -1,3 +1,4 @@
+import random
 import unittest
 from typing import Optional, Any
 
@@ -8,6 +9,13 @@ class TestCircularLinkedList(unittest.TestCase):
 
     def setUp(self) -> None:
         self.c_linkedList = CircularLinkedList()
+        self.print_test_cases = [
+            None,
+            [1],
+            [{1, 2, 3}, 1],
+            [1, 'B', "C"],
+            [[1, 2, 3], [1], 4]
+        ]
 
     def test_append(self):
         # testing appending
@@ -120,6 +128,50 @@ class TestCircularLinkedList(unittest.TestCase):
         for i in range(len(items)):
             self.assertEqual(items[i:] + items[0:i], self.traverse_from(head))
             head = head.next
+
+    def test_iter(self):
+        items = random.sample(range(100), 10)
+        list_ = CircularLinkedList(items)
+        for list_item, actual_item in zip(items, list_):
+            self.assertEqual(list_item, actual_item)
+
+    def test_string(self):
+        results = [
+            'NULL',
+
+            '          HEAD    \n'
+            '          TAIL    \n'
+            '      ┌─────╥────┐   \n'
+            ' ╭─-->│  1  ║  ─────╮\n'
+            ' │    └─────╨────┘  │\n'
+            ' ╰──────────────────╯\n',
+
+            '              HEAD                   TAIL        \n'
+            '      ┌─────────────╥────┐   ┌─────────────╥────┐   \n'
+            ' ╭─-->│  {1, 2, 3}  ║  ----->│      1      ║  ─────╮\n'
+            ' │    └─────────────╨────┘   └─────────────╨────┘  │\n'
+            ' ╰─────────────────────────────────────────────────╯\n',
+
+            '          HEAD                          TAIL    \n'
+            '      ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐   \n'
+            ' ╭─-->│  1  ║  ----->│  B  ║  ----->│  C  ║  ─────╮\n'
+            ' │    └─────╨────┘   └─────╨────┘   └─────╨────┘  │\n'
+            ' ╰────────────────────────────────────────────────╯\n',
+
+            '              HEAD                                          TAIL'
+            '        \n'
+            '      ┌─────────────╥────┐   ┌─────────────╥────┐   ┌───────────'
+            '──╥────┐   \n'
+            ' ╭─-->│  [1, 2, 3]  ║  ----->│     [1]     ║  ----->│      4    '
+            '  ║  ─────╮\n'
+            ' │    └─────────────╨────┘   └─────────────╨────┘   └───────────'
+            '──╨────┘  │\n'
+            ' ╰──────────────────────────────────────────────────────────────'
+            '──────────╯\n'
+        ]
+        for testcase, result in zip(self.print_test_cases, results):
+            list_ = CircularLinkedList(testcase)
+            self.assertEqual(result, list_.__str__())
 
     def items_in(self, c_linked_list: CircularLinkedList = None
                  ) -> list[Optional[Any]]:

@@ -5,8 +5,8 @@ import string
 import unittest
 from typing import Any
 
-from datastax.errors import DeletionFromEmptyTree
-from datastax.trees import HeapTree, HeapTreeNode
+from datastax.errors import DeletionFromEmptyTreeWarning
+from datastax.trees import HeapTree, HeapNode
 from tests.trees_tests.common_helper_functions import level_wise_items, \
     max_heapify
 
@@ -59,16 +59,15 @@ class TestHeapTree(unittest.TestCase):
             self.assertEqual(result[1], tree.root.data if tree.root else None)
 
         # Construct with existing root
-        root_node = HeapTreeNode(10)
+        root_node = HeapNode(10)
         tree = HeapTree([*range(9, 0, -1)], root=root_node)
         self.assertEqual([*range(10, 0, -1)], level_wise_items(tree))
 
     def test_heappush(self):
         # inserting using insert_path
-        with self.assertRaises(NotImplementedError):
-            self.ht.insert_path(10)
-        self.assertEqual([], level_wise_items(self.ht))
-
+        self.ht.insert(10)
+        self.assertEqual([10], level_wise_items(self.ht))
+        self.ht = HeapTree()
         # testing heappush
         data = [4, 3, 1, 2, 5, 3, 2, 1, 9]
 
@@ -87,7 +86,7 @@ class TestHeapTree(unittest.TestCase):
             self.assertEqual(sorted(test_case, reverse=True), result)
 
             # Must warn when tree is Empty
-            with self.assertWarns(DeletionFromEmptyTree):
+            with self.assertWarns(DeletionFromEmptyTreeWarning):
                 self.assertEqual(None, tree.heappop())
 
     def test_inserting_heterogeneous_items(self):
@@ -131,7 +130,8 @@ class TestHeapTree(unittest.TestCase):
 
         for testcase, result in zip(self.print_test_cases, results):
             tree = HeapTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_string_representation(self):
         results = [

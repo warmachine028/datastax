@@ -39,29 +39,43 @@ class Stack:
     def peek(self) -> str:
         return 'STACK EMPTY' if self.is_empty() else self._array[-1]
 
+    # private method to mangle string __repr__
+    @staticmethod
+    def _mangled(item: Any) -> str:
+        if '\n' in str(item):
+            return f"{str(type(item))[8:-2].split('.')[-1]}@{id(item)}"
+        return str(item)
+
     def __str__(self):
         if self.is_empty():
             return '│STACK EMPTY│\n' \
                    '╰───────────╯\n'
         padding = 9
-        maximum_breadth = (max(
-            len(str(item)) for item in self._array)) + padding
+        maximum_breadth = max(
+            len((self._mangled(item))) for item in self._array
+        ) + padding
         # For FULLY LOADED STACK
         if self.is_full():
             string = f"┌{'─' * maximum_breadth}┐\n"
         elif (len(self._array) < 0.7 * self.capacity) or (
                 self.capacity - len(self._array) > 5):
-            string = f"│{' ' * maximum_breadth}│\n" \
-                     f":{' ' * maximum_breadth}:\n"  # Shrink visualization
+            string = (
+                f"│{' ' * maximum_breadth}│\n"
+                f":{' ' * maximum_breadth}:\n"
+            )  # Shrink visualization
         else:
             string = f"│{' ' * maximum_breadth}│\n" * 2 * (
                     self.capacity - len(self._array))  # Expand Visualization
 
         for n, item in enumerate(self._array[::-1]):
-            top = '' if self.is_full() and not n \
+            top = (
+                '' if self.is_full() and not n
                 else f"├{'─' * maximum_breadth}┤\n"
-            bottom = f"│{str(item).center(maximum_breadth)}│" \
-                     f"{' <- TOP' if not n else ''}\n"
+            )
+            bottom = (
+                f"│{self._mangled(item).center(maximum_breadth)}│"
+                f"{' <- TOP' if not n else ''}\n"
+            )
             string += top + bottom
         string += f"╰{'─' * maximum_breadth}╯\n"
         return string

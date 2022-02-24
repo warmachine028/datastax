@@ -1,3 +1,4 @@
+import random
 import unittest
 from typing import Optional, Any
 
@@ -8,6 +9,13 @@ class TestDoublyLinkedList(unittest.TestCase):
 
     def setUp(self) -> None:
         self.d_linkedList = DoublyLinkedList()
+        self.print_test_cases = [
+            None,
+            [1],
+            [{1, 2, 3}, 1],
+            [1, 'B', "C"],
+            [[1, 2, 3], [1], 4]
+        ]
 
     def test_append(self):
         # testing appending
@@ -100,6 +108,52 @@ class TestDoublyLinkedList(unittest.TestCase):
 
         self.assertEqual(items, self.items_in())
         self.assertEqual(items[::-1], self.items_from_tail())
+
+    def test_iter(self):
+        items = random.sample(range(100), 10)
+        list_ = DoublyLinkedList(items)
+        for list_item, actual_item in zip(items, list_):
+            self.assertEqual(list_item, actual_item)
+
+    def test_string(self):
+        results = [
+            '         \n NULL \n        \n',
+
+            '               HEAD      \n'
+            '               TAIL      \n'
+            '         ┌────╥─────╥────┐  \n'
+            ' NULL <-----  ║  1  ║  -----> NULL\n'
+            '         └────╨─────╨────┘  \n',
+
+            '                   HEAD                        TAIL          \n'
+            '         ┌────╥─────────────╥────┐   ┌────╥─────────────╥────┐'
+            '  \n'
+            ' NULL <-----  ║  {1, 2, 3}  ║  <------->  ║      1      ║  ----->'
+            ' NULL\n'
+            '         └────╨─────────────╨────┘   └────╨─────────────╨────┘'
+            '  \n',
+
+            '               HEAD                                    TAIL    '
+            '  \n'
+            '         ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥──'
+            '──┐  \n'
+            ' NULL <-----  ║  1  ║  <------->  ║  B  ║  <------->  ║  C  ║  '
+            '-----> NULL\n'
+            '         └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨──'
+            '──┘  \n',
+
+            '                   HEAD                                        '
+            '            TAIL          \n'
+            '         ┌────╥─────────────╥────┐   ┌────╥─────────────╥────┐ '
+            '  ┌────╥─────────────╥────┐  \n'
+            ' NULL <-----  ║  [1, 2, 3]  ║  <------->  ║     [1]     ║  <---'
+            '---->  ║      4      ║  -----> NULL\n'
+            '         └────╨─────────────╨────┘   └────╨─────────────╨────┘ '
+            '  └────╨─────────────╨────┘  \n'
+        ]
+        for testcase, result in zip(self.print_test_cases, results):
+            list_ = DoublyLinkedList(testcase)
+            self.assertEqual(result, list_.__str__())
 
     def items_in(self, d_linked_list: DoublyLinkedList = None
                  ) -> list[Optional[Any]]:

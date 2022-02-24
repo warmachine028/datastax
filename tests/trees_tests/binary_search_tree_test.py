@@ -2,11 +2,17 @@ import random
 import string
 import unittest
 
-from datastax.errors import DuplicateNodeWarning
+from datastax.errors import (
+    DuplicateNodeWarning,
+    DeletionFromEmptyTreeWarning,
+    NodeNotFoundWarning
+
+)
 from datastax.trees import TreeNode, BinarySearchTree
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
-    inorder_items
+    inorder_items,
+    check_bst_property
 )
 
 
@@ -67,6 +73,8 @@ class TestBinarySearchTree(unittest.TestCase):
             self.assertEqual(result[0], level_wise_items(tree))
             # checking root
             self.assertEqual(result[1], tree.root.data if tree.root else None)
+            # check bst property
+            self.assertTrue(check_bst_property(tree.root))
 
         # Construct with existing root
         root_node = TreeNode(6)
@@ -75,10 +83,39 @@ class TestBinarySearchTree(unittest.TestCase):
             self.assertEqual([6, 5, 9, 4, 8, 3, 7, 2, 1],
                              level_wise_items(tree))
 
+    def test_delete(self):
+        # Test deletion from empty Tree
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
+            tree = BinarySearchTree()
+            self.assertEqual(tree.delete(), None)
+            self.assertEqual([], level_wise_items(tree))
+
+        sample = random.sample(range(100), self.max_sample_size)
+        tree = BinarySearchTree(sample)
+        # Attempting deletion of invalid item from empty tree
+        with self.assertWarns(NodeNotFoundWarning):
+            tree.delete(404)
+
+        temp = list(sample)
+        for item in sample:
+            tree.delete(item)
+            temp.remove(item)
+            self.assertEqual(sorted(temp), inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
+
+        # Attempting deletion from empty tree
+        with self.assertWarns(DeletionFromEmptyTreeWarning):
+            tree.delete(404)
+
+        # Attempt insertion after deletion
+        insertion_order = random.sample(range(10), self.max_sample_size)
+        for i, item in enumerate(insertion_order):
+            tree.insert(item)
+            self.assertEqual(sorted(insertion_order[:i + 1]),
+                             inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
+
     def test_insert(self):
-        # inserting using insert_path
-        with self.assertRaises(NotImplementedError):
-            self.bst.insert_path(10)
         self.assertEqual([], level_wise_items(self.bst))
 
         # testing insertion
@@ -95,6 +132,7 @@ class TestBinarySearchTree(unittest.TestCase):
         for item, result in zip(data[:5], results[:5]):
             self.bst.insert(item)
             self.assertEqual(result, level_wise_items(self.bst))
+            self.assertTrue(check_bst_property(self.bst.root))
 
         # Testing warnings
         for item in data[5:-1]:
@@ -131,31 +169,32 @@ class TestBinarySearchTree(unittest.TestCase):
 
             '\n1'
             '\n└─▶ B'  # Normal BinarySearchTree Repr
-            '\n   └─▶ Baxy'
-            '\n      └─▶ D',
+            '\n    └─▶ Baxy'
+            '\n        └─▶ D',
 
             '\n1'
             '\n└─▶ 2'
-            '\n   └─▶ 3'  # An example of a right skewed tree
-            '\n      └─▶ 4'
-            '\n         └─▶ 5'
+            '\n    └─▶ 3'  # An example of a right skewed tree
+            '\n        └─▶ 4'
+            '\n            └─▶ 5'
 
         ]
 
         for testcase, result in zip(self.print_test_cases, results):
             tree = BinarySearchTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_search(self):
         sample = random.sample(range(10), 10)
         item = random.choice(sample)
         tree = BinarySearchTree(sample)
         self.assertEqual(item, tree.search(item).data)
-        self.assertEqual(None, tree.search(11))
-        items = [3, 1, 0, 6, 4, 7, 8, 9, 2, 5]
-        tree = BinarySearchTree(items)
-        self.assertEqual(False, bool(tree.search(1, tree.root.right)))
-        self.assertEqual(True, bool(tree.search(9, tree.root.right)))
+        with self.assertWarns(NodeNotFoundWarning):
+            self.assertIsNone(tree.search(11))
+        self.assertTrue(bool(tree.search(random.choice(sample))))
+        self.assertEqual(sorted(sample), inorder_items(tree))
+        self.assertTrue(check_bst_property(tree.root))
 
     def test_string_representation(self):
         results = [
@@ -200,12 +239,15 @@ class TestBinarySearchTree(unittest.TestCase):
             # Constructing tree with random numbers
             tree = BinarySearchTree(sample)
             self.assertEqual(sorted(sample), inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
 
             sample_size = random.randint(1, len(characters))
             sample = random.sample(characters, sample_size)
 
+            # Constructing tree with random characters
             tree = BinarySearchTree(sample)
             self.assertEqual(sorted(sample), inorder_items(tree))
+            self.assertTrue(check_bst_property(tree.root))
 
         # Try insertion with duplicates
         sample_size = random.randint(1, self.max_sample_size)

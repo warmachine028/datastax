@@ -5,7 +5,7 @@ from typing import Optional, Any
 
 from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
 from datastax.linkedlists import Queue
-from datastax.trees import ThreadedBinaryTree, ThreadedTreeNode
+from datastax.trees import ThreadedBinaryTree, ThreadedNode
 
 
 class TestThreadedBinaryTree(unittest.TestCase):
@@ -83,7 +83,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
             self.assertEqual(result[1], tree.root.data if tree.root else None)
 
         # Construct with existing root
-        root_node = ThreadedTreeNode(10)
+        root_node = ThreadedNode(10)
         tree = ThreadedBinaryTree([*range(9, 0, -1)], None, root_node)
         self.assertEqual([*range(10, 0, -1)], tree.array_repr)
 
@@ -104,9 +104,6 @@ class TestThreadedBinaryTree(unittest.TestCase):
             tree.insert(10)
 
     def test_insert(self):
-        # Testing with ThreadedBinaryTree itself
-        with self.assertRaises(NotImplementedError):
-            self.tbt.insert_path(10)
         self.assertEqual([], self.level_wise_items(self.tbt))
 
         # testing insertion
@@ -187,28 +184,30 @@ class TestThreadedBinaryTree(unittest.TestCase):
             '\n│   ├─▶ 4'
             '\n│   └─▶ 3'
             '\n└─▶ 4'
-            '\n   └─▶ [\'1\']',
+            '\n    └─▶ [\'1\']',
 
             '\n(10, 20)'
             '\n└─▶ [10, 20]',
 
             '\n1'
             '\n└─▶ 2'
-            '\n   └─▶ 3'  # An example of a right skewed tree
-            '\n      └─▶ 4'
-            '\n         └─▶ 5'
+            '\n    └─▶ 3'  # An example of a right skewed tree
+            '\n        └─▶ 4'
+            '\n            └─▶ 5'
         ]
 
         for testcase, result in zip(self.print_test_cases[:-3] +
                                     self.print_test_cases[-1:],
                                     results[:-3] + results[-1:]):
             tree = ThreadedBinaryTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
         for testcase, result in zip(self.print_test_cases[-3:-1],
                                     results[-3:-1]):
             tree = ThreadedBinaryTree(testcase, 'BinaryTree')
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_string_representation(self):
         results = [
@@ -281,7 +280,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
 
     @staticmethod
     def inorder(tree: ThreadedBinaryTree):
-        def insert_inorder(node: Optional[ThreadedTreeNode]) -> None:
+        def insert_inorder(node: Optional[ThreadedNode]) -> None:
             if node:
                 insert_inorder(node.left if node.left_is_child else None)
                 array.append(node.data)
@@ -302,7 +301,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
         if tree.root:
             queue.enqueue(tree.root)
         while not queue.is_empty():
-            node: ThreadedTreeNode = queue.dequeue()
+            node: ThreadedNode = queue.dequeue()
             result.append(node.data)
             if node.left_is_child:
                 queue.enqueue(node.left)

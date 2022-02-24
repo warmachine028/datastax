@@ -1,4 +1,5 @@
-""" Implementation of LRU Cache using DoublyLinkedList and HashMap
+"""
+Implementation of LRU Cache using DoublyLinkedList and HashMap
 - LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
 - int get(int key) Return the value of the key if the key exists, otherwise
 return -1.
@@ -10,6 +11,8 @@ The functions get and put must each run in O(1) average time complexity.
 
 LRU -> Least Recently used
 """
+from typing import Any
+
 from datastax.linkedlists import DoublyLinkedList, DoublyNode
 
 
@@ -56,3 +59,9 @@ class LRUCache(DoublyLinkedList):
         self.head.next = node.next
         node.next.prev = node.prev
         self._cache.pop(node.data[0])
+
+    def append(self, data) -> None:
+        raise NotImplementedError
+
+    def insert(self, data: Any):
+        return NotImplementedError

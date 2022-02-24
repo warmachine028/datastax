@@ -142,7 +142,7 @@ class TestExpressionTree(unittest.TestCase):
     def test_insert_path(self):
         # inserting using insert_path
         with self.assertRaises(NotImplementedError):
-            self.expt.insert_path(10)
+            self.expt.insert(10)
         self.assertEqual([], level_wise_items(self.expt))
 
     def test_precedence(self):
@@ -178,8 +178,8 @@ class TestExpressionTree(unittest.TestCase):
             '\n├─▶ %'
             '\n│   ├─▶ 1'
             '\n│   └─▶ +'  # Normal ExpressionTree Repr
-            '\n│      ├─▶ B'
-            '\n│      └─▶ Baxy'
+            '\n│       ├─▶ B'
+            '\n│       └─▶ Baxy'
             '\n└─▶ D',
 
             '\n+'
@@ -190,8 +190,8 @@ class TestExpressionTree(unittest.TestCase):
             '\n├─▶ *'
             '\n│   ├─▶ D'
             '\n│   └─▶ +'
-            '\n│      ├─▶ 6'
-            '\n│      └─▶ A'
+            '\n│       ├─▶ 6'
+            '\n│       └─▶ A'
             '\n└─▶ C',
 
             '\n/'
@@ -205,7 +205,8 @@ class TestExpressionTree(unittest.TestCase):
 
         for testcase, result in zip(self.print_test_cases, results):
             tree = ExpressionTree(testcase)
-            self.assertEqual(result, tree.preorder_print())
+            tree.preorder_print()
+            self.assertEqual(result, tree._string)
 
     def test_string_representation(self):
         results = [

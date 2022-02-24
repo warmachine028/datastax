@@ -81,11 +81,15 @@ class PathAlreadyOccupiedWarning(UserWarning):
     pass
 
 
+class NodeNotFoundWarning(UserWarning):
+    pass
+
+
 class DuplicateNodeWarning(UserWarning):
     pass
 
 
-class DeletionFromEmptyTree(UserWarning):
+class DeletionFromEmptyTreeWarning(UserWarning):
     pass
 
 

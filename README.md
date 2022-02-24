@@ -1,4 +1,4 @@
-    updated: Monday, 24th January 2022
+    updated: Thursday, 24th February 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -20,10 +20,25 @@
 
 ## What's New?
 
-- Added Threaded Binary Trees
-- Added LRU Cache
-- Added Proper and effective testcases
-- Added Search Functionality for BST and AVLTree
+- Added Sum Segment Tree
+- Added Min Segment Tree
+- Added Huffman Tree
+    - data encoder
+    - data decoder
+    - Huffman Code
+    - Huffman Table
+    - compression ratio
+    - space saved
+- Added Red Black Tree - 🗸 TESTED
+- Added Splay Tree - 🗸 TESTED
+- Added Delete methods in: 🗸 TESTED
+    - BinaryTree
+    - BinarySearchTree
+    - AVLTree
+- Enhanced string representation of all LinkedLists
+- Added Custom Comparator for PriorityQueue
+- Added name-mangler function for items with multiline string representations
+- Added HuffmanTable object for storing and visualizing huffman-table
 
 ## Table of Contents
 
@@ -115,10 +130,17 @@ pip install datastax
   Visuals for LinkedLists:
 
   1. Singly Linked List:
-  Node[1] -> Node[2] -> Node[3] -> Node[4] -> NULL
+     HEAD                                         TAIL
+ ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐   ┌─────╥────┐
+ │  1  ║  ----->│  2  ║  ----->│  3  ║  ----->│  4  ║  -----> NULL
+ └─────╨────┘   └─────╨────┘   └─────╨────┘   └─────╨────┘
+
 
   2. Doubly Linked List:
-  NULL <-> Node[1] <-> Node[2] <-> Node[3] <-> Node[4] <-> NULL
+               HEAD                                                        TAIL
+         ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥────┐   ┌────╥─────╥────┐
+ NULL <-----  ║  1  ║  <------->  ║  2  ║  <------->  ║  3  ║  <------->  ║  4  ║  -----> NULL
+         └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨────┘   └────╨─────╨────┘
   ...
 ```
 
@@ -204,7 +226,8 @@ $ OUTPUT
 ```py
 from datastax.trees import ThreadedBinaryTree as Tbt
 
-tbt = Tbt(['a', 'b', 'c', 'd', 'e'], insertion_logic="BinaryTree")
+logic = str("BinaryTree")
+tbt = Tbt(['a', 'b', 'c', 'd', 'e'], insertion_logic=logic)
 print(tbt)
 ```
 
@@ -222,31 +245,105 @@ $ OUTPUT
 
 ```
 
-## What's Next
+---------------------------------------------------
 
-- Implementation of **Segment Trees**
-- Proper tests using UnitTest Lib
-- Enhanced Documentation
-- Implementation of Other Abstract data types like **LFU_CACHE, SKIP_LIST**
-- Beautification of [README.md](README.md)
-
-### Upcoming
+- **SumSegmentTree**
 
 ```py
-from datastax.trees import SumSegmentTree as St
+from datastax.trees import SumSegmentTree
 
-st = St([1, 3, 5, 7, 9, 11])
-print(st)
+sst = SumSegmentTree([1, 3, 5, 7, 9, 11])
+print(sst)
+print(sst.preorder_print())
 ```
 
 ```shell
-$ OUTPUT               
+$ OUTPUT        
+                                                
                        36                       
+                      [0:5]                     
             ┌───────────┴───────────┐           
             9                      27           
+          [0:2]                   [3:5]         
       ┌─────┴─────┐           ┌─────┴─────┐     
       4           5          16          11     
-   ┌──┴──┐     ┌──┴──┐                          
-   1     3     7     9                          
-                          
+    [0:1]                   [3:4]               
+   ┌──┴──┐                 ┌──┴──┐              
+   1     3                 7     9              
+
+
+36 [0:5]
+├─▶ 9 [0:2]
+│   ├─▶ 4 [0:1]
+│   │   ├─▶ 1 
+│   │   └─▶ 3 
+│   └─▶ 5 
+└─▶ 27 [3:5]
+    ├─▶ 16 [3:4]
+    │   ├─▶ 7 
+    │   └─▶ 9 
+    └─▶ 11             
+                  
 ```
+
+---------------------------------------------------
+
+- **HuffmanTree**
+
+```py
+from datastax.trees import HuffmanTree
+
+string = str("Espresso Express")
+hft = HuffmanTree(string)
+print(hft)
+```
+
+```shell
+$ OUTPUT
+                                               16                                               
+                         0                      │                      1                        
+                        ┌───────────────────────┴───────────────────────┐                       
+                        7                                               9                       
+             0          │          1                         0          │          1            
+            ┌───────────┴───────────┐                       ┌───────────┴───────────┐           
+            3                       4                       4                       s           
+       0    │    1             0    │    1             0    │    1                  5           
+      ┌─────┴─────┐           ┌─────┴─────┐           ┌─────┴─────┐                             
+      x           2           e           r           E           p                             
+      1         0 │ 1         2           2           2           2                             
+               ┌──┴──┐                                                                          
+               o                                                                                
+               1     1       
+```
+
+---------------------------------------------------
+
+- **RedBlackTree**
+
+```py
+from datastax.trees import RedBlackTree
+
+rbt = RedBlackTree([500, 236, 565, 105, 842, 497, 312, 612, 80])
+rbt.delete(236)
+print(rbt)
+```
+
+```shell
+$ OUTPUT                                                                         
+                                   500                                      
+                  ┌─────────────────┴─────────────────┐                     
+                 105                                 612                    
+         ┌────────┴────────┐                 ┌────────┴────────┐            
+        80                497               565               842           
+                       ┌───┘                                                
+                     312
+                                                                                                                                    
+```
+
+## What's Next
+
+- Enhanced Documentation
+- Better TestCases for Huffman Tree
+- Better TestCases for Segment Trees
+- Test Cases for Fibonacci Tree
+- Adding of images of trees instead of trees themselves in README 
