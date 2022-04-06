@@ -24,7 +24,7 @@ class ExpressionTree(BinaryTree):
         infix_expression = [*filter(lambda x: x is not None, infix_expression)]
         self.infix_expression = ''.join(map(str, infix_expression))
         self.postfix_expression = self.infix_to_postfix()
-        stack = Stack(len(infix_expression))
+        stack = Stack(capacity=len(infix_expression))
         for item in self.postfix_expression.split():
             if self.is_operator(item):
                 try:
@@ -63,7 +63,7 @@ class ExpressionTree(BinaryTree):
             raise UnmatchedBracketPairError(self, infix_expression)
 
         postfix_expression: str = ''
-        stack = Stack(len(infix_expression))
+        stack = Stack(capacity=len(infix_expression))
         infix_expression += ')'
         stack.push('(')
         current_count = 0

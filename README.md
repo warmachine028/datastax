@@ -1,4 +1,4 @@
-    updated: Thursday, 24th February 2022
+    updated: Wednesday, 6th April 2022
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -20,25 +20,10 @@
 
 ## What's New?
 
-- Added Sum Segment Tree
-- Added Min Segment Tree
-- Added Huffman Tree
-    - data encoder
-    - data decoder
-    - Huffman Code
-    - Huffman Table
-    - compression ratio
-    - space saved
-- Added Red Black Tree - 🗸 TESTED
-- Added Splay Tree - 🗸 TESTED
-- Added Delete methods in: 🗸 TESTED
-    - BinaryTree
-    - BinarySearchTree
-    - AVLTree
-- Enhanced string representation of all LinkedLists
-- Added Custom Comparator for PriorityQueue
-- Added name-mangler function for items with multiline string representations
-- Added HuffmanTable object for storing and visualizing huffman-table
+- Added Mandatory Keyword arguments to avoid confusion in:
+  - Arrays 
+  - ThreadedBinaryTree 
+- Added High Quality PNGs in README.md
 
 ## Table of Contents
 
@@ -148,197 +133,57 @@ pip install datastax
 
 - **Queue**
 
-```py
-from datastax.arrays import Queue
+![queue](./assets/Usage/queue.png)
 
-# Building a Queue Data Structure with fixed capacity
-queue = Queue(capacity=5)
-
-# Enqueueing items inside queue
-for item in ('item 1', 'item 2'):
-    queue.enqueue(item)
-
-# Performing Dequeue Operation 
-queue.dequeue()
-
-queue.enqueue('item 3')
-print(queue)
-```
-
-```shell
-$ OUTPUT:
-
-         ┌──────────╥──────────┬──────────┐
-FRONT -> │    ╳     ║  item 2  │  item 3  │ <- REAR
-         └──────────╨──────────┴──────────┘
-      
-```
+![queue_output](./assets/Usage/queue_output.png)
 
 ---------------------------------------------------
 
 - **BinaryTree**
 
-```py
-from datastax.trees import BinaryTree
+![BinaryTree](./assets/Usage/binaryTree.png)
 
-bt = BinaryTree([1, 2, 3, 4, 5])
-print(bt)
-```
-
-```shell
-$ OUTPUT:
-
-             1           
-       ┌─────┴─────┐     
-       2           3     
-    ┌──┴──┐              
-    4     5              
-```
+![BinaryTree_output](./assets/Usage/binaryTree_output.png)
 
 ---------------------------------------------------
 
 - **MinHeapTree**
 
-```py
-from datastax.trees import MinHeapTree
+![MinHeapTree](./assets/Usage/mht.png)
 
-MiHT = MinHeapTree([1, 2, 4, 2, 6, 5, 9, 18, 3, 2])
-print(MiHT)
-```
-
-```shell
-$ OUTPUT
-
-                        1                       
-            ┌───────────┴───────────┐           
-            2                       4           
-      ┌─────┴─────┐           ┌─────┴─────┐     
-      2           2           5           9     
-   ┌──┴──┐     ┌──┘                             
-  18     3     6    
-
-```
+![MinHeapTree_output](./assets/Usage/mht_output.png)
 
 ---------------------------------------------------
 
 - **ThreadedBinaryTree**
 
-```py
-from datastax.trees import ThreadedBinaryTree as Tbt
+![ThreadedBinaryTree](./assets/Usage/tbt.png)
 
-logic = str("BinaryTree")
-tbt = Tbt(['a', 'b', 'c', 'd', 'e'], insertion_logic=logic)
-print(tbt)
-```
-
-```shell
-$ OUTPUT               
-                                   ┌───┐
-   ┌───────────────────────────> DUMMY │<──────────────┐
-   │                           ┌───┴───┘               │
-   │                           a                       │        
-   │           ┌───────────────┴───────────────┐       │        
-   │           b           │           │       c       │        
-   │   ┌───────┴───────┐   │           └───────┴───────┘        
-   │   d   │       │   e   │                                    
-   └───┴───┘       └───┴───┘                                    
-
-```
+![ThreadedBinaryTree_output](./assets/Usage/tbt_output.png)
 
 ---------------------------------------------------
 
 - **SumSegmentTree**
 
-```py
-from datastax.trees import SumSegmentTree
+![SumSegmentTree](./assets/Usage/sst.png)
 
-sst = SumSegmentTree([1, 3, 5, 7, 9, 11])
-print(sst)
-print(sst.preorder_print())
-```
-
-```shell
-$ OUTPUT        
-                                                
-                       36                       
-                      [0:5]                     
-            ┌───────────┴───────────┐           
-            9                      27           
-          [0:2]                   [3:5]         
-      ┌─────┴─────┐           ┌─────┴─────┐     
-      4           5          16          11     
-    [0:1]                   [3:4]               
-   ┌──┴──┐                 ┌──┴──┐              
-   1     3                 7     9              
-
-
-36 [0:5]
-├─▶ 9 [0:2]
-│   ├─▶ 4 [0:1]
-│   │   ├─▶ 1 
-│   │   └─▶ 3 
-│   └─▶ 5 
-└─▶ 27 [3:5]
-    ├─▶ 16 [3:4]
-    │   ├─▶ 7 
-    │   └─▶ 9 
-    └─▶ 11             
-                  
-```
+![SumSegmentTree_Output](./assets/Usage/sst_output.png)
 
 ---------------------------------------------------
 
 - **HuffmanTree**
 
-```py
-from datastax.trees import HuffmanTree
+![HuffmanTree](./assets/Usage/hft.png)
 
-string = str("Espresso Express")
-hft = HuffmanTree(string)
-print(hft)
-```
-
-```shell
-$ OUTPUT
-                                               16                                               
-                         0                      │                      1                        
-                        ┌───────────────────────┴───────────────────────┐                       
-                        7                                               9                       
-             0          │          1                         0          │          1            
-            ┌───────────┴───────────┐                       ┌───────────┴───────────┐           
-            3                       4                       4                       s           
-       0    │    1             0    │    1             0    │    1                  5           
-      ┌─────┴─────┐           ┌─────┴─────┐           ┌─────┴─────┐                             
-      x           2           e           r           E           p                             
-      1         0 │ 1         2           2           2           2                             
-               ┌──┴──┐                                                                          
-               o                                                                                
-               1     1       
-```
+![HuffmanTree_Output](./assets/Usage/hft_output.png)
 
 ---------------------------------------------------
 
 - **RedBlackTree**
 
-```py
-from datastax.trees import RedBlackTree
+![RedBlackTree](./assets/Usage/rbt.png)
 
-rbt = RedBlackTree([500, 236, 565, 105, 842, 497, 312, 612, 80])
-rbt.delete(236)
-print(rbt)
-```
-
-```shell
-$ OUTPUT                                                                         
-                                   500                                      
-                  ┌─────────────────┴─────────────────┐                     
-                 105                                 612                    
-         ┌────────┴────────┐                 ┌────────┴────────┐            
-        80                497               565               842           
-                       ┌───┘                                                
-                     312
-                                                                                                                                    
-```
+![RedBlackTreeOutput](./assets/Usage/rbt_output.png)
 
 ## What's Next
 
@@ -346,4 +191,3 @@ $ OUTPUT
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
 - Test Cases for Fibonacci Tree
-- Adding of images of trees instead of trees themselves in README 

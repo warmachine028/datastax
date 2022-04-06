@@ -6,9 +6,9 @@ from datastax.errors import OverFlowError, UnderFlowError
 
 
 class PriorityQueue(Queue):
-    def __init__(self, capacity: int = None,
+    def __init__(self, *, capacity: int = None,
                  custom_comparator: Callable = None):
-        super().__init__(capacity)
+        super().__init__(capacity=capacity)
         self.comparator = custom_comparator or max
 
     def swap(self, index1: int, index2: int) -> None:

@@ -10,7 +10,7 @@ class TestPriorityQueue(unittest.TestCase):
 
     def setUp(self) -> None:
         # With fixed size PriorityQueue
-        self.limitedPriorityQueue = PriorityQueue(2)
+        self.limitedPriorityQueue = PriorityQueue(capacity=2)
         # With dynamic PriorityQueue
         self.unlimitedPriorityQueue = PriorityQueue()
 
@@ -29,7 +29,7 @@ class TestPriorityQueue(unittest.TestCase):
         self.assertEqual([], self.items_in(self.limitedPriorityQueue))
 
     def test_construction(self):
-        queue = PriorityQueue(5)  # With capacity more than Array size
+        queue = PriorityQueue(capacity=5)  # With capacity more than Array size
         list(map(lambda item: queue.enqueue(item), [1, 2, 3]))
         self.assertEqual([3, 1, 2], self.items_in(queue))
         queue.enqueue(10)  # Then performing Enqueue Operation
@@ -39,7 +39,7 @@ class TestPriorityQueue(unittest.TestCase):
         queue = PriorityQueue()  # With first array element as None
         with self.assertRaises(TypeError):
             list(map(lambda item: queue.enqueue(item), [None, 1, 2]))
-        queue = PriorityQueue(None)  # With both arguments as None
+        queue = PriorityQueue(capacity=None)  # With both arguments as None
         self.assertEqual([], self.items_in(queue))
 
     def test_dequeue_from_empty_queue(self):
@@ -73,7 +73,7 @@ class TestPriorityQueue(unittest.TestCase):
         n = len(sample)
 
         # Priority Queue
-        p_queue = PriorityQueue(n)
+        p_queue = PriorityQueue(capacity=n)
         for item in sample:
             p_queue.enqueue(item)
         self.assertEqual(sorted(sample),
