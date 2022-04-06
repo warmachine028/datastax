@@ -6,7 +6,7 @@ from datastax.errors import UnderFlowError, OverFlowError
 
 
 class Stack:
-    def __init__(self, capacity: int = None):
+    def __init__(self, *, capacity: int = None):
         self.capacity = capacity if capacity is not None else math.inf
         self._array: list[Any] = []
 

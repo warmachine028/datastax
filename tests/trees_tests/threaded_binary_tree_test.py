@@ -47,7 +47,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
         data = [4, 3, 1, 2, 5, 9]
         result = [3, 1, 5, 2, 4, 9]
         # Normal inserting
-        tree = ThreadedBinaryTree(data, "AVLTree")
+        tree = ThreadedBinaryTree(data, insertion_logic="AVLTree")
         self.assertEqual(result, self.level_wise_items(tree))
         self.assertEqual(result, tree.array_repr)
         self.assertEqual(sorted(result), tree.inorder())
@@ -84,7 +84,8 @@ class TestThreadedBinaryTree(unittest.TestCase):
 
         # Construct with existing root
         root_node = ThreadedNode(10)
-        tree = ThreadedBinaryTree([*range(9, 0, -1)], None, root_node)
+        tree = ThreadedBinaryTree([*range(9, 0, -1)], root_node,
+                                  insertion_logic=None)
         self.assertEqual([*range(10, 0, -1)], tree.array_repr)
 
     def test_heap_trees(self):
@@ -92,7 +93,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
         data = [4, 3, 1, 2, 5, 3, 2, 1, 9]
         result = [9, 5, 3, 4, 3, 1, 2, 1, 2]
         # Normal inserting
-        tree = ThreadedBinaryTree(data, "HeapTree")
+        tree = ThreadedBinaryTree(data, insertion_logic="HeapTree")
         self.assertEqual(result, self.level_wise_items(tree))
         self.assertEqual(result, tree.array_repr)
         self.assertEqual(self.inorder(tree), tree.inorder())
@@ -128,13 +129,15 @@ class TestThreadedBinaryTree(unittest.TestCase):
 
     def test_insert_with_logic(self):
         # Inserting with explicit insertion logic of same type
-        tree = ThreadedBinaryTree(self.items, "ThreadedBinaryTree")
+        tree = ThreadedBinaryTree(self.items,
+                                  insertion_logic="ThreadedBinaryTree")
         self.traversal_testing(tree, self.items)
         # Testing Dummy Node
         self.assertEqual(tree.dummy_node.left.data, 1)
         self.assertEqual(tree.dummy_node.right, tree.dummy_node)
 
-        tree = ThreadedBinaryTree(self.items, "BinarySearchTree")
+        tree = ThreadedBinaryTree(self.items,
+                                  insertion_logic="BinarySearchTree")
         self.traversal_testing(tree, self.items)
         # Testing Dummy Node
         self.assertEqual(tree.dummy_node.left.data, 1)
@@ -160,11 +163,11 @@ class TestThreadedBinaryTree(unittest.TestCase):
             ThreadedBinaryTree(items)
 
         # Would be able to build successfully
-        tree = ThreadedBinaryTree(items, 'BinaryTree')
+        tree = ThreadedBinaryTree(items, insertion_logic='BinaryTree')
         self.assertEqual(items[:-1], self.level_wise_items(tree))
 
     def test_normal_binary_tree_construction(self):
-        tree = ThreadedBinaryTree(self.items, "BinaryTree")
+        tree = ThreadedBinaryTree(self.items, insertion_logic="BinaryTree")
         self.assertEqual(self.items, self.level_wise_items(tree))
         self.assertEqual(self.items, tree.array_repr)
         self.assertEqual(self.inorder(tree), tree.inorder())
@@ -205,7 +208,8 @@ class TestThreadedBinaryTree(unittest.TestCase):
 
         for testcase, result in zip(self.print_test_cases[-3:-1],
                                     results[-3:-1]):
-            tree = ThreadedBinaryTree(testcase, 'BinaryTree')
+            tree = ThreadedBinaryTree(testcase,
+                                      insertion_logic='BinaryTree')
             tree.preorder_print()
             self.assertEqual(result, tree._string)
 
@@ -242,7 +246,8 @@ class TestThreadedBinaryTree(unittest.TestCase):
         for testcase, result in zip(self.print_test_cases, results[:4]):
             tree = ThreadedBinaryTree(testcase)
             self.assertEqual(result, tree.__str__())
-        tree = ThreadedBinaryTree(self.print_test_cases[5], "BinaryTree")
+        tree = ThreadedBinaryTree(self.print_test_cases[5],
+                                  insertion_logic="BinaryTree")
         self.assertEqual(results[-1], tree.__str__())
 
     def test_with_random_inputs(self):

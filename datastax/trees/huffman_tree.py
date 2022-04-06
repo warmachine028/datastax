@@ -33,7 +33,7 @@ class HuffmanTree(huffman_tree.HuffmanTree):
                 _data, None, None, frequency
             ) for _data, frequency in Counter(data).items()
         )
-        p_queue = PriorityQueue(None, comparator)
+        p_queue = PriorityQueue(capacity=None, custom_comparator=comparator)
         for node in nodes:
             p_queue.enqueue(node)
 
@@ -82,6 +82,10 @@ class HuffmanTree(huffman_tree.HuffmanTree):
         pass
 
     def size_calculator(self) -> Optional[tuple[int, int]]:
+        """
+        Calculates the actual encoding size and total 
+        huffman encoding size with table included
+        """
         if not self.root or not self.huffman_table:
             return None
         fixed_encoding = huffman_encoding = 0

@@ -9,7 +9,7 @@ from datastax.linkedlists import LinkedList
 class TestStack(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.limitedStack = Stack(2)  # With fixed size Stack
+        self.limitedStack = Stack(capacity=2)  # With fixed size Stack
         self.unlimitedStack = Stack()  # With dynamic Stack
 
     def test_complete_fill_complete_empty(self):
@@ -27,7 +27,7 @@ class TestStack(unittest.TestCase):
         self.assertEqual([], self.items_in(self.limitedStack))
 
     def test_construction(self):
-        stack = Stack(5)  # With capacity more than Array size
+        stack = Stack(capacity=5)  # With capacity more than Array size
         list(map(lambda item: stack.push(item), [1, 2, 3]))
         self.assertEqual([1, 2, 3], self.items_in(stack))
         stack.push(10)  # Then performing Enqueue Operation
@@ -37,7 +37,7 @@ class TestStack(unittest.TestCase):
         stack = Stack()  # With first array element as None
         list(map(lambda item: stack.push(item), [None, 1, 2]))
         self.assertEqual([None, 1, 2], self.items_in(stack))
-        stack = Stack(None)  # With both arguments as None
+        stack = Stack(capacity=None)  # With both arguments as None
         self.assertEqual([], self.items_in(stack))
 
     def test_dequeue_from_empty_queue(self):
@@ -75,7 +75,7 @@ class TestStack(unittest.TestCase):
             # Inserting Uncommon items
             LinkedList([1, 2]).head,  # -> Node
             LinkedList([1, 2]),  # ->  LinkedList
-            Stack(3),  # -> self referential type
+            Stack(capacity=3),  # -> self referential type
             None
         ]
         for item in items:
@@ -84,7 +84,7 @@ class TestStack(unittest.TestCase):
         self.assertEqual(items, self.items_in(self.unlimitedStack))
 
     def test_string_repr(self):
-        stack = Stack(3)
+        stack = Stack(capacity=3)
         operations = [
             'display',
             ['push', 30],

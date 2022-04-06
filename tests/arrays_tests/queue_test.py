@@ -9,7 +9,7 @@ from datastax.linkedlists import LinkedList
 class TestQueue(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.limitedQueue = Queue(2)  # With fixed size Queue
+        self.limitedQueue = Queue(capacity=2)  # With fixed size Queue
         self.unlimitedQueue = Queue()  # With dynamic Queue
 
     def test_complete_fill_complete_empty(self):
@@ -27,7 +27,7 @@ class TestQueue(unittest.TestCase):
         self.assertEqual([], self.items_in(self.limitedQueue))
 
     def test_construction(self):
-        queue = Queue(5)  # With capacity more than Array size
+        queue = Queue(capacity=5)  # With capacity more than Array size
         list(map(lambda item: queue.enqueue(item), [1, 2, 3]))
         self.assertEqual([1, 2, 3], self.items_in(queue))
         queue.enqueue(10)  # Then performing Enqueue Operation
@@ -37,7 +37,7 @@ class TestQueue(unittest.TestCase):
         queue = Queue()  # With first array element as None
         list(map(lambda item: queue.enqueue(item), [None, 1, 2]))
         self.assertEqual([None, 1, 2], self.items_in(queue))
-        queue = Queue(None)  # With both arguments as None
+        queue = Queue(capacity=None)  # With both arguments as None
         self.assertEqual([], self.items_in(queue))
 
     def test_dequeue_from_empty_queue(self):
@@ -75,7 +75,7 @@ class TestQueue(unittest.TestCase):
             # Inserting Uncommon items
             LinkedList([1, 2]).head,  # -> Node
             LinkedList([1, 2]),  # ->  LinkedList
-            Queue(3),  # -> self referential type
+            Queue(capacity=3),  # -> self referential type
             None
         ]
         for item in items:

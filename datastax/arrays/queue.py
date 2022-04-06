@@ -6,7 +6,7 @@ from datastax.errors import OverFlowError, UnderFlowError
 
 
 class Queue:
-    def __init__(self, capacity: int = None):
+    def __init__(self, *, capacity: int = None):
         self._capacity = capacity if capacity is not None else math.inf
         self._array: list[Any] = []
         self._front = self._rear = 0

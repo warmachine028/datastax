@@ -90,8 +90,9 @@ class ThreadedNode(TreeNode):
 
 
 class ThreadedBinaryTree(binary_tree.BinaryTree):
-    def __init__(self, array=None, insertion_logic: str = None,
-                 root: ThreadedNode = None):
+    def __init__(self, array=None, root: ThreadedNode = None, *,
+                 insertion_logic: str = None
+                 ):
         self._root: Optional[ThreadedNode] = root
         self.head = self.tail = self.root
         self.dummy_node = ThreadedNode(None, self.root)

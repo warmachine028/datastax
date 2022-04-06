@@ -46,57 +46,60 @@ except Exception as error:
     sys.stderr.write(f"Warning: Could not open README.md due {error}\n")
 
 setup(
-    name='datastax',
-    maintainer="Pritam K",
-    description='A python library to handle dataStructures',
-    long_description=readme_contents,
-    long_description_content_type='text/markdown',
-    url='https://github.com/warmachine028/datastax',
-    author='Pritam K',
-    download_url="https://pypi.python.org/pypi/datastax",
-    project_urls={
-        'Bug Tracker': 'https://github.com/warmachine028/datastax/issues',
-        'Documentation': 'https://github.com/warmachine028/datastax#readme',
-        'Source Code': 'https://github.com/warmachine028/datastax',
-    },
-    license='MIT',
-    classifiers=[
-        "Development Status :: 4 - Beta",
+        name='datastax',
+        maintainer="Pritam K",
+        description='A python library to handle dataStructures',
+        long_description=readme_contents,
+        long_description_content_type='text/markdown',
+        url='https://github.com/warmachine028/datastax',
+        author='Pritam K',
+        download_url="https://pypi.python.org/pypi/datastax",
+        project_urls={
+            'Bug Tracker': 'https://github.com/warmachine028/datastax/issues',
+            'Documentation': 'https://github.com/warmachine028/'
+                             'datastax#readme',
+            'Source Code': 'https://github.com/warmachine028/datastax',
+        },
+        license='MIT',
+        classifiers=[
+            "Development Status :: 4 - Beta",
 
-        "Intended Audience :: Education",
-        "Intended Audience :: Developers",
-        "Intended Audience :: End Users/Desktop",
-        "Intended Audience :: Science/Research",
+            "Intended Audience :: Education",
+            "Intended Audience :: Developers",
+            "Intended Audience :: End Users/Desktop",
+            "Intended Audience :: Science/Research",
 
-        "License :: OSI Approved :: MIT License",
+            "License :: OSI Approved :: MIT License",
 
-        "Operating System :: OS Independent",
+            "Operating System :: OS Independent",
 
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
 
-        "Topic :: Documentation",
-        "Topic :: Education :: Testing",
-        "Topic :: Scientific/Engineering :: Visualization",
-        "Topic :: Software Development :: Documentation",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: Software Development :: Testing :: Unit",
+            "Topic :: Documentation",
+            "Topic :: Education :: Testing",
+            "Topic :: Scientific/Engineering :: Visualization",
+            "Topic :: Software Development :: Documentation",
+            "Topic :: Software Development :: Libraries :: Python Modules",
+            "Topic :: Software Development :: Testing :: Unit",
 
-        "Typing :: Typed"
-    ],
-    platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
-    test_suite='pytest',
-    version=datastax.__version__,
-    python_requires='>=3.7',
-    zip_safe=False,
-    packages=[
-        'datastax',
-        'datastax/arrays',
-        'datastax/linkedlists',
-        'datastax/trees',
-    ],
-    author_email='pritamkundu771@gmail.com'
+            "Typing :: Typed"
+        ],
+        platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
+        test_suite='pytest',
+        version=datastax.__version__,
+        python_requires='>=3.7',
+        zip_safe=False,
+        packages=[
+            'datastax',
+            'datastax/arrays',
+            'datastax/linkedlists',
+            'datastax/trees',
+            'datastax/linkedlists/private_lists',
+            'datastax/trees/private_trees',
+        ],
+        author_email='pritamkundu771@gmail.com'
 )
