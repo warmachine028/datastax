@@ -1,8 +1,8 @@
-    updated: Wednesday, 6th April 2022
+    updated: Sunday, 9th July 2023
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
-    <img width=200 src="https://github.com/warmachine028/datastax/blob/main/assets/icon.png" alt="datastax"></a>
+    <img width=200 src="https://github.com/warmachine028/datastax/assets/75939390/2c1ad8f7-b1ed-44aa-9923-307af5a52cfc" alt="datastax"></a>
     <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
     <a href="https://pypi.org/project/datastax" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
     <a href="https://pypi.org/project/datastax/#files"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/datastax.svg?label=Pypi%20downloads"></a>
@@ -15,6 +15,7 @@
     <a href="https://github.com/warmachine028/datastax/network/members"><img src="https://img.shields.io/github/forks/warmachine028/datastax?color=cyan"></a>
     <br>
 </div>
+
 
 # [dataStax](https://github.com/warmachine028/datastax)
 
@@ -133,57 +134,58 @@ pip install datastax
 
 - **Queue**
 
-![queue](./assets/Usage/queue.png)
+![queue](https://github.com/warmachine028/datastax/assets/75939390/0fe72e7a-7eb9-4ee9-9b7a-6c0f83d98409)
 
-![queue_output](./assets/Usage/queue_output.png)
+![queue_output](https://github.com/warmachine028/datastax/assets/75939390/daecb209-d459-4374-96e0-816deb08dcde)
 
----------------------------------------------------
+------------------------------------
+---------------
 
 - **BinaryTree**
 
-![BinaryTree](./assets/Usage/binaryTree.png)
+![binaryTree](https://github.com/warmachine028/datastax/assets/75939390/7228c4b4-def7-4c6b-9e29-e6e244c2c4c1)
 
-![BinaryTree_output](./assets/Usage/binaryTree_output.png)
+![binaryTree_output](https://github.com/warmachine028/datastax/assets/75939390/2357fa58-3122-47ad-ac7f-f67d72ef6e8c)
 
 ---------------------------------------------------
 
 - **MinHeapTree**
 
-![MinHeapTree](./assets/Usage/mht.png)
+![mht](https://github.com/warmachine028/datastax/assets/75939390/1c00a207-9ea0-4965-898f-29e37883fac5)
 
-![MinHeapTree_output](./assets/Usage/mht_output.png)
+![mht_output](https://github.com/warmachine028/datastax/assets/75939390/fcfe24d9-6b80-4b16-873c-3f5c3d808d70)
 
 ---------------------------------------------------
 
 - **ThreadedBinaryTree**
 
-![ThreadedBinaryTree](./assets/Usage/tbt.png)
+![tbt](https://github.com/warmachine028/datastax/assets/75939390/ab2f2572-1474-4d82-9138-b8ee85869114)
 
-![ThreadedBinaryTree_output](./assets/Usage/tbt_output.png)
+![tbt_output](https://github.com/warmachine028/datastax/assets/75939390/9e77c5dc-082c-471b-90d5-33792673bdf3)
 
 ---------------------------------------------------
 
 - **SumSegmentTree**
 
-![SumSegmentTree](./assets/Usage/sst.png)
+![sst](https://github.com/warmachine028/datastax/assets/75939390/7bdcfd6e-37ac-4421-b6d2-acd59cf4976c)
 
-![SumSegmentTree_Output](./assets/Usage/sst_output.png)
+![sst_output](https://github.com/warmachine028/datastax/assets/75939390/3a3f1de2-72e8-4b1d-88c7-40e4dcc11215)
 
 ---------------------------------------------------
 
 - **HuffmanTree**
 
-![HuffmanTree](./assets/Usage/hft.png)
+![hft](https://github.com/warmachine028/datastax/assets/75939390/5dc609a6-51c2-4ec9-88ba-c1ea175ef88e)
 
-![HuffmanTree_Output](./assets/Usage/hft_output.png)
+![hft_output](https://github.com/warmachine028/datastax/assets/75939390/2de13da6-8eaa-4e62-a06a-8dbf91c008a2)
 
 ---------------------------------------------------
 
 - **RedBlackTree**
 
-![RedBlackTree](./assets/Usage/rbt.png)
+![rbt](https://github.com/warmachine028/datastax/assets/75939390/8d924d6e-d63a-4891-bf9e-c7acdb3775ba)
 
-![RedBlackTreeOutput](./assets/Usage/rbt_output.png)
+![rbt_output](https://github.com/warmachine028/datastax/assets/75939390/3af4ceb6-1e68-4906-ba39-db84dbf274f0)
 
 ## What's Next
 
