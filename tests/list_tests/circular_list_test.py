@@ -2,7 +2,7 @@ import random
 import unittest
 from typing import Optional, Any
 
-from datastax.linkedlists import CircularLinkedList, Node
+from datastax.Lists import CircularLinkedList, Node
 
 
 class TestCircularLinkedList(unittest.TestCase):
@@ -35,20 +35,21 @@ class TestCircularLinkedList(unittest.TestCase):
         existing_linked_list = CircularLinkedList([*range(10)])
         ll = CircularLinkedList([*range(10, 20)], existing_linked_list.tail)
         # **MUST MANUALLY SET tail.next Pointer to old linked_list's head**
-        ll.tail.next = existing_linked_list.head
+        ll.tail.set_next(existing_linked_list.head)
+        ll.set_head(existing_linked_list.head)
         # might be able to construct
         self.assertEqual([*range(20)], self.items_in(existing_linked_list))
         # but the tail of existing_linked_list will remain same
         self.assertNotEqual(existing_linked_list.tail, ll.tail)
 
         # the tail must be manually updated
-        existing_linked_list._tail = ll.tail
+        existing_linked_list.set_tail(ll.tail)
         self.assertEqual(existing_linked_list.tail, ll.tail)
-
+        # return
         # Testing circular traversal after above operation
-        self.assertEqual([*range(2, 20), 0, 1],
-                         self.traverse_from(
-                             existing_linked_list.head.next.next))
+        self.assertEqual([*range(2, 20), 0, 1], self.traverse_from(
+            existing_linked_list.head.next.next
+        ))
 
         # Testing build with an arbitrary node
         head = Node(7)
@@ -72,8 +73,8 @@ class TestCircularLinkedList(unittest.TestCase):
             [[1, 2, 3, 4, 5, 6], 1, 6],
             [[*range(10)], 0, 9],
             [[], None, None],
-            [[], None, None],
-            [[], None, None],
+            [[None], None, None],
+            [[None, 1, 2, 3, 4, 5], None, 5],
             [[], None, None]
         ]
         for item, result in zip(items, results):

@@ -4,7 +4,7 @@ import unittest
 from typing import Optional, Any
 
 from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
-from datastax.linkedlists import Queue
+from datastax.Lists import Queue
 from datastax.trees import ThreadedBinaryTree, ThreadedNode
 
 

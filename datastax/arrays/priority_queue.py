@@ -1,7 +1,7 @@
 # Priority Queue implementation using Lists (Pseudo Arrays)
 from typing import Any, Callable
 
-from datastax.arrays.queue import Queue
+from datastax.Arrays.queue import Queue
 from datastax.errors import OverFlowError, UnderFlowError
 
 

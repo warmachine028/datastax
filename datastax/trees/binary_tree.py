@@ -11,7 +11,7 @@ from datastax.errors import (
     NodeNotFoundWarning,
     DeletionFromEmptyTreeWarning,
 )
-from datastax.linkedlists import Queue
+from datastax.Lists import Queue
 from datastax.trees.private_trees import binary_tree
 from datastax.trees.private_trees.binary_tree import TreeNode
 
@@ -47,7 +47,7 @@ class BinaryTree(binary_tree.BinaryTree):
         if not array or array[0] is None:
             return None
 
-        queue = Queue(len(array))
+        queue = Queue(capacity=len(array))
         current = 0
         root = self.root
         if not root:
@@ -80,7 +80,7 @@ class BinaryTree(binary_tree.BinaryTree):
         if not self.root or data is None:
             return self.delete_deepest()
 
-        queue = Queue(len(self.array_repr))
+        queue = Queue(capacity=len(self.array_repr))
         queue.enqueue(self.root)
         del_node = None
         while not queue.is_empty():
@@ -110,7 +110,7 @@ class BinaryTree(binary_tree.BinaryTree):
         Deletes the rightmost leaf node
         :return: data if tree is not empty else None
         """
-        queue = Queue(len(self.array_repr))
+        queue = Queue(capacity=len(self.array_repr))
         if self.root:
             queue.enqueue(self.root)
         parent = None
@@ -144,8 +144,9 @@ class BinaryTree(binary_tree.BinaryTree):
         return data
 
     def insert(self, item: Any):
+
         temp = None if item is None else TreeNode(item)
-        queue = Queue(len(self.array_repr))
+        queue = Queue(capacity=len(self.array_repr))
         if self.root:
             queue.enqueue(self.root)
         while not queue.is_empty():

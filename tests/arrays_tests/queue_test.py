@@ -1,9 +1,9 @@
 import unittest
 from typing import Optional, Any
 
-from datastax.arrays import Queue
+from datastax.Arrays import Queue
 from datastax.errors import UnderFlowError, OverFlowError
-from datastax.linkedlists import LinkedList
+from datastax.Lists import LinkedList
 
 
 class TestQueue(unittest.TestCase):

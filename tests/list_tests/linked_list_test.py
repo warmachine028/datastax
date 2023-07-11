@@ -2,7 +2,8 @@ import random
 import unittest
 from typing import Optional, Any
 
-from datastax.linkedlists import LinkedList
+from datastax.Lists.LinkedList import LinkedList
+from datastax.Lists.Node import Node
 
 
 class TestLinkedList(unittest.TestCase):
@@ -53,13 +54,13 @@ class TestLinkedList(unittest.TestCase):
             [[1, 2, 3, 4, 5, 6], 1, 6],
             [[*range(10)], 0, 9],
             [[], None, None],
-            [[], None, None],
-            [[], None, None],
+            [[None], None, None],
+            [[None, 1, 2, 3, 4, 5], None, 5],
             [[], None, None]
         ]
         for item, result in zip(items, results):
             ll = LinkedList(item)
-            # checking linkedlist items
+            # checking linkedList items
             self.assertEqual(result[0], self.items_in(ll))
             # checking head
             self.assertEqual(result[1], ll.head.data if ll.head else None)
@@ -133,6 +134,53 @@ class TestLinkedList(unittest.TestCase):
         for testcase, result in zip(self.print_test_cases, results):
             list_ = LinkedList(testcase)
             self.assertEqual(result, list_.__str__())
+
+    def test_constructor_with_node_head(self):
+        head = Node(10)
+        linked_list = LinkedList([1, 2, 3], head)
+
+        # Verify items in the linked list
+        self.assertEqual([10, 1, 2, 3], self.items_in(linked_list))
+
+        # Verify head and tail
+        self.assertEqual(10, linked_list.head.data)
+        self.assertEqual(3, linked_list.tail.data)
+
+        # Verify the next node
+        self.assertIs(linked_list.head, head)
+        self.assertIsNone(linked_list.tail.next)
+
+    def test_constructor_with_node_tail(self):
+        tail = Node(10)
+        linked_list = LinkedList([1, 2, 3], tail=tail)
+
+        # Verify items in the linked list
+        self.assertEqual([10, 1, 2, 3], self.items_in(linked_list))
+
+        # Verify head and tail
+        self.assertEqual(10, linked_list.head.data)
+        self.assertEqual(3, linked_list.tail.data)
+
+        # Verify the next node
+        self.assertIsNone(linked_list.tail.next)
+        self.assertIs(tail, linked_list.head)
+
+    def test_constructor_with_node_tail_and_head(self):
+
+        head, tail = Node(90), Node(10)
+        linked_list = LinkedList([1, 2, 3], head, tail)
+
+        # Verify items in the linked list
+        self.assertEqual([90, 10, 1, 2, 3], self.items_in(linked_list))
+
+        # Verify head and tail
+        self.assertEqual(90, linked_list.head.data)
+        self.assertEqual(3, linked_list.tail.data)
+
+        # Verify the next node
+        self.assertIsNone(linked_list.tail.next)
+        self.assertIs(head, linked_list.head)
+        self.assertIs(tail, linked_list.head.next)
 
     def items_in(self, linked_list: LinkedList = None) -> list[Optional[Any]]:
         if linked_list is None:

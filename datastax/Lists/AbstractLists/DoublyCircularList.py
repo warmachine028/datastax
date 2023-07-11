@@ -1,19 +1,11 @@
-from __future__ import annotations
+from abc import ABC
 
-from typing import Any, Optional
-
-from datastax.linkedlists.private_lists.circular_linked_list import (
-    CircularLinkedList
-)
-from datastax.linkedlists.private_lists.doubly_linked_list import (
-    DoublyLinkedList,
-    _mangled
-)
+from datastax.Lists.AbstractLists.CircularLinkedList import CircularLinkedList
+from datastax.Lists.AbstractLists.DoublyLinkedList import DoublyLinkedList
+from datastax.Lists.Utils import Commons
 
 
-class DoublyCircularList(DoublyLinkedList, CircularLinkedList):
-    def _construct(self, array: Optional[list[Any]]) -> DoublyCircularList:
-        raise NotImplementedError
+class DoublyCircularList(DoublyLinkedList, CircularLinkedList, ABC):
 
     def __str__(self):
         if not self.head:
@@ -29,7 +21,7 @@ class DoublyCircularList(DoublyLinkedList, CircularLinkedList):
             top += f" ┌────╥{'─' * max_width}╥────┐  "
             mid += (
                 f"---->  ║"
-                f"{f'{_mangled(ref.data)}'.center(max_width)}"
+                f"{f'{Commons.repr(ref.data)}'.center(max_width)}"
                 f"║  <---"
             )
             dow += f" └────╨{'─' * max_width}╨────┘  "

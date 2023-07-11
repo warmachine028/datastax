@@ -4,7 +4,7 @@ from __future__ import annotations
 from itertools import chain
 from typing import Optional, Any
 
-from datastax.linkedlists import Queue
+from datastax.Lists import Queue
 from datastax.trees import (
     BinaryTree,
     AVLTree,

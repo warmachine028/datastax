@@ -1,7 +1,7 @@
 import unittest
 from typing import Optional, Any
 
-from datastax.linkedlists import DoublyCircularList, DoublyNode
+from datastax.Lists import DoublyCircularList, DoublyNode
 
 
 class TestDoublyCircularList(unittest.TestCase):
@@ -31,16 +31,16 @@ class TestDoublyCircularList(unittest.TestCase):
         previous_tail = existing_linked_list.tail.prev
         ll = DoublyCircularList([*range(10, 20)], existing_linked_list.tail)
         # **MUST MANUALLY SET tail.next and head prev**
-        ll.tail.next = existing_linked_list.head
-        ll.head.prev = previous_tail
+        ll.tail.set_next(existing_linked_list.head)
+        ll.head.set_prev(previous_tail)
         # might be able to construct
         self.assertEqual([*range(20)], self.items_in(existing_linked_list))
         # but the tail of existing_linked_list will remain same
         self.assertNotEqual(existing_linked_list.tail, ll.tail)
 
         # the tail must be manually updated
-        existing_linked_list.head.prev = ll.tail
-        existing_linked_list._tail = ll.tail
+        existing_linked_list.head.set_prev(ll.tail)
+        existing_linked_list.set_tail(ll.tail)
         self.assertEqual(existing_linked_list.tail, ll.tail)
         self.assertEqual([*range(20)][::-1], self.items_from_tail(
             existing_linked_list))

@@ -13,7 +13,7 @@ LRU -> Least Recently used
 """
 from typing import Any
 
-from datastax.linkedlists import DoublyLinkedList, DoublyNode
+from datastax.Lists import DoublyLinkedList, DoublyNode
 
 
 class LRUCache(DoublyLinkedList):
@@ -23,8 +23,8 @@ class LRUCache(DoublyLinkedList):
         self._cache: dict[int, DoublyNode] = {}
         self._head = DoublyNode('HEAD')
         self._tail = DoublyNode('TAIL')
-        self.tail.prev = self.head
-        self.head.next = self.tail
+        self.tail.set_prev(self.head)
+        self.head.set_next(self.tail)
 
     def get(self, key: int) -> int:
         if key not in self._cache:
@@ -45,19 +45,19 @@ class LRUCache(DoublyLinkedList):
 
     def _enqueue(self, node: DoublyNode) -> None:
         if node.prev:
-            node.prev.next = node.next
+            node.prev.set_next(node.next)
         if node.next:
-            node.next.prev = node.prev
-        node.prev = self.tail.prev
-        node.next = self.tail
-        self.tail.prev.next = node
-        self.tail.prev = node
+            node.next.set_prev(node.prev)
+        node.set_prev(self.tail.prev)
+        node.set_next(self.tail)
+        self.tail.prev.set_next(node)
+        self.tail.set_prev(node)
         self._cache[node.data[0]] = node
 
     def _dequeue(self) -> None:
         node = self.head.next
-        self.head.next = node.next
-        node.next.prev = node.prev
+        self.head.set_next(node.next)
+        node.next.set_prev(node.prev)
         self._cache.pop(node.data[0])
 
     def append(self, data) -> None:

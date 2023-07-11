@@ -1,6 +1,6 @@
 from typing import Any
 
-from datastax.linkedlists import Queue
+from datastax.Lists import Queue
 
 
 def level_wise_items(tree) -> list:

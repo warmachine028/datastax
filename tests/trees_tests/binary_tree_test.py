@@ -163,7 +163,7 @@ class TestBinaryTree(unittest.TestCase):
             self.bt.insert_path(i, paths[i - 1])
         self.assertEqual([1, 2, 3, 5, 4], level_wise_items(self.bt))
 
-        # Unsuccessful insertion Must require path for non root nodes
+        # Unsuccessful insertion Must require path for non-root nodes
         with self.assertRaises(PathNotGivenError):
             self.bt.insert_path(10, None)
 
