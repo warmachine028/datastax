@@ -77,9 +77,7 @@
 
 ## Requirements
 
-- Runs on latest Python 3.7+
-- (Although the module may run without errors on Python 3.7, it has been thoroughly tested and verified for
-  compatibility with Python 3.9 and higher.)
+- Runs on latest Python 3.11+
 - (Suggesting you to always update to the latest python version)
 
 ## Installation
