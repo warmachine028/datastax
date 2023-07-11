@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Optional, Union, Any
 
-from datastax.arrays import Stack
+from datastax.Arrays import Stack
 from datastax.errors import (
     UnmatchedBracketPairError, InvalidExpressionError,
     UnderFlowError, OverFlowError

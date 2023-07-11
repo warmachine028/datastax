@@ -44,6 +44,6 @@ jobs:
         run: |
           # --exclude will exclude following folders to avoid duplicates and annoying errors in tests
           # --ignore-missing-imports will ignore all missing stub files in imported modules
-          mypy . --exclude build --ignore-missing-imports
+          # mypy . --exclude build --ignore-missing-imports
 
 

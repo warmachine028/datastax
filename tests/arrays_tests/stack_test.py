@@ -1,9 +1,9 @@
 import unittest
 from typing import Optional, Any
 
-from datastax.arrays import Stack
+from datastax.Arrays import Stack
 from datastax.errors import UnderFlowError, OverFlowError
-from datastax.linkedlists import LinkedList
+from datastax.Lists import LinkedList
 
 
 class TestStack(unittest.TestCase):

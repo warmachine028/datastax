@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Optional, Union
 
-from datastax.arrays import PriorityQueue
+from datastax.Arrays import PriorityQueue
 from datastax.trees.private_trees import huffman_tree
 from datastax.trees.private_trees.huffman_tree import HuffmanNode
 
@@ -83,7 +83,7 @@ class HuffmanTree(huffman_tree.HuffmanTree):
 
     def size_calculator(self) -> Optional[tuple[int, int]]:
         """
-        Calculates the actual encoding size and total 
+        Calculates the actual encoding size and total
         huffman encoding size with table included
         """
         if not self.root or not self.huffman_table:

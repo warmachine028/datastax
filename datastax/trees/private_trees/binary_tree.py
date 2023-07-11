@@ -4,7 +4,7 @@ from __future__ import annotations
 import math
 from typing import Any, Optional
 
-from datastax.linkedlists import Queue
+from datastax.Lists import Queue
 
 
 def _node_builder(data: Optional[str], piece_width: int) -> str:

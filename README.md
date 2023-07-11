@@ -1,30 +1,41 @@
-    updated: Sunday, 9th July 2023
+    updated: Sunday, 11th July 2023
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
-    <img width=200 src="https://github.com/warmachine028/datastax/assets/75939390/2c1ad8f7-b1ed-44aa-9923-307af5a52cfc" alt="datastax"></a>
-    <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic"> Simplicity meets intelligence</p>
-    <a href="https://pypi.org/project/datastax" ><img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet"></a>
+        <img width=200 src="https://github.com/warmachine028/datastax/assets/75939390/2c1ad8f7-b1ed-44aa-9923-307af5a52cfc" alt="datastax">
+    </a>
+    <p style="font-family: roboto, calibri; font-size:12pt; font-style:italic">Simplicity meets intelligence</p>
+    <a href="https://pypi.org/project/datastax">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/datastax?color=blueviolet">
+    </a>
     <a href="https://pypi.org/project/datastax/#files"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/datastax.svg?label=Pypi%20downloads"></a>
     <br>
-    <a href="https://github.com/warmachine028/datastax/releases/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen"></a>
-    <a href="https://github.com/warmachine028/datastax/releases/tag/"> <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> </a>
+    <a href="https://github.com/warmachine028/datastax/releases/"> 
+        <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=brightgreen">
+    </a>
+    <a href="https://github.com/warmachine028/datastax/releases/tag/"> 
+        <img src="https://img.shields.io/github/v/release/warmachine028/datastax?color=lightgreen&include_prereleases&label=pre%20release"> 
+    </a>
     <br>
     <img src="https://img.shields.io/github/stars/warmachine028/datastax">
-    <a href= "https://github.com/warmachine028/datastax/blob/main/LICENSE"><img src="https://img.shields.io/github/license/warmachine028/datastax?color=orange"></a>
-    <a href="https://github.com/warmachine028/datastax/network/members"><img src="https://img.shields.io/github/forks/warmachine028/datastax?color=cyan"></a>
+    <a href= "https://github.com/warmachine028/datastax/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/warmachine028/datastax?color=orange">
+    </a>
+    <a href="https://github.com/warmachine028/datastax/network/members">
+        <img src="https://img.shields.io/github/forks/warmachine028/datastax?color=cyan">
+    </a>
     <br>
 </div>
-
 
 # [dataStax](https://github.com/warmachine028/datastax)
 
 ## What's New?
 
-- Added Mandatory Keyword arguments to avoid confusion in:
-  - Arrays 
-  - ThreadedBinaryTree 
-- Added High Quality PNGs in README.md
+- Refactored linkedlists -> Lists
+- Refactored arrays -> Arrays
+- Refactored private_lists -> AbstractLists
+- Refactored AbstractLists by converting all items to AbstractClass to prevent direct initialization.
+- Module Conventions converted to uppercase CamelCase from lowercase snake_case
 
 ## Table of Contents
 
@@ -38,38 +49,38 @@
 
 ## Introduction
 
-- This is a very simple yet powerful project to implement day to day abstract data structures
-- A pure implementation of Python in representing Tree, Linkedlist and Array based datastructures in basic command
-  prompt
-- It helps visualize each data structure for better understanding
-- Students can be beneficial in using this Package
-- This project is still under construction
+- This library offers a simple yet powerful solution for implementing common abstract data structures.
+- With a pure Python implementation, it provides representations of tree, linked list, and array-based data structures
+  accessible through a basic command prompt interface.
+- The package includes visualization features that enhance the understanding of each data structure.
+- Students can greatly benefit from utilizing this package for their learning and educational purposes.
+- Please note that this project is currently a work in progress and undergoing active development.
 
 ## Problem Statement
 
-- Often at the beginning of B.Tech Course, CS students face a lot of problems understanding the internal architecture of
-  complex ADTs.
-- While solving coding challenges locally where test cases have to be written using these ADTs, it becomes really
-  cumbersome to write these data structures from scratch.
-- Also, when writing programs which implements these ADS, we encounter lots of errors just because we are unable to
-  preview what's actually going on under the hood.
+- Many CS students encounter difficulties in comprehending the intricate internal architecture of complex
+  Abstract Data Types (ADTs) during the initial stages of their B.Tech course.
+- When attempting to solve coding challenges that involve writing test cases using these ADTs, it becomes excessively
+  burdensome to manually create these data structures from scratch.
+- Furthermore, while developing programs that implement these ADTs, numerous errors are encountered due to the
+  inability to visualize and understand the underlying processes of these data structures.
 
 ## Benefits
 
-- Instant installation
-- Quick Updates
-- Very small size
-- No extra modules required
-- Written purely from scratch
-- Easy Documentation [Upcoming]
-- Command Line Demo
+- Swift installation process
+- Efficient and prompt updates
+- Minimal disk space usage due to its small size
+- No additional modules or dependencies needed
+- Developed entirely from scratch
+- Upcoming user-friendly documentation
+- Command line demonstration for easy usage
 
 ## Requirements
 
 - Runs on latest Python 3.7+
-- (WARNING: Though the module might run on py 3.7 error free, but it has been tested for 3.9+)
+- (Although the module may run without errors on Python 3.7, it has been thoroughly tested and verified for
+  compatibility with Python 3.9 and higher.)
 - (Suggesting you to always update to the latest python version)
-- This Library requires no extra modules
 
 ## Installation
 
@@ -193,3 +204,4 @@ pip install datastax
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
 - Test Cases for Fibonacci Tree
+- Refactoring Arrays SubPackage

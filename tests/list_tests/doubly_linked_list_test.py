@@ -2,7 +2,8 @@ import random
 import unittest
 from typing import Optional, Any
 
-from datastax.linkedlists import DoublyLinkedList
+from datastax.Lists.DoublyLinkedList import DoublyLinkedList
+from datastax.Lists.DoublyNode import DoublyNode
 
 
 class TestDoublyLinkedList(unittest.TestCase):
@@ -60,13 +61,13 @@ class TestDoublyLinkedList(unittest.TestCase):
             [[1, 2, 3, 4, 5, 6], 1, 6],
             [[*range(10)], 0, 9],
             [[], None, None],
-            [[], None, None],
-            [[], None, None],
+            [[None], None, None],
+            [[None, 1, 2, 3, 4, 5], None, 5],
             [[], None, None]
         ]
-        for item, result in zip(items, results):
-            dll = DoublyLinkedList(item)
-            # checking linkedlist items
+        for test_case, result in zip(items, results):
+            dll = DoublyLinkedList(test_case)
+            # checking doublyLinkedList items
             self.assertEqual(result[0], self.items_in(dll))
             # checking items from the end
             self.assertEqual(result[0][::-1], self.items_from_tail(dll))
@@ -155,6 +156,72 @@ class TestDoublyLinkedList(unittest.TestCase):
             list_ = DoublyLinkedList(testcase)
             self.assertEqual(result, list_.__str__())
 
+    def test_construction_with_tail(self):
+        items = [
+            # <- Using general list of ints with DoublyNode tail
+            ([1, 2, 3, 4, 5], DoublyNode(6)),
+            # <- Using range object unpacking in list with DoublyNode tail
+            ([*range(10)], DoublyNode(9)),
+            # <- Using Empty list with None tail
+            ([], None),
+            # <- Using only None item passed through list with DoublyNode tail
+            ([None], DoublyNode(None)),
+            # <- Using First item as None with DoublyNode tail
+            ([None, 1, 2, 3, 4], DoublyNode(5)),
+            (None, None),  # <- Using None passed directly with None tail
+        ]
+        results = [
+            [[6, 1, 2, 3, 4, 5], 6, 5],
+            [[9, *range(10)], 9, 9],
+            [[], None, None],
+            [[None, None], None, None],
+            [[5, None, 1, 2, 3, 4], 5, 4],
+            [[], None, None]
+        ]
+        for test_case, result in zip(items, results):
+            dll = DoublyLinkedList(test_case[0], tail=test_case[1])
+            # checking linked list items
+            self.assertEqual(result[0], self.items_in(dll))
+            # checking items from the end
+            self.assertEqual(result[0][::-1], self.items_from_tail(dll))
+            # checking head
+            self.assertEqual(result[1], dll.head.data if dll.head else None)
+            # checking tail
+            self.assertEqual(result[2], dll.tail.data if dll.tail else None)
+
+    def test_construction_with_both(self):
+        items = [
+            # <- Using general list of ints with DoublyNode tail
+            ([1, 2, 3, 4, 5], DoublyNode(6), DoublyNode(7)),
+            ([*range(10)], DoublyNode(9),
+             # <- Using range object unpacking in list with DoublyNode tail
+             DoublyNode(19)),
+            ([], None, DoublyNode(10)),  # <- Using Empty list with None tail
+            # <- Using only None item passed through list with DoublyNode tail
+            ([None], DoublyNode(None), DoublyNode(0)),
+            # <- Using First item as None with DoublyNode tail
+            ([None, 1, 2, 3, 4], DoublyNode(5), DoublyNode(10)),
+            (None, None, None),  # <- Using None passed directly with None tail
+        ]
+        results = [
+            [[6, 7, 1, 2, 3, 4, 5], 6, 5],
+            [[9, 19, *range(10)], 9, 9],
+            [[10], 10, 10],
+            [[None, 0, None], None, None],
+            [[5, 10, None, 1, 2, 3, 4], 5, 4],
+            [[], None, None]
+        ]
+        for test_case, result in zip(items, results):
+            dll = DoublyLinkedList(*test_case)
+            # checking linked list items
+            self.assertEqual(result[0], self.items_in(dll))
+            # checking items from the end
+            self.assertEqual(result[0][::-1], self.items_from_tail(dll))
+            # checking head
+            self.assertEqual(result[1], dll.head.data if dll.head else None)
+            # checking tail
+            self.assertEqual(result[2], dll.tail.data if dll.tail else None)
+
     def items_in(self, d_linked_list: DoublyLinkedList = None
                  ) -> list[Optional[Any]]:
         if d_linked_list is None:
@@ -166,7 +233,7 @@ class TestDoublyLinkedList(unittest.TestCase):
             head = head.next
         return result
 
-    def items_from_tail(self, d_linked_list: DoublyLinkedList = None
+    def items_from_tail(self, d_linked_list: Optional[DoublyLinkedList] = None
                         ) -> list[Optional[Any]]:
         if d_linked_list is None:
             d_linked_list = self.d_linkedList

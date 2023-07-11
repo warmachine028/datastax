@@ -2,7 +2,7 @@ import random
 import unittest
 from typing import Optional, Any
 
-from datastax.arrays import PriorityQueue
+from datastax.Arrays import PriorityQueue
 from datastax.errors import UnderFlowError, OverFlowError
 
 

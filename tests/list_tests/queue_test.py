@@ -1,8 +1,8 @@
+import sys
 import unittest
 from typing import Optional, Any
-
 from datastax.errors import UnderFlowError, OverFlowError
-from datastax.linkedlists import Queue, LinkedList
+from datastax.Lists import Queue, LinkedList
 
 
 class TestQueue(unittest.TestCase):
@@ -48,7 +48,7 @@ class TestQueue(unittest.TestCase):
         queue.dequeue()  # Performing Dequeue Operation
         self.assertEqual([2, 3, 10, 20], self.items_in(queue))
         queue = Queue(None, [None, 1, 2])  # With first array element as None
-        self.assertEqual([], self.items_in(queue))
+        self.assertEqual([None, 1, 2], self.items_in(queue))
         queue = Queue(None, None)  # With both arguments as None
         self.assertEqual([], self.items_in(queue))
 
@@ -75,6 +75,16 @@ class TestQueue(unittest.TestCase):
         self.unlimitedQueue.enqueue(50)  # unlimited Queue, can't be full
         self.assertEqual([30, 40, 50], self.items_in(self.unlimitedQueue))
 
+    def test_queue_insertion_deletion(self):
+        queue = self.unlimitedQueue
+        self.assertEqual([], self.items_in(self.unlimitedQueue))
+        queue.enqueue(10)
+        self.assertEqual([10], self.items_in(self.unlimitedQueue))
+        queue.dequeue()
+        self.assertEqual([], self.items_in(self.unlimitedQueue))
+        queue.enqueue(20)
+        self.assertEqual([20], self.items_in(self.unlimitedQueue))
+
     def test_enqueueing_heterogeneous_items(self):
         # inserting miscellaneous items
         items = [
@@ -95,6 +105,43 @@ class TestQueue(unittest.TestCase):
             self.unlimitedQueue.enqueue(item)
 
         self.assertEqual(items, self.items_in(self.unlimitedQueue))
+
+    def test_set_capacity(self):
+        # Test case: Capacity 10
+        # Test case: Valid capacity
+        try:
+            queue = Queue(10)
+            self.assertEqual(queue.capacity, 10)
+        except Exception as e:
+            self.fail(f"An unexpected error occurred: {e}")
+        # Test case: Capacity 0
+        # Test case: Useless capacity
+        try:
+            queue = Queue(0)
+            self.assertEqual(queue.capacity, 0)
+        except Exception as e:
+            self.fail(f"An unexpected error occurred: {e}")
+        # Test case: Negative capacity
+        with self.assertRaises(ValueError):
+            Queue(-1)
+
+        # Test case: Float capacity
+        with self.assertRaises(TypeError):
+            Queue(4.5)
+
+        # Test case: None capacity
+        try:
+            queue = Queue(None)
+            self.assertEqual(queue.capacity, sys.maxsize)
+        except Exception as e:
+            self.fail(f"An unexpected error occurred: {e}")
+
+        # Test case: No capacity argument
+        try:
+            queue = Queue(None)
+            self.assertEqual(queue.capacity, sys.maxsize)
+        except Exception as e:
+            self.fail(f"An unexpected error occurred: {e}")
 
     @staticmethod
     def items_in(queue: Queue) -> list[Optional[Any]]:

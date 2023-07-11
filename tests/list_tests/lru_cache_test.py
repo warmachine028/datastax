@@ -1,7 +1,7 @@
 import unittest
 from typing import Optional, Callable
 
-from datastax.linkedlists import LRUCache
+from datastax.Lists import LRUCache
 
 
 class TestLRUCache(unittest.TestCase):
