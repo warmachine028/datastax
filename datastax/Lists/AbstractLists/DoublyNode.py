@@ -2,7 +2,7 @@ from abc import ABC
 from typing import Optional, Self
 
 from datastax.Lists.AbstractLists.Node import Node
-from datastax.Lists.Utils import Commons
+from datastax.Utils import Commons
 
 
 class DoublyNode(Node, ABC):

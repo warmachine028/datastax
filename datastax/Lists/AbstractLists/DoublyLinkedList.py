@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Optional
 from datastax.Lists.AbstractLists.LinkedList import LinkedList
-from datastax.Lists.Utils import Commons
+from datastax.Utils import Commons
 from datastax.Lists.AbstractLists.DoublyNode import DoublyNode
 
 

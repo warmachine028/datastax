@@ -1,6 +1,6 @@
 from typing import Any, Optional, Self
 from datastax.Lists.AbstractLists.Node import Node
-from datastax.Lists.Utils import Commons
+from datastax.Utils import Commons
 from abc import abstractmethod, ABC as AbstractClass
 
 
@@ -26,7 +26,7 @@ class LinkedList(AbstractClass):
     def __str__(self):
         start_padding = 1
         top = mid = dow = " " * start_padding
-        ref = self._head
+        ref = self.head
         max_width = self._max_width(ref) + 4
         nodes = 0
         while ref:

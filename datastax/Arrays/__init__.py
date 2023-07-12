@@ -1,6 +1,6 @@
 from .priority_queue import PriorityQueue
-from .queue import Queue
-from .stack import Stack
+from .Queue import Queue
+from .Stack import Stack
 
 __all__ = [
     'Queue',

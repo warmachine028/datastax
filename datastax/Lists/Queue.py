@@ -1,7 +1,7 @@
 # Queue implementation using LinkedList
 
 from sys import maxsize
-from typing import Any
+from typing import Any, Optional
 from datastax.Lists import Node
 from datastax.errors import OverFlowError, UnderFlowError
 from datastax.Lists import LinkedList
@@ -55,13 +55,7 @@ class Queue(AbstractQueue, LinkedList):
         self._rear -= 1
         return deleted_item
 
-    def peek(self) -> str:
+    def peek(self) -> str | Optional[Any]:
         if self.is_empty():
             return "QUEUE EMPTY"
-        return str(self._tail.data if self._tail else None)
-
-    def append(self, data: Any) -> None:
-        raise NotImplementedError
-
-    def insert(self, data: Any) -> None:
-        raise NotImplementedError
+        return self._tail.data if self._tail else None

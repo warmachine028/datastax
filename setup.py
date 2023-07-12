@@ -45,7 +45,6 @@ except Exception as error:
         '   j. Splay Tree\n\n'
     )
     sys.stderr.write(f"Warning: Could not open README.md due {error}\n")
-
 setup(
     name='datastax',
     maintainer="Pritam Kundu",
@@ -93,15 +92,16 @@ setup(
     test_suite='pytest',
     version=datastax.__version__,
     python_requires='>=3.11',
-    zip_safe=False,
     packages=[
         'datastax',
+        'datastax/Utils',
         'datastax/Arrays',
+        'datastax/Arrays/AbstractArrays',
         'datastax/Lists',
-        'datastax/Lists/Utils',
         'datastax/Lists/AbstractLists',
         'datastax/trees',
         'datastax/trees/private_trees',
     ],
-    author_email='pritamkundu771@gmail.com'
+    author_email='pritamkundu771@gmail.com',
 )
+

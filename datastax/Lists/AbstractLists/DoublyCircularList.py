@@ -2,7 +2,7 @@ from abc import ABC
 
 from datastax.Lists.AbstractLists.CircularLinkedList import CircularLinkedList
 from datastax.Lists.AbstractLists.DoublyLinkedList import DoublyLinkedList
-from datastax.Lists.Utils import Commons
+from datastax.Utils import Commons
 
 
 class DoublyCircularList(DoublyLinkedList, CircularLinkedList, ABC):
