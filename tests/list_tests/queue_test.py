@@ -13,8 +13,10 @@ class TestQueue(unittest.TestCase):
 
     def test_append_and_insert(self):
         item = 10
-        self.assertRaises(NotImplementedError, lambda: self.limitedQueue.append(item))
-        self.assertRaises(NotImplementedError, lambda: self.limitedQueue.insert(item))
+        self.assertRaises(
+            NotImplementedError, lambda: self.limitedQueue.append(item))
+        self.assertRaises(
+            NotImplementedError, lambda: self.limitedQueue.insert(item))
 
     def test_complete_fill_complete_empty(self):
         # Completely Filled

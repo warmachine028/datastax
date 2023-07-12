@@ -1,12 +1,16 @@
 from abc import ABC as AbstractClass, abstractmethod
-from datastax.Utils import Commons
-from datastax.Arrays.AbstractArrays import Array
 from typing import Any
+from datastax.Utils import Commons
+from datastax.Arrays.AbstractArrays.Array import Array
 
 
 class Stack(Array, AbstractClass):
     def append(self, data: Any) -> None:
         raise NotImplementedError
+
+    @property
+    def array(self) -> list[Any]:
+        return self._array
 
     def insert(self, data: Any) -> None:
         raise NotImplementedError

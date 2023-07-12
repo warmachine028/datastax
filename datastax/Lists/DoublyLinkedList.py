@@ -1,6 +1,7 @@
 from typing import Any, Optional, Iterable, Self
 
-from datastax.Lists import DoublyNode, LinkedList
+from datastax.Lists.DoublyNode import DoublyNode
+from datastax.Lists.LinkedList import LinkedList
 from datastax.Lists.AbstractLists import DoublyLinkedList as AbstractList
 
 
@@ -13,16 +14,16 @@ class DoublyLinkedList(AbstractList, LinkedList):
             tail.set_prev(head)
         super().__init__(items, head, tail)
 
-    def _construct(self, array: Optional[list[Any]]) -> Self:
+    def _construct(self, array: Iterable[Any]) -> Self:
         return super()._construct(array)
 
-    def set_head(self, head: Optional[DoublyNode] = None):
+    def set_head(self, head):
         if head is not None and not isinstance(head, DoublyNode):
             raise TypeError("The 'head' parameter must be an "
                             "instance of DoublyNode or its subclass.")
         super().set_head(head)
 
-    def set_tail(self, tail: Optional[DoublyNode] = None):
+    def set_tail(self, tail):
         if tail is not None and not isinstance(tail, DoublyNode):
             raise TypeError("The 'tail' parameter must be an "
                             "instance of DoublyNode or its subclass.")

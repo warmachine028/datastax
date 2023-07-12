@@ -1,21 +1,25 @@
 # Queue implementation using LinkedList
 
 from sys import maxsize
-from typing import Any, Optional
-from datastax.Lists import Node
+from typing import Any, Optional, Sequence, Self
+from datastax.Lists.Node import Node
 from datastax.errors import OverFlowError, UnderFlowError
-from datastax.Lists import LinkedList
+from datastax.Lists.LinkedList import LinkedList
 from datastax.Lists.AbstractLists import Queue as AbstractQueue
 
 
 class Queue(AbstractQueue, LinkedList):
-    def __init__(self, capacity: int = None, items: list[Any] = None):
+    def __init__(self, capacity: Optional[int] = None,
+                 items: Optional[list] = None):
         super().__init__()
         self._rear = 0
         self.set_capacity(capacity)
-        if items:
-            for item in items[:self.capacity]:
-                self.enqueue(item)
+        self._build(items if items else [])
+
+    def _build(self, items: Sequence[Any]) -> Self:
+        for item in items[:self.capacity]:
+            self.enqueue(item)
+        return self
 
     def is_empty(self) -> bool:
         return self.head is None
@@ -23,7 +27,7 @@ class Queue(AbstractQueue, LinkedList):
     def is_full(self) -> bool:
         return self._rear == self.capacity
 
-    def set_capacity(self, capacity: int):
+    def set_capacity(self, capacity: int | None):
         if capacity is None:
             self._capacity = maxsize
             return

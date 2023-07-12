@@ -1,13 +1,15 @@
 # Priority Queue implementation using Lists (Pseudo Arrays)
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 from datastax.Arrays.Queue import Queue
 from datastax.errors import OverFlowError, UnderFlowError
 
 
 class PriorityQueue(Queue):
-    def __init__(self, *, capacity: int = None,
-                 custom_comparator: Callable = None):
+    comparator: Callable
+
+    def __init__(self, *, capacity: Optional[int] = None,
+                 custom_comparator: Optional[Callable] = None):
         super().__init__(capacity=capacity)
         self.comparator = custom_comparator or max
 

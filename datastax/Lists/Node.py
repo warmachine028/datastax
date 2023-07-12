@@ -4,7 +4,7 @@ from datastax.Lists.AbstractLists import Node as AbstractNode
 
 
 class Node(AbstractNode):
-    def __init__(self, data: Optional[Any] = None,
+    def __init__(self, data: Any,
                  _next: Optional[Self] = None):
         self.data = data
         self.set_next(_next)

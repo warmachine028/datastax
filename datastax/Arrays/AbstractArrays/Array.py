@@ -1,21 +1,21 @@
-from abc import ABC, abstractmethod
+from abc import ABC as AbstractClass, abstractmethod
 from sys import maxsize
 from typing import Any
 
 
-class Array:
+class Array(AbstractClass):
     _capacity = 0
-    _array = []
+    _array: list[Any] = []
 
     @property
-    def capacity(self):
+    def capacity(self) -> int:
         return self._capacity
 
     @property
     def array(self) -> list[Any]:
         return self._array
 
-    def set_capacity(self, capacity: int):
+    def set_capacity(self, capacity: int | None) -> None:
         if capacity is None:
             self._capacity = maxsize
             return

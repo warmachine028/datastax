@@ -1,4 +1,4 @@
-from typing import Any, Optional, Self
+from typing import Any, Optional, Self, Iterable
 from datastax.Lists.AbstractLists.Node import Node
 from datastax.Utils import Commons
 from abc import abstractmethod, ABC as AbstractClass
@@ -67,5 +67,5 @@ class LinkedList(AbstractClass):
         ...
 
     @abstractmethod
-    def _construct(self, array: Optional[list[Any]]) -> Self:
+    def _construct(self, array: Iterable[Any]) -> Self:
         ...

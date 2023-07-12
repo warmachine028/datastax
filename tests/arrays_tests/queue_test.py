@@ -26,6 +26,15 @@ class TestQueue(unittest.TestCase):
         self.limitedQueue.dequeue()
         self.assertEqual([], self.items_in(self.limitedQueue))
 
+    def test_append_and_insert(self):
+        item = 10
+        self.assertRaises(NotImplementedError,
+                          lambda: self.limitedQueue.append(item))
+        self.assertRaises(NotImplementedError,
+                          lambda: self.limitedQueue.insert(item))
+        self.assertRaises(NotImplementedError,
+                          lambda: self.limitedQueue.pop())
+
     def test_construction(self):
         queue = Queue(capacity=5)  # With capacity more than Array size
         list(map(lambda item: queue.enqueue(item), [1, 2, 3]))
@@ -139,6 +148,28 @@ class TestQueue(unittest.TestCase):
             operation, items = item if item[0] == 'enqueue' else (item, 0)
             operate[operation](items)
             self.assertEqual(result, queue.__str__())
+
+    def test_peek_with_limited_queue(self):
+        queue = self.limitedQueue
+        queue.enqueue(10)
+        self.assertEqual(10, queue.peek())
+        queue.enqueue(20)
+        self.assertEqual(10, queue.peek())
+        self.assertEqual(10, queue.dequeue())
+        self.assertEqual(20, queue.peek())
+        self.assertEqual(20, queue.dequeue())
+        self.assertEqual("QUEUE EMPTY", queue.peek())
+
+    def test_peek_with_unlimited_queue(self):
+        queue = self.unlimitedQueue
+        queue.enqueue(10)
+        self.assertEqual(10, queue.peek())
+        queue.enqueue(20)
+        self.assertEqual(10, queue.peek())
+        self.assertEqual(10, queue.dequeue())
+        self.assertEqual(20, queue.peek())
+        self.assertEqual(20, queue.dequeue())
+        self.assertEqual("QUEUE EMPTY", queue.peek())
 
     @staticmethod
     def items_in(queue: Queue) -> list[Optional[Any]]:
