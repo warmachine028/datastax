@@ -1,4 +1,4 @@
-    updated: Sunday, 11th July 2023
+    updated: Wednesday, 12th July 2023
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -31,11 +31,10 @@
 
 ## What's New?
 
-- Refactored linkedlists -> Lists
-- Refactored arrays -> Arrays
-- Refactored private_lists -> AbstractLists
-- Refactored AbstractLists by converting all items to AbstractClass to prevent direct initialization.
-- Module Conventions converted to uppercase CamelCase from lowercase snake_case
+- Refactored Array Contents
+- Added AbstractArray SubModule to abstract print logic
+- Added more test cases for Queues
+- Type Checked Arrays and Lists with mypy
 
 ## Table of Contents
 
@@ -202,4 +201,3 @@ pip install datastax
 - Better TestCases for Huffman Tree
 - Better TestCases for Segment Trees
 - Test Cases for Fibonacci Tree
-- Refactoring Arrays SubPackage

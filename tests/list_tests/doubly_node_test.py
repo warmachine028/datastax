@@ -12,7 +12,7 @@ class TestDoublyNode(unittest.TestCase):
             [{1, 2, 3}, 1],
             0,
             'A',
-            DoublyNode(),
+            DoublyNode(10),
             DoublyNode(10, prev=DoublyNode(100)),
             DoublyNode(10, DoublyNode(100)),
             DoublyNode(10, DoublyNode(100), DoublyNode(1000))

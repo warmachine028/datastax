@@ -1,16 +1,11 @@
-from typing import Any, Optional, Self
+from typing import Any
 
-from datastax.Lists import DoublyLinkedList
+from datastax.Lists.DoublyLinkedList import DoublyLinkedList
+from datastax.Lists.CircularLinkedList import CircularLinkedList
 from datastax.Lists.AbstractLists import DoublyCircularList as AbstractList
 
 
-class DoublyCircularList(AbstractList, DoublyLinkedList):
-
-    def _construct(self, array: Optional[list[Any]]) -> Self:
-        if array and array[0] is not None:
-            for item in array:
-                self.append(item)
-        return self
+class DoublyCircularList(AbstractList, CircularLinkedList, DoublyLinkedList):
 
     def append(self, data: Any) -> None:
         super().append(data)

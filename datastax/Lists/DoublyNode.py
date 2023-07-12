@@ -1,11 +1,11 @@
 from typing import Any, Self, Optional
 
-from datastax.Lists import Node
+from datastax.Lists.Node import Node
 from datastax.Lists.AbstractLists import DoublyNode as AbstractNode
 
 
 class DoublyNode(AbstractNode, Node):
-    def __init__(self, data: Optional[Any] = None,
+    def __init__(self, data: Any,
                  _next: Optional[Self] = None,
                  prev: Optional[Self] = None):
         super().__init__(data)

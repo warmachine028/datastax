@@ -159,6 +159,22 @@ class TestStack(unittest.TestCase):
             operate[operation](items)
             self.assertEqual(result, stack.__str__())
 
+    def test_peek_with_limited_stack(self):
+        self.perform_operations(self.limitedStack)
+
+    def test_peek_with_unlimited_stack(self):
+        self.perform_operations(self.unlimitedStack)
+
+    def perform_operations(self, stack: Stack):
+        stack.push(10)
+        self.assertEqual(10, stack.peek())
+        stack.push(20)
+        self.assertEqual(20, stack.peek())
+        self.assertEqual(20, stack.pop())
+        self.assertEqual(10, stack.peek())
+        self.assertEqual(10, stack.pop())
+        self.assertEqual("STACK EMPTY", stack.peek())
+
     @staticmethod
     def items_in(stack: Stack) -> list[Optional[Any]]:
         return stack.array

@@ -13,7 +13,8 @@ LRU -> Least Recently used
 """
 from typing import Any
 
-from datastax.Lists import DoublyLinkedList, DoublyNode
+from datastax.Lists.DoublyLinkedList import DoublyLinkedList
+from datastax.Lists.DoublyNode import DoublyNode
 
 
 class LRUCache(DoublyLinkedList):
@@ -26,24 +27,25 @@ class LRUCache(DoublyLinkedList):
         self.tail.set_prev(self.head)
         self.head.set_next(self.tail)
 
-    def get(self, key: int) -> int:
+    def get(self, key: int) -> int | None:
         if key not in self._cache:
             return -1
         node = self._cache[key]
         self._enqueue(node)
-        return node.data[1]
+        return node.data[1] if node.data else None
 
-    def put(self, key: int, value: int) -> None:
+    def put(self, key: int, value: int):
         if key not in self._cache:
             node = DoublyNode([key, value])
             if len(self._cache) == self._capacity:
                 self._dequeue()
         else:
             node = self._cache[key]
-            node.data[1] = value
+            if node.data:
+                node.data[1] = value
         self._enqueue(node)
 
-    def _enqueue(self, node: DoublyNode) -> None:
+    def _enqueue(self, node: DoublyNode):
         if node.prev:
             node.prev.set_next(node.next)
         if node.next:
@@ -52,7 +54,8 @@ class LRUCache(DoublyLinkedList):
         node.set_next(self.tail)
         self.tail.prev.set_next(node)
         self.tail.set_prev(node)
-        self._cache[node.data[0]] = node
+        if node.data:
+            self._cache[node.data[0]] = node
 
     def _dequeue(self) -> None:
         node = self.head.next

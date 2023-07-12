@@ -11,7 +11,7 @@ class TestNode(unittest.TestCase):
             [{1, 2, 3}, 1],
             0,
             'A',
-            Node()
+            Node(10)
         ]
 
     def test_string_with_none(self):

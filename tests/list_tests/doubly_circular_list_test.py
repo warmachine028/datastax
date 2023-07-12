@@ -74,9 +74,9 @@ class TestDoublyCircularList(unittest.TestCase):
             [[1, 2, 3, 4, 5, 6], 1, 6],
             [[*range(10)], 0, 9],
             [[], None, None],
+            [[None], None, None],
+            [[None, 1, 2, 3, 4, 5], None, 5],
             [[], None, None],
-            [[], None, None],
-            [[], None, None]
         ]
         for item, result in zip(items, results):
             ll = DoublyCircularList(item)

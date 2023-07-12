@@ -12,9 +12,11 @@ class TestQueue(unittest.TestCase):
         self.unlimitedQueue = Queue()  # With dynamic Queue
 
     def test_append_and_insert(self):
-        with self.assertRaises(NotImplementedError):
-            self.limitedQueue.append(10)
-            self.limitedQueue.insert(30)
+        item = 10
+        self.assertRaises(
+            NotImplementedError, lambda: self.limitedQueue.append(item))
+        self.assertRaises(
+            NotImplementedError, lambda: self.limitedQueue.insert(item))
 
     def test_complete_fill_complete_empty(self):
         # Completely Filled

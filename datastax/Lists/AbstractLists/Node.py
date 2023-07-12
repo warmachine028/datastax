@@ -1,5 +1,5 @@
 from typing import Self, Optional, Any
-from datastax.Lists.Utils import Commons
+from datastax.Utils import Commons
 from abc import ABC as AbstractClass, abstractmethod
 
 
