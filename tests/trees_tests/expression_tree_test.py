@@ -4,7 +4,7 @@ from datastax.errors import (
     UnmatchedBracketPairError,
     InvalidExpressionError
 )
-from datastax.trees import ExpressionTree
+from datastax.Trees import ExpressionTree
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
     postorder_items

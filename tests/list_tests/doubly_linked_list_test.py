@@ -2,8 +2,8 @@ import random
 import unittest
 from typing import Optional, Any
 
-from datastax.Lists.DoublyLinkedList import DoublyLinkedList
-from datastax.Lists.DoublyNode import DoublyNode
+from datastax.Lists import DoublyLinkedList
+from datastax.Nodes import DoublyNode
 
 
 class TestDoublyLinkedList(unittest.TestCase):

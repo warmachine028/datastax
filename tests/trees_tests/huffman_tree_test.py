@@ -1,6 +1,6 @@
 import unittest
 
-from datastax.trees import HuffmanTree
+from datastax.Trees import HuffmanTree
 
 
 class TestHuffmanTree(unittest.TestCase):

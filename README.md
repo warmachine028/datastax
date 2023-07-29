@@ -112,7 +112,7 @@ pip install datastax
   Usage
   > py datastax <data-structure> [data]
   Data Structures:
-  ->  trees          Hierarchical DS
+  ->  Trees          Hierarchical DS
   ->  linkedlists    Linear DS
   ->  arrays         Fixed Size Linear DS
 

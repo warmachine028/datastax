@@ -4,7 +4,7 @@ import math
 from itertools import chain
 from typing import Any, Optional
 
-from datastax.trees.private_trees.binary_tree import (
+from datastax.Trees.AbstractTrees.binary_tree import (
     TreeNode,
     BinaryTree,
     _mangled,

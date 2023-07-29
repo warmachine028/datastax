@@ -9,7 +9,7 @@ from datastax.errors import (
     DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
-from datastax.trees import BinaryTree, TreeNode
+from datastax.Trees import BinaryTree, TreeNode
 from tests.trees_tests.common_helper_functions import level_wise_items
 
 

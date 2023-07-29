@@ -4,7 +4,7 @@ from __future__ import annotations
 from sys import maxsize
 from typing import Any, Optional
 
-from datastax.trees.private_trees.segment_tree import SegmentTree, SegmentNode
+from datastax.Trees.AbstractTrees.segment_tree import SegmentTree, SegmentNode
 
 
 class MinSegmentTree(SegmentTree):

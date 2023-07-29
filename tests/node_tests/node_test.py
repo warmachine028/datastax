@@ -1,6 +1,6 @@
 import unittest
 
-from datastax.Lists.Node import Node
+from datastax.Nodes import Node
 
 
 class TestNode(unittest.TestCase):

@@ -99,8 +99,8 @@ setup(
         'datastax/Arrays/AbstractArrays',
         'datastax/Lists',
         'datastax/Lists/AbstractLists',
-        'datastax/trees',
-        'datastax/trees/private_trees',
+        'datastax/Trees',
+        'datastax/Trees/AbstractTrees',
     ],
     author_email='pritamkundu771@gmail.com',
 )

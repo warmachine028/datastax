@@ -5,7 +5,7 @@ import warnings
 from typing import Any, Optional
 
 from datastax.errors import DuplicateNodeWarning
-from datastax.trees.binary_search_tree import BinarySearchTree, TreeNode
+from datastax.Trees.binary_search_tree import BinarySearchTree, TreeNode
 
 
 class AVLNode(TreeNode):

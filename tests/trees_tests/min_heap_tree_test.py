@@ -6,7 +6,7 @@ import unittest
 from typing import Any
 
 from datastax.errors import DeletionFromEmptyTreeWarning
-from datastax.trees import MinHeapTree, HeapNode
+from datastax.Trees import MinHeapTree, HeapNode
 from tests.trees_tests.common_helper_functions import level_wise_items
 
 
@@ -158,7 +158,7 @@ class TestMinHeapTree(unittest.TestCase):
     def test_with_random_inputs(self):
         numbers = range(-100, 100)
         characters = string.ascii_uppercase + string.ascii_lowercase
-        # To avoid terminal explosion please avoid printing these trees
+        # To avoid terminal explosion please avoid printing these Trees
         # after construction
         for _ in range(self.test_cases):
             sample_size = random.randint(1, self.max_sample_size)

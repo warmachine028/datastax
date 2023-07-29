@@ -1,6 +1,6 @@
 import sys
 
-from datastax import Lists, trees, Arrays
+from datastax import Lists, Trees, Arrays
 
 
 def main():
@@ -38,20 +38,20 @@ def main():
                   f"6. LRU Cache: \n"
                   f"{Lists.LRUCache(capacity=10)}\n\n"
                   )
-        elif data_structure in ('tree', 'trees'):
+        elif data_structure in ('tree', 'Trees'):
             print("Visuals for Trees:\n\n"
                   f"1. Binary Tree \n"
-                  f"{trees.BinaryTree(data)}\n\n"
+                  f"{Trees.BinaryTree(data)}\n\n"
                   f"2. Binary Search Tree \n"
-                  f"{trees.BinarySearchTree(data)}\n\n"
+                  f"{Trees.BinarySearchTree(data)}\n\n"
                   f"3. AVL Tree \n"
-                  f"{trees.AVLTree(data)}\n\n")
+                  f"{Trees.AVLTree(data)}\n\n")
         else:
             print("This module is not available yet")
     else:
         print("$ py datastax <data-structure> [data]\n"
               "Data Structures: \n"
-              "->  trees          Hierarchical DS\n"
+              "->  Trees          Hierarchical DS\n"
               "->  lists          Linear DS\n"
               "->  arrays         Fixed Size Linear DS")
 

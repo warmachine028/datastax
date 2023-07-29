@@ -1,7 +1,6 @@
 import unittest
 
-from datastax.Lists.DoublyNode import DoublyNode
-from datastax.Lists.Node import Node
+from datastax.Nodes import Node, DoublyNode
 
 
 class TestDoublyNode(unittest.TestCase):

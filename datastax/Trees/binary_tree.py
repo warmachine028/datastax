@@ -12,8 +12,8 @@ from datastax.errors import (
     DeletionFromEmptyTreeWarning,
 )
 from datastax.Lists import Queue
-from datastax.trees.private_trees import binary_tree
-from datastax.trees.private_trees.binary_tree import TreeNode
+from datastax.Trees.AbstractTrees import binary_tree
+from datastax.Trees.AbstractTrees.binary_tree import TreeNode
 
 
 class BinaryTree(binary_tree.BinaryTree):

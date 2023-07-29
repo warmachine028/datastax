@@ -5,7 +5,7 @@ import warnings
 from typing import Optional, Any
 
 from datastax.errors import DeletionFromEmptyTreeWarning
-from datastax.trees.private_trees.binary_tree import BinaryTree, TreeNode
+from datastax.Trees.AbstractTrees.binary_tree import BinaryTree, TreeNode
 
 
 class HeapNode(TreeNode):

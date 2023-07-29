@@ -4,7 +4,7 @@ import random
 import unittest
 # from itertools import chain
 
-from datastax.trees import SumSegmentTree
+from datastax.Trees import SumSegmentTree
 
 
 class TestSumSegmentTree(unittest.TestCase):

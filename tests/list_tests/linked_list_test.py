@@ -3,7 +3,7 @@ import unittest
 from typing import Optional, Any
 
 from datastax.Lists.LinkedList import LinkedList
-from datastax.Lists.Node import Node
+from datastax.Nodes import Node
 
 
 class TestLinkedList(unittest.TestCase):

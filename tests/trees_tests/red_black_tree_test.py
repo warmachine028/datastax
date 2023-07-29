@@ -7,8 +7,8 @@ from datastax.errors import (
     NodeNotFoundWarning,
     DeletionFromEmptyTreeWarning
 )
-from datastax.trees import RedBlackTree, RedBlackNode
-from datastax.trees.red_black_tree import RED, BLACK
+from datastax.Trees import RedBlackTree, RedBlackNode
+from datastax.Trees.red_black_tree import RED, BLACK
 from tests.trees_tests.common_helper_functions import (
     inorder_items, level_wise_items, check_bst_property
 )
@@ -180,7 +180,7 @@ class TestRedBlackTree(unittest.TestCase):
                 return False
             if node.right and node.right.color == RED:
                 return False
-        # Recursively checking for left and right sub trees
+        # Recursively checking for left and right sub Trees
         left = self.check_coloring(node.left)
         right = self.check_coloring(node.right)
         return left and right

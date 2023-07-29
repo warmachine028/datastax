@@ -8,7 +8,7 @@ from datastax.errors import (
     NodeNotFoundWarning
 
 )
-from datastax.trees import TreeNode, BinarySearchTree
+from datastax.Trees import TreeNode, BinarySearchTree
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
     inorder_items,
@@ -230,7 +230,7 @@ class TestBinarySearchTree(unittest.TestCase):
     def test_with_random_inputs(self):
         numbers = range(-100, 100)
         characters = string.ascii_uppercase + string.ascii_lowercase
-        # To avoid terminal explosion please avoid printing these trees
+        # To avoid terminal explosion please avoid printing these Trees
         # after construction
         for _ in range(self.test_cases):
             sample_size = random.randint(1, self.max_sample_size)

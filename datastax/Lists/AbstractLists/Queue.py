@@ -1,11 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import ABC as AbstractClass, abstractmethod
 from typing import Optional, Any
+from datastax.Nodes.AbstractNodes import Node
 from datastax.Lists.AbstractLists.LinkedList import LinkedList
-from datastax.Lists.AbstractLists.Node import Node
 from datastax.Utils import Commons
 
 
-class Queue(LinkedList, ABC):
+class Queue(LinkedList, AbstractClass):
     _capacity = 0
     _rear = 0
 

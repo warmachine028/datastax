@@ -31,9 +31,6 @@ class Queue(AbstractQueue):
         self._front += 1
         return deleted_item
 
-    def __len__(self):
-        return len(self.array)
-
     def peek(self) -> Any:
         if self.is_empty() or self._front >= self._rear:
             return "QUEUE EMPTY"

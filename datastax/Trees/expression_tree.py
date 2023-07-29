@@ -8,7 +8,7 @@ from datastax.errors import (
     UnmatchedBracketPairError, InvalidExpressionError,
     UnderFlowError, OverFlowError
 )
-from datastax.trees.private_trees.binary_tree import TreeNode, BinaryTree
+from datastax.Trees.AbstractTrees.binary_tree import TreeNode, BinaryTree
 
 
 class ExpressionTree(BinaryTree):

@@ -4,7 +4,7 @@ from __future__ import annotations
 import math
 from typing import Any, Optional, Union
 
-from datastax.trees.private_trees.binary_tree import (
+from datastax.Trees.AbstractTrees.binary_tree import (
     BinaryTree, TreeNode,
     _node_builder, _mangled
 )

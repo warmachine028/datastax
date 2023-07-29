@@ -1,6 +1,6 @@
 from typing import Any, Self, Optional
 
-from datastax.Lists.AbstractLists import Node as AbstractNode
+from datastax.Nodes.AbstractNodes import Node as AbstractNode
 
 
 class Node(AbstractNode):

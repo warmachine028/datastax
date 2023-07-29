@@ -5,9 +5,9 @@ import warnings
 from typing import Optional, Any, Union
 
 from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
-from datastax.trees import TreeNode, AVLNode, HeapNode
-from datastax.trees.private_trees import threaded_binary_tree
-from datastax.trees.private_trees.threaded_binary_tree import ThreadedNode
+from datastax.Trees import TreeNode, AVLNode, HeapNode
+from datastax.Trees.AbstractTrees import threaded_binary_tree
+from datastax.Trees.AbstractTrees.threaded_binary_tree import ThreadedNode
 
 rootNode = Union[TreeNode, AVLNode, HeapNode]
 

@@ -2,7 +2,7 @@
 
 from sys import maxsize
 from typing import Any, Optional, Sequence, Self
-from datastax.Lists.Node import Node
+from datastax.Nodes import Node
 from datastax.errors import OverFlowError, UnderFlowError
 from datastax.Lists.LinkedList import LinkedList
 from datastax.Lists.AbstractLists import Queue as AbstractQueue

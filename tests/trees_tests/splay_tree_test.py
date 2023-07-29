@@ -8,7 +8,7 @@ from datastax.errors import (
     DeletionFromEmptyTreeWarning,
     DuplicateNodeWarning
 )
-from datastax.trees import SplayTree
+from datastax.Trees import SplayTree
 from tests.trees_tests.common_helper_functions import (
     inorder_items, level_wise_items, check_bst_property
 )

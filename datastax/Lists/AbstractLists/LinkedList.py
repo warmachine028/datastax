@@ -1,7 +1,7 @@
 from typing import Any, Optional, Self, Iterable
-from datastax.Lists.AbstractLists.Node import Node
 from datastax.Utils import Commons
 from abc import abstractmethod, ABC as AbstractClass
+from datastax.Nodes.AbstractNodes import Node
 
 
 class LinkedList(AbstractClass):

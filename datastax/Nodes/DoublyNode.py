@@ -1,7 +1,7 @@
 from typing import Any, Self, Optional
 
-from datastax.Lists.Node import Node
-from datastax.Lists.AbstractLists import DoublyNode as AbstractNode
+from datastax.Nodes.Node import Node
+from datastax.Nodes.AbstractNodes import DoublyNode as AbstractNode
 
 
 class DoublyNode(AbstractNode, Node):

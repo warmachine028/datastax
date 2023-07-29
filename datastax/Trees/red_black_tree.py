@@ -7,9 +7,9 @@ from typing import Optional, Any
 from datastax.errors import (
     DuplicateNodeWarning
 )
-from datastax.trees.binary_search_tree import BinarySearchTree
-from datastax.trees.private_trees import red_black_tree
-from datastax.trees.private_trees.red_black_tree import (
+from datastax.Trees.binary_search_tree import BinarySearchTree
+from datastax.Trees.AbstractTrees import red_black_tree
+from datastax.Trees.AbstractTrees.red_black_tree import (
     RedBlackNode,
     BLACK, RED
 )

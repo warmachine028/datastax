@@ -1,11 +1,11 @@
-from abc import ABC
+from abc import ABC as AbstractClass
 from typing import Optional, Self
 
-from datastax.Lists.AbstractLists.Node import Node
+from datastax.Nodes.AbstractNodes.Node import Node
 from datastax.Utils import Commons
 
 
-class DoublyNode(Node, ABC):
+class DoublyNode(Node, AbstractClass):
     _next: Optional[Self]
     _prev: Optional[Self]
 

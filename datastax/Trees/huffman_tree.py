@@ -5,8 +5,8 @@ from collections import Counter
 from typing import Any, Optional, Union
 
 from datastax.Arrays import PriorityQueue
-from datastax.trees.private_trees import huffman_tree
-from datastax.trees.private_trees.huffman_tree import HuffmanNode
+from datastax.Trees.AbstractTrees import huffman_tree
+from datastax.Trees.AbstractTrees.huffman_tree import HuffmanNode
 
 
 class HuffmanTable(huffman_tree.HuffmanTable):

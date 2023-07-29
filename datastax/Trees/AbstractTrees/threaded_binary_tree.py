@@ -5,14 +5,14 @@ from itertools import chain
 from typing import Optional, Any
 
 from datastax.Lists import Queue
-from datastax.trees import (
+from datastax.Trees import (
     BinaryTree,
     AVLTree,
     HeapTree,
     MinHeapTree
 )
-from datastax.trees.private_trees import binary_tree
-from datastax.trees.private_trees.binary_tree import TreeNode, _mangled
+from datastax.Trees.AbstractTrees import binary_tree
+from datastax.Trees.AbstractTrees.binary_tree import TreeNode, _mangled
 
 
 class ThreadedNode(TreeNode):

@@ -9,7 +9,7 @@ from datastax.errors import (
     DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
-from datastax.trees.binary_search_tree import BinarySearchTree, TreeNode
+from datastax.Trees.binary_search_tree import BinarySearchTree, TreeNode
 
 
 class SplayNode(TreeNode):

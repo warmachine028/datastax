@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from datastax.trees import MinSegmentTree
+from datastax.Trees import MinSegmentTree
 
 
 class TestMinSegmentTree(unittest.TestCase):

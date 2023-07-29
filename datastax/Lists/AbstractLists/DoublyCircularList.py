@@ -1,11 +1,10 @@
-from abc import ABC
-
+from abc import ABC as AbstractClass
 from datastax.Lists.AbstractLists.CircularLinkedList import CircularLinkedList
 from datastax.Lists.AbstractLists.DoublyLinkedList import DoublyLinkedList
 from datastax.Utils import Commons
 
 
-class DoublyCircularList(DoublyLinkedList, CircularLinkedList, ABC):
+class DoublyCircularList(DoublyLinkedList, CircularLinkedList, AbstractClass):
 
     def __str__(self):
         if not self.head:

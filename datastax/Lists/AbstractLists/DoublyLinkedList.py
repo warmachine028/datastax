@@ -1,11 +1,11 @@
-from abc import ABC
+from abc import ABC as AbstractClass
 from typing import Optional
+from datastax.Nodes.AbstractNodes import DoublyNode
 from datastax.Lists.AbstractLists.LinkedList import LinkedList
 from datastax.Utils import Commons
-from datastax.Lists.AbstractLists.DoublyNode import DoublyNode
 
 
-class DoublyLinkedList(LinkedList, ABC):
+class DoublyLinkedList(LinkedList, AbstractClass):
     _head: Optional[DoublyNode] = None
     _tail: Optional[DoublyNode] = None
 

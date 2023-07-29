@@ -1,6 +1,6 @@
 import unittest
 
-from datastax.trees import FibonacciTree
+from datastax.Trees import FibonacciTree
 
 
 class TestFibonacciTree(unittest.TestCase):

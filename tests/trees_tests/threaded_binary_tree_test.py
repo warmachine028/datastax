@@ -5,7 +5,7 @@ from typing import Optional, Any
 
 from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
 from datastax.Lists import Queue
-from datastax.trees import ThreadedBinaryTree, ThreadedNode
+from datastax.Trees import ThreadedBinaryTree, ThreadedNode
 
 
 class TestThreadedBinaryTree(unittest.TestCase):
@@ -253,7 +253,7 @@ class TestThreadedBinaryTree(unittest.TestCase):
     def test_with_random_inputs(self):
         numbers = range(-100, 100)
         characters = string.ascii_uppercase + string.ascii_lowercase
-        # To avoid terminal explosion please avoid printing these trees
+        # To avoid terminal explosion please avoid printing these Trees
         # after construction
         for _ in range(self.test_cases):
             sample_size = random.randint(1, self.max_sample_size)

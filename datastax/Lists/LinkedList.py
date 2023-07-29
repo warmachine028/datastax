@@ -1,6 +1,6 @@
 from typing import Any, Optional, Iterable, Self
 
-from datastax.Lists.Node import Node
+from datastax.Nodes import Node
 from datastax.Lists.AbstractLists import LinkedList as AbstractLinkedList
 
 
