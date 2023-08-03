@@ -9,7 +9,7 @@ try:  # https://stackoverflow.com/questions/30700166/python-open-file-error
     with codecs.open("README.md", 'r', errors='ignore', encoding='utf8') as f:
         readme_contents = f.read()
 
-except Exception as error:
+except FileNotFoundError as e:
     readme_contents = (
         'This library which supports ADTs like Arrays, LinkedLists and Trees '
         'and its types. This instant library is solely written from scratch '
@@ -59,7 +59,7 @@ except Exception as error:
         '5. Tables\n'
         '   a. HuffmanTable'
     )
-    sys.stderr.write(f"Warning: Could not open README.md due {error}\n")
+    sys.stderr.write(f"Warning: Could not open README.md due {e}\n")
 setup(
     name='datastax',
     maintainer="Pritam Kundu",

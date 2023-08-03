@@ -31,20 +31,29 @@
 
 ## What's New?
 
-- Refactored Array Contents
-- Added AbstractArray SubModule to abstract print logic
-- Added more test cases for Queues
-- Type Checked Arrays and Lists with mypy
+- Refactored Trees
+- Added Nodes SubPackage
+- Separated TreeNodes into Nodes
+- Added Tables SubPackage
+- Added Colors and ColorCodes in Utils
+- Refactored Lists
+- Removed `__repr__` overrides
+- Added Exceptions in Utils
+- Added Warnings in Utils
+- Added new workflows
+- Added datastax.Wiki
 
 ## Table of Contents
 
+- [What's New](#whats-new)
 - [Introduction](#introduction)
 - [Problem Statement](#problem-statement)
 - [Benefits](#benefits)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [What's Next](#whats-next)
+- [Documentation](#documentation)
+- [License](#license)
 
 ## Introduction
 
@@ -195,9 +204,17 @@ pip install datastax
 
 ![rbt_output](https://github.com/warmachine028/datastax/assets/75939390/3af4ceb6-1e68-4906-ba39-db84dbf274f0)
 
-## What's Next
+## Documentation
 
-- Enhanced Documentation
-- Better TestCases for Huffman Tree
-- Better TestCases for Segment Trees
-- Test Cases for Fibonacci Tree
+- For detailed documentation. See [documentation](https://github.com/warmachine028/datastax/wiki)
+- (Still in progress) 
+
+## License
+
+- see [LICENSE]
+
+**Pritam, 2023**
+
+[license]: https://github.com/warmachine028/datastax/blob/main/LICENSE
+
+---------------------------------------------------
