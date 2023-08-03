@@ -1,14 +1,13 @@
 import random
 import string
 import unittest
-
-from datastax.errors import (
+from datastax.Utils.Warnings import (
     DuplicateNodeWarning,
     DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
-
 )
-from datastax.Trees import TreeNode, BinarySearchTree
+from datastax.Trees import BinarySearchTree
+from datastax.Nodes import TreeNode
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
     inorder_items,

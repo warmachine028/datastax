@@ -20,7 +20,7 @@ class TestNode(unittest.TestCase):
             ' │  None  ║ ------> NULL\n' \
             ' └────────╨────┘\n'
 
-        self.assertEqual(result, Node(self.test_cases[0]).__str__())
+        self.assertEqual(result, str(Node(self.test_cases[0])))
 
     def test_string_with_list(self):
         result = \
@@ -28,7 +28,7 @@ class TestNode(unittest.TestCase):
             ' │  [1]  ║ ------> NULL\n' \
             ' └───────╨────┘\n'
 
-        self.assertEqual(result, Node(self.test_cases[1]).__str__())
+        self.assertEqual(result, str(Node(self.test_cases[1])))
 
     def test_string_with_combination(self):
         result = \
@@ -71,7 +71,7 @@ class TestNode(unittest.TestCase):
 
     def test_next_as_NonNode(self):
         next_item = ['Non Node Item']
-        self.assertRaises(TypeError, lambda: Node('data', next_item))
+        self.assertRaises(TypeError, lambda: Node('data', _next=next_item))
 
     def test_next_set_manually(self):
         next_item = Node(10)

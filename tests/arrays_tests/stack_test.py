@@ -2,7 +2,7 @@ import unittest
 from typing import Optional, Any
 
 from datastax.Arrays import Stack
-from datastax.errors import UnderFlowError, OverFlowError
+from datastax.Utils.Exceptions import UnderflowException, OverflowException
 from datastax.Lists import LinkedList
 
 
@@ -18,7 +18,7 @@ class TestStack(unittest.TestCase):
         self.limitedStack.push(20)
 
         # Should raise overflow error
-        with self.assertRaises(OverFlowError):
+        with self.assertRaises(OverflowException):
             self.limitedStack.push(30)
 
         # Completely Emptied
@@ -41,7 +41,7 @@ class TestStack(unittest.TestCase):
         self.assertEqual([], self.items_in(stack))
 
     def test_dequeue_from_empty_queue(self):
-        with self.assertRaises(UnderFlowError):
+        with self.assertRaises(UnderflowException):
             self.limitedStack.pop()
             self.unlimitedStack.pop()
 
@@ -55,7 +55,7 @@ class TestStack(unittest.TestCase):
         self.limitedStack.push(30)
         self.limitedStack.push(40)
         self.assertEqual([30, 40], self.items_in(self.limitedStack))
-        with self.assertRaises(OverFlowError):
+        with self.assertRaises(OverflowException):
             self.limitedStack.push(50)
 
         self.unlimitedStack.push(30)

@@ -1,5 +1,4 @@
 import unittest
-
 from datastax.Nodes import Node, DoublyNode
 
 

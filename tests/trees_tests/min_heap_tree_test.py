@@ -1,12 +1,10 @@
-from __future__ import annotations
-
 import random
 import string
 import unittest
 from typing import Any
-
-from datastax.errors import DeletionFromEmptyTreeWarning
-from datastax.Trees import MinHeapTree, HeapNode
+from datastax.Utils.Warnings import DeletionFromEmptyTreeWarning
+from datastax.Trees import MinHeapTree
+from datastax.Nodes import HeapNode
 from tests.trees_tests.common_helper_functions import level_wise_items
 
 

@@ -3,7 +3,7 @@ import unittest
 from typing import Optional, Any
 
 from datastax.Arrays import PriorityQueue
-from datastax.errors import UnderFlowError, OverFlowError
+from datastax.Utils.Exceptions import UnderflowException, OverflowException
 
 
 class TestPriorityQueue(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestPriorityQueue(unittest.TestCase):
         self.limitedPriorityQueue.enqueue(20)
 
         # Should raise overflow error
-        with self.assertRaises(OverFlowError):
+        with self.assertRaises(OverflowException):
             self.limitedPriorityQueue.enqueue(30)
 
         # Completely Emptied
@@ -43,7 +43,7 @@ class TestPriorityQueue(unittest.TestCase):
         self.assertEqual([], self.items_in(queue))
 
     def test_dequeue_from_empty_queue(self):
-        with self.assertRaises(UnderFlowError):
+        with self.assertRaises(UnderflowException):
             self.limitedPriorityQueue.dequeue()
             self.unlimitedPriorityQueue.dequeue()
 
@@ -57,7 +57,7 @@ class TestPriorityQueue(unittest.TestCase):
         self.limitedPriorityQueue.enqueue(30)
         self.limitedPriorityQueue.enqueue(40)
         self.assertEqual([40, 30], self.items_in(self.limitedPriorityQueue))
-        with self.assertRaises(OverFlowError):
+        with self.assertRaises(OverflowException):
             self.limitedPriorityQueue.enqueue(50)
 
         self.unlimitedPriorityQueue.enqueue(30)

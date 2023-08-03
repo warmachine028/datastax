@@ -1,8 +1,8 @@
 import unittest
 
-from datastax.errors import (
-    UnmatchedBracketPairError,
-    InvalidExpressionError
+from datastax.Utils.Exceptions import (
+    UnmatchedBracketPairException,
+    InvalidExpressionException
 )
 from datastax.Trees import ExpressionTree
 from tests.trees_tests.common_helper_functions import (
@@ -86,10 +86,10 @@ class TestExpressionTree(unittest.TestCase):
             self.assertEqual(result[1], tree.root.data if tree.root else None)
             # checking infix and postfix expressions:
             if tree.root:
-                self.assertEqual(tree.infix_expression,
+                self.assertEqual(tree._infix_expression,
                                  ''.join(map(str, item)))
                 self.assertEqual(
-                    tree.postfix_expression,
+                    tree._postfix_expression,
                     f"{' '.join(map(str, postorder_items(tree)))} ")
 
     def test_errors(self):
@@ -102,7 +102,7 @@ class TestExpressionTree(unittest.TestCase):
             "a*b(c*(d/ e * f)"
         ]
         for test_case in test_cases:
-            with self.assertRaises(UnmatchedBracketPairError):
+            with self.assertRaises(UnmatchedBracketPairException):
                 ExpressionTree(test_case)
 
         # Bad Expressions
@@ -111,7 +111,7 @@ class TestExpressionTree(unittest.TestCase):
             'A B + C - (9) +-'
         ]
         for test_case in test_cases:
-            with self.assertRaises(InvalidExpressionError):
+            with self.assertRaises(InvalidExpressionException):
                 ExpressionTree(test_case)
 
     def test_infix_to_postfix(self):

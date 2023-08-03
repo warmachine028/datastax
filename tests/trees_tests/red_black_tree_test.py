@@ -1,14 +1,12 @@
-from __future__ import annotations
-
 import random
 import unittest
-
-from datastax.errors import (
+from datastax.Utils.Warnings import (
     NodeNotFoundWarning,
     DeletionFromEmptyTreeWarning
 )
-from datastax.Trees import RedBlackTree, RedBlackNode
-from datastax.Trees.red_black_tree import RED, BLACK
+from datastax.Trees import RedBlackTree
+from datastax.Nodes import RedBlackNode
+from datastax.Trees.RedBlackTree import RED, BLACK
 from tests.trees_tests.common_helper_functions import (
     inorder_items, level_wise_items, check_bst_property
 )
@@ -45,7 +43,7 @@ class TestRedBlackTree(unittest.TestCase):
 
             tree = RedBlackTree(sample)
             self.assertEqual(sorted(sample), inorder_items(tree))
-            # Validate Red Black Tree tree
+            # Validate Red Black Tree
             self.assertTrue(self.validate_tree(tree))
             # Check deletion after insertion
             to_delete = sample[random.randint(0, len(sample)) - 1]
@@ -124,7 +122,7 @@ class TestRedBlackTree(unittest.TestCase):
         self.assertTrue(check_bst_property(tree.root))
 
     def test_with_rogue_rbt(self):
-        # Tree with red Red conflict
+        # Tree with red-red conflict
         root = RedBlackNode(
             500,
             RedBlackNode(400, RedBlackNode(300, None, None, BLACK)),
@@ -132,9 +130,10 @@ class TestRedBlackTree(unittest.TestCase):
             BLACK
         )
         # creating parental links
-        root.left.parent = root.right.parent = root
-        root.left.left.parent = root.left
-        root.right.left.parent = root.right
+        root.left.set_parent(root)
+        root.right.set_parent(root)
+        root.left.left.set_parent(root.left)
+        root.right.left.set_parent(root.right)
 
         self.assertFalse(self.check_coloring(root))
         self.assertTrue(check_bst_property(root))
@@ -148,9 +147,10 @@ class TestRedBlackTree(unittest.TestCase):
         )
 
         # creating parental links
-        root.left.parent = root.right.parent = root
-        root.left.left.parent = root.left
-        root.right.left.parent = root.right
+        root.left.set_parent(root)
+        root.right.set_parent(root)
+        root.left.left.set_parent(root.left)
+        root.right.left.set_parent(root.right)
 
         self.assertFalse(self.check_coloring(root))
         self.assertTrue(check_bst_property(root))

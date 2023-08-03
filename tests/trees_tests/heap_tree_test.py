@@ -1,14 +1,14 @@
-from __future__ import annotations
-
 import random
 import string
 import unittest
 from typing import Any
-
-from datastax.errors import DeletionFromEmptyTreeWarning
-from datastax.Trees import HeapTree, HeapNode
-from tests.trees_tests.common_helper_functions import level_wise_items, \
+from datastax.Utils.Warnings import DeletionFromEmptyTreeWarning
+from datastax.Trees import HeapTree
+from datastax.Nodes import HeapNode
+from tests.trees_tests.common_helper_functions import (
+    level_wise_items,
     max_heapify
+)
 
 
 class TestHeapTree(unittest.TestCase):
@@ -100,7 +100,7 @@ class TestHeapTree(unittest.TestCase):
             'A',  # -> char
             # Inserting Uncommon items
             HeapTree([1, 2]).root,  # -> Node
-            HeapTree([1, 2]),  # ->  self referential type
+            HeapTree([1, 2]),  # ->  self-referential type
             None  # -> * can't be inserted anywhere
             # entire list will be discarded if Node as first element
         ]  # Can't even insert the rest of the items

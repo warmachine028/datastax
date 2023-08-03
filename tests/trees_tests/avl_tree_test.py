@@ -1,13 +1,13 @@
 import random
 import string
 import unittest
-
-from datastax.errors import (
+from datastax.Utils.Warnings import (
     DuplicateNodeWarning,
     NodeNotFoundWarning,
     DeletionFromEmptyTreeWarning
 )
-from datastax.Trees import AVLTree, AVLNode
+from datastax.Trees import AVLTree
+from datastax.Nodes import AVLNode
 from tests.trees_tests.common_helper_functions import (
     level_wise_items,
     inorder_items,
