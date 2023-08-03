@@ -1,44 +1,53 @@
-# Expression Tree Implementation
-from __future__ import annotations
+from typing import Any, Optional, Self, Sequence
 
-from typing import Optional, Union, Any
-
-from datastax.Arrays import Stack
-from datastax.errors import (
-    UnmatchedBracketPairError, InvalidExpressionError,
-    UnderFlowError, OverFlowError
+from datastax.Utils.Exceptions import (
+    UnmatchedBracketPairException,
+    InvalidExpressionException,
+    UnderflowException,
+    OverflowException
 )
-from datastax.Trees.AbstractTrees.binary_tree import TreeNode, BinaryTree
+from datastax.Arrays import Stack
+from datastax.Nodes import TreeNode
+from datastax.Trees.BinaryTree import BinaryTree
 
 
 class ExpressionTree(BinaryTree):
-    def __init__(self, infix_expression: Union[list, str] = None):
-        self.infix_expression = ''
-        self.postfix_expression = ''
+    _infix_expression = ""
+    _postfix_expression = ""
+
+    @property
+    def infix_expression(self):
+        return self._infix_expression
+
+    @property
+    def postfix_expression(self):
+        return self._postfix_expression
+
+    def __init__(self, infix_expression: Optional[Sequence] = None):
         super().__init__(infix_expression)
 
-    def _construct(self, infix_expression: Union[list, str] = None
-                   ) -> Optional[ExpressionTree]:
+    def _construct(self, infix_expression: Optional[Sequence] = None
+                   ) -> Optional[Self]:
         if not infix_expression or infix_expression[0] is None:
             return None
         infix_expression = [*filter(lambda x: x is not None, infix_expression)]
-        self.infix_expression = ''.join(map(str, infix_expression))
-        self.postfix_expression = self.infix_to_postfix()
+        self._set_infix(''.join(map(str, infix_expression)))
+        self._set_postfix(self.infix_to_postfix())
         stack = Stack(capacity=len(infix_expression))
-        for item in self.postfix_expression.split():
+        for item in self._postfix_expression.split():
             if self.is_operator(item):
                 try:
                     right, left = stack.pop(), stack.pop()
                     node = TreeNode(item, left, right)
-                except UnderFlowError:
-                    raise InvalidExpressionError(self)
+                except UnderflowException:
+                    raise InvalidExpressionException(self)
             else:
                 node = TreeNode(item)
             try:
                 stack.push(node)
-            except OverFlowError:
-                raise InvalidExpressionError(self)
-        self._root = stack.pop()
+            except OverflowException:
+                raise InvalidExpressionException(self)
+        self.set_root(stack.pop())
         return self
 
     @staticmethod
@@ -47,22 +56,21 @@ class ExpressionTree(BinaryTree):
 
     @staticmethod
     def precedence_of(operator: str) -> int:
-        if operator == '^':
-            return 1
-        if operator in ('*', '/', '%'):
-            return 2
-        if operator in ('+', '-'):
-            return 3
-        return 4
+        precedence = {
+            '^': 1,
+            '*': 2, '/': 2, '%': 2,
+            '+': 3, '-': 3
+        }
+        return precedence.get(operator, 4)
 
-    def infix_to_postfix(self, infix_expression=''):
+    def infix_to_postfix(self, infix_expression: Optional[str] = '') -> str:
         if not infix_expression:
-            infix_expression = self.infix_expression
+            infix_expression = self._infix_expression
 
         if infix_expression.count('(') != infix_expression.count(')'):
-            raise UnmatchedBracketPairError(self, infix_expression)
+            raise UnmatchedBracketPairException(self, infix_expression)
 
-        postfix_expression: str = ''
+        postfix_expression = ''
         stack = Stack(capacity=len(infix_expression))
         infix_expression += ')'
         stack.push('(')
@@ -99,5 +107,14 @@ class ExpressionTree(BinaryTree):
 
         return postfix_expression
 
+    def _set_infix(self, infix_expression: str):
+        self._infix_expression = infix_expression
+
+    def _set_postfix(self, postfix_expression: str):
+        self._postfix_expression = postfix_expression
+
     def insert(self, item: Any):
+        raise NotImplementedError
+
+    def insert_path(self, data: Any, path: Optional[list[str]] = None) -> None:
         raise NotImplementedError

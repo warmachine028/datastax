@@ -1,29 +1,40 @@
-# Binary Tree Implementation
-from __future__ import annotations
-
 import warnings
-from typing import Any, Optional
-
-from datastax.errors import (
-    PathNotGivenError,
-    PathNotFoundError,
+from typing import Any, Optional, Self, Sequence
+from datastax.Utils.Exceptions import (
+    PathNotGivenException,
+    PathNotFoundException,
+)
+from datastax.Utils.Warnings import (
     PathAlreadyOccupiedWarning,
     NodeNotFoundWarning,
     DeletionFromEmptyTreeWarning,
 )
 from datastax.Lists import Queue
-from datastax.Trees.AbstractTrees import binary_tree
-from datastax.Trees.AbstractTrees.binary_tree import TreeNode
+from datastax.Nodes import TreeNode
+from datastax.Trees.AbstractTrees import BinaryTree as AbstractTree
 
 
-class BinaryTree(binary_tree.BinaryTree):
-    def insert_path(self, data: Any, path: list[str] = None) -> None:
+class BinaryTree(AbstractTree):
+    def __init__(self, items: Optional[Sequence] = None,
+                 root: Optional[TreeNode] = None):
+        self.set_root(root)
+        self._construct(items)
+        self._string: Optional[str] = None
+
+    def set_root(self, root: TreeNode | None):
+        if root is None or isinstance(root, TreeNode):
+            self._root = root
+            return
+        raise TypeError("The 'root' parameter must be an "
+                        "instance of TreeNode or its subclass.")
+
+    def insert_path(self, data: Any, path: Optional[list[str]] = None) -> None:
         node = TreeNode(data)
         if not self._root:
             self._root = node
             return
         if not path:
-            raise PathNotGivenError(self)
+            raise PathNotGivenException(self)
         parent = self._root
         for direction in path[:-1]:  # Reaching
             if direction == 'left' and parent.left:
@@ -31,11 +42,11 @@ class BinaryTree(binary_tree.BinaryTree):
             elif direction == 'right' and parent.right:
                 parent = parent.right
             else:
-                raise PathNotFoundError(self)
+                raise PathNotFoundException(self)
         if path[-1] == 'right' and not parent.right:
-            parent.right = node
+            parent.set_right(node)
         elif path[-1] == 'left' and not parent.left:
-            parent.left = node
+            parent.set_left(node)
         else:
             occupied_node = parent.left if path[-1] == 'left' else parent.right
             warnings.warn("Insertion unsuccessful. Path already occupied by "
@@ -43,28 +54,28 @@ class BinaryTree(binary_tree.BinaryTree):
                           PathAlreadyOccupiedWarning)
 
     # Helper function to construct tree by level order -> Array to tree
-    def _construct(self, array: list[Any] = None) -> Optional[BinaryTree]:
-        if not array or array[0] is None:
+    def _construct(self, items: Optional[Sequence] = None) -> Self | None:
+        if not items or items[0] is None:
             return None
 
-        queue = Queue(capacity=len(array))
+        queue = Queue(capacity=len(items))
         current = 0
         root = self.root
         if not root:
-            root = TreeNode(array[0])
+            root = TreeNode(items[0])
             current = 1
         queue.enqueue(root)
-        while not queue.is_empty() and current < len(array):
+        while not queue.is_empty() and current < len(items):
             node = queue.dequeue()
-            node.left = None if array[current] is None else TreeNode(
-                array[current])
+            node.set_left(None if items[current] is None else TreeNode(
+                items[current]))
             if node.left:
                 queue.enqueue(node.left)  # Inserting Left Node
             current += 1
-            if current >= len(array):
+            if current >= len(items):
                 break
-            node.right = None if array[current] is None else TreeNode(
-                array[current])
+            node.set_right(None if items[current] is None else TreeNode(
+                items[current]))
             if node.right:
                 queue.enqueue(node.right)  # Inserting Right Node
             current += 1
@@ -129,13 +140,13 @@ class BinaryTree(binary_tree.BinaryTree):
         if parent:
             if parent.right:
                 data = parent.right.data
-                parent.right = None
+                parent.set_right(None)
             else:
                 data = parent.left.data
-                parent.left = None
+                parent.set_left(None)
         elif self._root:
             data = self._root.data
-            self._root = None
+            self.set_root(None)
         else:
             warnings.warn(
                 "Deletion Unsuccessful. Can't delete from empty Tree",
@@ -143,8 +154,7 @@ class BinaryTree(binary_tree.BinaryTree):
             )
         return data
 
-    def insert(self, item: Any):
-
+    def insert(self, item: Any) -> None:
         temp = None if item is None else TreeNode(item)
         queue = Queue(capacity=len(self.array_repr))
         if self.root:
@@ -154,12 +164,12 @@ class BinaryTree(binary_tree.BinaryTree):
             if node.left:
                 queue.enqueue(node.left)
             else:
-                node.left = temp
+                node.set_left(temp)
                 return
             if node.right:
                 queue.enqueue(node.right)
             else:
-                node.right = temp
+                node.set_right(temp)
                 return
         else:
             self._root = temp

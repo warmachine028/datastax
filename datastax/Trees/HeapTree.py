@@ -1,41 +1,41 @@
-# Heap Tree Implementation
-from __future__ import annotations
-
 import warnings
-from typing import Optional, Any
+from typing import Any, Optional, Self, Sequence
 
-from datastax.errors import DeletionFromEmptyTreeWarning
-from datastax.Trees.AbstractTrees.binary_tree import BinaryTree, TreeNode
-
-
-class HeapNode(TreeNode):
-    def __init__(self, data: Any,
-                 left: HeapNode = None,
-                 right: HeapNode = None):
-        super().__init__(data, left, right)
-        self.parent: Optional[HeapNode] = None
-        self.prev_leaf: Optional[HeapNode] = None
+from datastax.Utils.Warnings import DeletionFromEmptyTreeWarning
+from datastax.Trees.BinaryTree import BinaryTree
+from datastax.Nodes import HeapNode
 
 
 class HeapTree(BinaryTree):
-    def __init__(self, array: list[Any] = None, root: HeapNode = None):
-        self._root: Optional[HeapNode] = root
-        self._leaf: Optional[HeapNode] = root
-        super().__init__(array, root)
+    _leaf: Optional[HeapNode]
 
-    def _construct(self, array: list[Any] = None) -> Optional[HeapTree]:
-        if not array or array[0] is None:
+    def __init__(self, items: Optional[list] = None,
+                 root: Optional[HeapNode] = None):
+        self.set_root(root)
+        self.set_leaf(root)
+        super().__init__(items, root)
+
+    @property
+    def leaf(self):
+        return self._leaf
+
+    def set_leaf(self, leaf: HeapNode | None):
+        if leaf is None or isinstance(leaf, HeapNode):
+            self._leaf = leaf
+            return
+        raise TypeError("The 'leaf' parameter must be an "
+                        "instance of HeapNode or its subclass.")
+
+    def _construct(self, items: Optional[Sequence] = None) -> Self | None:
+        if not items or items[0] is None:
             return None
-        for item in array:
+
+        for item in items:
             try:
                 self.heappush(item)
             except TypeError as error:
                 raise error
         return self
-
-    @property
-    def leaf(self):
-        return self._leaf
 
     # Function to push an element inside a tree
     def heappush(self, data: Any) -> None:
@@ -44,20 +44,21 @@ class HeapTree(BinaryTree):
             return
         node = HeapNode(data)
         if root is None:  # Heap Tree is Empty
-            self._root = self._leaf = node
+            self.set_root(node)
+            self.set_leaf(node)
         # Heap tree has nodes. So inserting new node
         # in the left of leftmost leaf node
         elif self.leaf and self.leaf.left is None:
-            self.leaf.left = node
-            node.parent = self.leaf
+            self.leaf.set_left(node)
+            node.set_parent(self.leaf)
         else:
             if not self.leaf:
                 return
-            self.leaf.right = node
+            self.leaf.set_right(node)
             previous_leaf = self.leaf
-            node.parent = self.leaf
+            node.set_parent(previous_leaf)
             self._update_leaf(self.leaf)
-            self.leaf.prev_leaf = previous_leaf
+            self.leaf.set_prev_leaf(previous_leaf)
         self._heapify(node)
 
     # Private function to convert a subtree to heap
@@ -67,17 +68,17 @@ class HeapTree(BinaryTree):
             self._heapify(node.parent)
 
     # Private Helper method of heappush function to
-    # update rightmost node in deepest level
+    # update rightmost node in the deepest level
     def _update_leaf(self, node: HeapNode) -> None:
         # reach extreme left of next level if current level is full
         if node.parent is None:
-            self._leaf = node
+            self.set_leaf(node)
         elif node.parent.left is node:
-            self._leaf = node.parent.right
+            self.set_leaf(node.parent.right)
         elif node.parent.right is node:
             self._update_leaf(node.parent)
         while self.leaf and self.leaf.left:
-            self._leaf = self.leaf.left
+            self.set_leaf(self.leaf.left)
 
     # Function to pop the largest element in the tree
     def heappop(self) -> Optional[Any]:
@@ -90,19 +91,19 @@ class HeapTree(BinaryTree):
         deleted_data = self.root.data
         if self.root is self.leaf and not any(
                 [self.leaf.left, self.leaf.right]):
-            self._root = self._leaf = None
-
+            self.set_root(None)
+            self.set_leaf(None)
         else:
             if self.leaf.right and self.root:
                 self.root.data = self.leaf.right.data
-                self.leaf.right = None
+                self.leaf.set_right(None)
                 self._shift_up(self.root)
             elif self.leaf.left and self.root:
                 self.root.data = self.leaf.left.data
-                self.leaf.left = None
+                self.leaf.set_left(None)
                 self._shift_up(self.root)
             else:  # We have reached the end of a level
-                self._leaf = self.leaf.prev_leaf
+                self.set_leaf(self.leaf.prev_leaf)
                 return self.heappop()
         return deleted_data
 

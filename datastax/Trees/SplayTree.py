@@ -1,23 +1,14 @@
-# Splay Tree Implementation
-from __future__ import annotations
-
 import warnings
 from typing import Any, Optional
 
-from datastax.errors import (
+from datastax.Utils.Warnings import (
     DuplicateNodeWarning,
     DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
-from datastax.Trees.binary_search_tree import BinarySearchTree, TreeNode
 
-
-class SplayNode(TreeNode):
-    def __init__(self, data: Any,
-                 left: SplayNode = None,
-                 right: SplayNode = None) -> None:
-        super().__init__(data, left, right)
-        self.parent: Optional[SplayNode] = None
+from datastax.Trees.BinarySearchTree import BinarySearchTree
+from datastax.Nodes import SplayNode
 
 
 class SplayTree(BinarySearchTree):
@@ -41,14 +32,14 @@ class SplayTree(BinarySearchTree):
                 if parent:
                     self._splay(parent)
                 return None
-        node.parent = parent
+        node.set_parent(parent)
         # Node to be added is root node
         if not parent:
             return node
         if parent.data > node.data:
-            parent.left = node
+            parent.set_left(node)
         else:
-            parent.right = node
+            parent.set_right(node)
         self._splay(node)
         return self.root
 
@@ -94,21 +85,21 @@ class SplayTree(BinarySearchTree):
         left = node.left
         if not left:
             return left
-        left.parent = node.parent
+        left.set_parent(node.parent)
 
-        node.left = left.right
+        node.set_left(left.right)
         if node.left:
-            node.left.parent = node
-        left.right = node
-        node.parent = left
+            node.left.set_parent(node)
+        left.set_right(node)
+        node.set_parent(left)
 
         if left.parent:
             if node is left.parent.left:
-                left.parent.left = left
+                left.parent.set_left(left)
             else:
-                left.parent.right = left
+                left.parent.set_right(left)
         else:
-            self._root = left
+            self.set_root(left)
         return left
 
     # Private helper method of balance function to perform LL rotation
@@ -116,22 +107,22 @@ class SplayTree(BinarySearchTree):
         right = node.right
         if not right:
             return right
-        right.parent = node.parent
+        right.set_parent(node.parent)
 
-        node.right = right.left
+        node.set_right(right.left)
         if node.right:
-            node.right.parent = node
+            node.right.set_parent(node)
 
-        right.left = node
-        node.parent = right
+        right.set_left(node)
+        node.set_parent(right)
 
         if right.parent:
             if node is right.parent.left:
-                right.parent.left = right
+                right.parent.set_left(right)
             else:
-                right.parent.right = right
+                right.parent.set_right(right)
         else:
-            self._root = right
+            self.set_root(right)
         return right
 
     def delete(self, data: Any = None) -> None:
@@ -141,7 +132,7 @@ class SplayTree(BinarySearchTree):
                 DeletionFromEmptyTreeWarning
             )
             return
-        self._root = self._delete(self.root, data)
+        self.set_root(self._delete(self.root, data))
 
     def _delete(self, root, item: Any):
         node = self.search(item)
@@ -152,20 +143,20 @@ class SplayTree(BinarySearchTree):
         # First completing leftSubTree
         left_tree = SplayTree(None, self.root.left)
         if left_tree.root:
-            left_tree.root.parent = None
+            left_tree.root.set_parent(None)
 
         right_tree = SplayTree(None, self.root.right)
         if right_tree.root:
-            right_tree.root.parent = None
+            right_tree.root.set_parent(None)
 
         if left_tree.root:
             # Finding the maximum element in left subtree
             predecessor = self.inorder_predecessor(self.root)
             if predecessor:
                 left_tree._splay(predecessor)
-            left_tree.root.right = right_tree.root
+            left_tree.root.set_right(right_tree.root)
             if right_tree.root:
-                right_tree.root.parent = left_tree.root
+                right_tree.root.set_parent(left_tree.root)
             self._root = left_tree.root
         else:
             self._root = right_tree.root

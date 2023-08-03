@@ -1,7 +1,5 @@
-# Min Heap Tree Implementation
-from __future__ import annotations
-
-from datastax.Trees.heap_tree import HeapTree, HeapNode
+from datastax.Trees.HeapTree import HeapTree
+from datastax.Nodes import HeapNode
 
 
 class MinHeapTree(HeapTree):

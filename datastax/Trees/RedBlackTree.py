@@ -1,22 +1,15 @@
-# Implementation of Variable size Huffman Coding Tree
-from __future__ import annotations
-
 import warnings
 from typing import Optional, Any
+from datastax.Utils.Warnings import DuplicateNodeWarning
+from datastax.Utils import ColorCodes
+from datastax.Nodes import RedBlackNode
+from datastax.Trees.BinarySearchTree import BinarySearchTree
+from datastax.Trees.AbstractTrees import RedBlackTree as AbstractTree
 
-from datastax.errors import (
-    DuplicateNodeWarning
-)
-from datastax.Trees.binary_search_tree import BinarySearchTree
-from datastax.Trees.AbstractTrees import red_black_tree
-from datastax.Trees.AbstractTrees.red_black_tree import (
-    RedBlackNode,
-    BLACK, RED
-)
+RED, BLACK = ColorCodes.RED, ColorCodes.BLACK
 
 
-class RedBlackTree(BinarySearchTree,
-                   red_black_tree.RedBlackTree):
+class RedBlackTree(BinarySearchTree, AbstractTree):
     # Private helper function for inserting
     def _place(self,
                parent: Optional[RedBlackNode],
@@ -37,15 +30,15 @@ class RedBlackTree(BinarySearchTree,
                 )
                 return None
 
-        node.parent = parent
+        node.set_parent(parent)
         # Node to be added is root node
         if not parent:
-            node.color = BLACK
+            node.set_color(BLACK)
             return node
         if parent.data > node.data:
-            parent.left = node
+            parent.set_left(node)
         else:
-            parent.right = node
+            parent.set_right(node)
         self._post_place(node)
         return self.root
 
@@ -60,15 +53,16 @@ class RedBlackTree(BinarySearchTree,
     def _post_place(self, node: Optional[RedBlackNode]):
         if not node or node is self.root:
             return
-        # * Resolve Red Red Conflict
+        # * Resolve Red-Red Conflict
         parent = node.parent
         if parent and parent.color is RED:
             sibling = self.sibling_of(parent)
             # CASE 1: Recolor and move up to see if more work required.
             if sibling and sibling.color is RED:
-                parent.color = sibling.color = BLACK
+                parent.set_color(BLACK)
+                sibling.set_color(BLACK)
                 if parent.parent and parent.parent is not self.root:
-                    parent.parent.color = RED
+                    parent.parent.set_color(RED)
                     self._post_place(parent.parent)
             # CASE 2: Color is black so restructuring (rotations) and
             # recoloring both are required.
@@ -82,8 +76,8 @@ class RedBlackTree(BinarySearchTree,
                         # node is Right and parent is Left Child of G.Parent
                         parent = self._left_rotate(parent)
                     if parent and parent.parent:
-                        parent.color = BLACK
-                        parent.parent.color = RED
+                        parent.set_color(BLACK)
+                        parent.parent.set_color(RED)
                         self._right_rotate(parent.parent)
                 # CASE B: Parent is right child
                 else:
@@ -94,66 +88,66 @@ class RedBlackTree(BinarySearchTree,
                         # node is Left and parent is Right Child of G.Parent
                         parent = self._right_rotate(parent)
                     if parent and parent.parent:
-                        parent.color = BLACK
-                        parent.parent.color = RED
+                        parent.set_color(BLACK)
+                        parent.parent.set_color(RED)
                         self._left_rotate(parent.parent)
 
     # Private helper method of balance function to perform RR rotation
-    def _right_rotate(self, node: RedBlackNode) -> Optional[RedBlackNode]:
+    def _right_rotate(self, node: RedBlackNode) -> RedBlackNode:
         left = node.left
         if not left:
             return left
-        left.parent = node.parent
+        left.set_parent(node.parent)
 
-        node.left = left.right
+        node.set_left(left.right)
         if node.left:
-            node.left.parent = node
-        left.right = node
-        node.parent = left
+            node.left.set_parent(node)
+        left.set_right(node)
+        node.set_parent(left)
 
         if left.parent:
             if node is left.parent.left:
-                left.parent.left = left
+                left.parent.set_left(left)
             else:
-                left.parent.right = left
+                left.parent.set_right(left)
         else:
-            self._root = left
+            self.set_root(left)
         return left
 
     # Private helper method of balance function to perform LL rotation
-    def _left_rotate(self, node: RedBlackNode) -> Optional[RedBlackNode]:
+    def _left_rotate(self, node: RedBlackNode) -> RedBlackNode:
         right = node.right
         if not right:
             return right
-        right.parent = node.parent
+        right.set_parent(node.parent)
 
-        node.right = right.left
+        node.set_right(right.left)
         if node.right:
-            node.right.parent = node
+            node.right.set_parent(node)
 
-        right.left = node
-        node.parent = right
+        right.set_left(node)
+        node.set_parent(right)
 
         if right.parent:
             if node is right.parent.left:
-                right.parent.left = right
+                right.parent.set_left(right)
             else:
-                right.parent.right = right
+                right.parent.set_right(right)
         else:
-            self._root = right
+            self.set_root(right)
         return right
 
     # Private helper method for delete to perform exchange of data between node
     def _transplant(self, node: RedBlackNode,
                     new_node: Optional[RedBlackNode]) -> None:
         if not node.parent:
-            self._root = new_node
+            self.set_root(new_node)
         elif node is node.parent.left:
-            node.parent.left = new_node
+            node.parent.set_left(new_node)
         else:
-            node.parent.right = new_node
+            node.parent.set_right(new_node)
         if new_node:
-            new_node.parent = node.parent
+            new_node.set_parent(node.parent)
 
     def _delete(self, root, item: Any):
         node = self.search(item)
@@ -165,17 +159,17 @@ class RedBlackTree(BinarySearchTree,
             color = predecessor.color
             pull_up = predecessor.left
             if predecessor.parent is node and pull_up:
-                pull_up.parent = predecessor
+                pull_up.set_parent(predecessor)
             else:
                 self._transplant(predecessor, pull_up)
-                predecessor.left = node.left
+                predecessor.set_left(node.left)
                 if node.left:
-                    node.left.parent = predecessor
+                    node.left.set_parent(predecessor)
             self._transplant(node, predecessor)
-            predecessor.right = node.right
+            predecessor.set_right(node.right)
             if node.right:
-                node.right.parent = predecessor
-            predecessor.color = node.color
+                node.right.set_parent(predecessor)
+            predecessor.set_color(node.color)
         else:
             pull_up = node.left if node.left else node.right
             self._transplant(node, pull_up)
@@ -185,55 +179,56 @@ class RedBlackTree(BinarySearchTree,
 
         return self.root
 
-    def _resolve_left_black_conflict(self, node):
+    def _resolve_left_black_conflict(self, node: RedBlackNode) -> RedBlackNode:
         parent = node.parent
         sibling = parent.right
-        if sibling.color == RED:
-            sibling.color = BLACK
-            parent.color = RED
+        if sibling.color is RED:
+            sibling.set_color(BLACK)
+            parent.set_color(RED)
             self._left_rotate(parent)
             sibling = node.parent.right
 
-        if sibling.left.color == BLACK and sibling.right.color == BLACK:
-            sibling.color = RED
+        if sibling.left.color is BLACK and sibling.right.color is BLACK:
+            sibling.set_color(RED)
             node = parent
         else:
-            if sibling.right.color == BLACK:
-                sibling.left.color = BLACK
-                sibling.color = RED
+            if sibling.right.color is BLACK:
+                sibling.left.set_color(BLACK)
+                sibling.set_color(RED)
                 self._right_rotate(sibling)
                 sibling = parent.right
 
-            sibling.color = parent.color
-            parent.color = BLACK
-            sibling.right.color = BLACK
+            sibling.set_color(parent.color)
+            parent.set_color(BLACK)
+            sibling.right.set_color(BLACK)
             self._left_rotate(parent)
             node = self.root
 
         return node
 
-    def _resolve_right_black_conflict(self, node):
+    def _resolve_right_black_conflict(self,
+                                      node: RedBlackNode) -> RedBlackNode:
         parent = node.parent
         sibling = parent.left
         if sibling.color is RED:
-            sibling.color = BLACK
-            parent.color = RED
+            sibling.set_color(BLACK)
+            parent.set_color(RED)
             self._right_rotate(parent)
             sibling = parent.left
 
         if sibling.right.color is sibling.left.color is BLACK:
-            sibling.color = RED
+            sibling.set_color(RED)
             node = parent
         else:
             if sibling.left.color is BLACK:
-                sibling.right.color = BLACK
-                sibling.color = RED
+                sibling.right.set_color(BLACK)
+                sibling.set_color(RED)
                 self._left_rotate(sibling)
                 sibling = parent.left
 
-            sibling.color = parent.color
-            parent.color = BLACK
-            sibling.left.color = BLACK
+            sibling.set_color(parent.color)
+            parent.set_color(BLACK)
+            sibling.left.set_color(BLACK)
             self._right_rotate(parent)
             node = self.root
         return node
@@ -249,4 +244,4 @@ class RedBlackTree(BinarySearchTree,
             else:
                 node = self._resolve_right_black_conflict(node)
         if node:
-            node.color = BLACK
+            node.set_color(BLACK)

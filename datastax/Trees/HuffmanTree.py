@@ -1,26 +1,20 @@
-# Implementation of Variable size Huffman Coding Tree
-from __future__ import annotations
-
 from collections import Counter
-from typing import Any, Optional, Union
-
+from typing import Any, Optional, Self, Sequence
 from datastax.Arrays import PriorityQueue
-from datastax.Trees.AbstractTrees import huffman_tree
-from datastax.Trees.AbstractTrees.huffman_tree import HuffmanNode
+from datastax.Nodes import HuffmanNode
+from datastax.Tables import HuffmanTable
+from datastax.Trees.BinaryTree import BinaryTree
+from datastax.Trees.AbstractTrees import HuffmanTree as AbstractTree
 
 
-class HuffmanTable(huffman_tree.HuffmanTable):
-    def _calculate_size(self):
-        size = 0
-        for char, huff_code in self.data.items():
-            size += ord(char).bit_length() + len(huff_code)
-        self._size = size
+class HuffmanTree(BinaryTree, AbstractTree):
+    def __init__(self, data: Optional[Sequence] = None):
+        self.data = data
+        super().__init__(data)
 
-
-class HuffmanTree(huffman_tree.HuffmanTree):
-    def _construct(self, data: Union[list[str], str] = None
-                   ) -> Optional[HuffmanTree]:
-        if not data or data[0] is None:
+    def _construct(self,
+                   items: Optional[Sequence] = None) -> Self | None:
+        if not items or items[0] is None:
             return None
 
         def comparator(n1: HuffmanNode, n2: HuffmanNode) -> HuffmanNode:
@@ -30,8 +24,8 @@ class HuffmanTree(huffman_tree.HuffmanTree):
 
         nodes = (
             HuffmanNode(
-                _data, None, None, frequency
-            ) for _data, frequency in Counter(data).items()
+                data, None, None, frequency
+            ) for data, frequency in Counter(items).items()
         )
         p_queue = PriorityQueue(capacity=None, custom_comparator=comparator)
         for node in nodes:
@@ -43,13 +37,12 @@ class HuffmanTree(huffman_tree.HuffmanTree):
             root_freq = sum((node1.frequency, node2.frequency))
             root = HuffmanNode(None, node1, node2, root_freq)
             p_queue.enqueue(root)
-
-        self._root = p_queue.dequeue()
+        self.set_root(p_queue.dequeue())
         self._calculate_huffman_code()
         self._create_huffman_table()
         return self
 
-    def huffman_code_of(self, character: str) -> Optional[str]:
+    def huffman_code_of(self, character: str) -> str | None:
         def find(node: HuffmanNode, path=None):
             if not node:
                 return None
@@ -71,17 +64,17 @@ class HuffmanTree(huffman_tree.HuffmanTree):
     # Private method to build data dictionary for HuffmanTable
     def _create_huffman_table(self):
         items = {}
-        for item in self._data:
+        for item in self.data:
             items[item] = self.huffman_code_of(item)
-        self._table = HuffmanTable(items, Counter(self._data))
+        self._table = HuffmanTable(items, Counter(self.data))
 
     def _calculate_huffman_code(self):
         self._huffman_code = ''.join(
-            self.huffman_code_of(character) for character in self._data
+            self.huffman_code_of(character) for character in self.data
         )
         pass
 
-    def size_calculator(self) -> Optional[tuple[int, int]]:
+    def size_calculator(self) -> tuple[int, int] | None:
         """
         Calculates the actual encoding size and total
         huffman encoding size with table included
@@ -89,21 +82,21 @@ class HuffmanTree(huffman_tree.HuffmanTree):
         if not self.root or not self.huffman_table:
             return None
         fixed_encoding = huffman_encoding = 0
-        frequency = self.huffman_table.frequency
+        frequencies = self.huffman_table.frequencies
 
         for char, huff_code in self.huffman_table.data.items():
             # Converting item to ascii finding bit_length and multiplying
             # it with frequency
-            total_bit_length = ord(char).bit_length() * frequency[char]
+            total_bit_length = ord(char).bit_length() * frequencies[char]
             fixed_encoding += total_bit_length  # Adding to fixed_encoding
 
             # Already in Binary so no conversion to ascii
-            total_bit_length = len(huff_code) * frequency[char]
+            total_bit_length = len(huff_code) * frequencies[char]
             huffman_encoding += total_bit_length  # Adding to huffman_encoding
 
         return fixed_encoding, huffman_encoding + self.huffman_table.size
 
-    def compression_ratio(self) -> Optional[str]:
+    def compression_ratio(self) -> str | None:
         if not self.root:
             return None
         result = self.size_calculator()
@@ -113,7 +106,7 @@ class HuffmanTree(huffman_tree.HuffmanTree):
         compression_ratio = huffman_encoding / fixed_encoding
         return f"{compression_ratio :.2%}"
 
-    def space_saved(self) -> Optional[str]:
+    def space_saved(self) -> str | None:
         if not self.root:
             return None
         result = self.size_calculator()

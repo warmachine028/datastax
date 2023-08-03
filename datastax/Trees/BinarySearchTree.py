@@ -1,26 +1,30 @@
-# Binary Search Tree Implementation
-from __future__ import annotations
-
 import warnings
-from typing import Optional, Any
+from typing import Any, Optional, Self, Sequence
 
-from datastax.errors import (
+from datastax.Utils.Warnings import (
     DuplicateNodeWarning,
     DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
-from datastax.Trees.AbstractTrees.binary_tree import BinaryTree, TreeNode
+from datastax.Nodes import TreeNode
+from datastax.Trees.BinaryTree import BinaryTree
 
 
 class BinarySearchTree(BinaryTree):
-
     def insert(self, data: Any) -> None:
         root = self.root
         if data is None:
             return
         result = self._place(root, data)
         if result:
-            self._root = result
+            self.set_root(result)
+
+    def _construct(self, items: Optional[Sequence] = None) -> Self | None:
+        if not items or items[0] is None:
+            return None
+        for item in items:
+            self.insert(item)
+        return self
 
     def search(self, data: Any):
         """
@@ -57,9 +61,9 @@ class BinarySearchTree(BinaryTree):
         if not parent:
             return TreeNode(data)
         elif parent.data < data:
-            parent.right = self._place(parent.right, data)
+            parent.set_right(self._place(parent.right, data))
         elif parent.data > data:
-            parent.left = self._place(parent.left, data)
+            parent.set_left(self._place(parent.left, data))
         else:
             warnings.warn(
                 f"Insertion unsuccessful. Item '{data}' already exists "
@@ -87,11 +91,11 @@ class BinarySearchTree(BinaryTree):
             # Node with both children, replace with inorder_predecessor
             predecessor = self.inorder_predecessor(root)
             root.data = predecessor.data
-            root.left = self._delete(root.left, root.data)
+            root.set_left(self._delete(root.left, root.data))
         elif item < root.data:
-            root.left = self._delete(root.left, item)
+            root.set_left(self._delete(root.left, item))
         elif root.data < item:
-            root.right = self._delete(root.right, item)
+            root.set_right(self._delete(root.right, item))
         return root
 
     def delete(self, data: Any = None) -> None:
@@ -112,4 +116,4 @@ class BinarySearchTree(BinaryTree):
                 f"data '{data}'", NodeNotFoundWarning
             )
             return
-        self._root = self._delete(self.root, data)
+        self.set_root(self._delete(self.root, data))

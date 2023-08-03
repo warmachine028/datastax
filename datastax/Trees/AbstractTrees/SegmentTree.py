@@ -1,61 +1,36 @@
-from __future__ import annotations
-
 import math
-from typing import Any, Optional
-
-from datastax.Trees.AbstractTrees.binary_tree import (
-    BinaryTree, TreeNode, _node_builder, _mangled
-)
-
-
-class SegmentNode(TreeNode):
-    def __init__(self, data: Any,
-                 left: SegmentNode = None,
-                 right: SegmentNode = None):
-        self.left_index = 0
-        self.right_index = 0
-        super().__init__(data, left, right)
+from typing import Optional
+from abc import ABC as AbstractClass, abstractmethod
+from datastax.Utils import Commons
+from datastax.Nodes import SegmentNode
+from datastax.Trees.AbstractTrees.BinaryTree import BinaryTree
 
 
-class SegmentTree(BinaryTree):
-    def insert(self, item: Any):
-        raise NotImplementedError
+class SegmentTree(BinaryTree, AbstractClass):
+    _segment_array: Optional[list]
 
     @property
     def segment_array(self):
-        segment_array = []
-        self._traverse_leafs(self.root, segment_array)
-        return segment_array
-
-    def _traverse_leafs(self, node, array):
-        if not node:
-            return
-        if not any((node.left, node.right)):
-            array.append(node.data)
-            return
-        # if left child is found, check for leaf node recursively
-        if node.left:
-            self._traverse_leafs(node.left, array)
-        # if right child is found, check for leaf node recursively
-        if node.right:
-            self._traverse_leafs(node.right, array)
+        self._segment_array = []
+        self._traverse_leafs(self.root)
+        return self._segment_array
 
     def __str__(self):  # noqa: C901
         root = self.root
         if not root:
             return "  NULL"
 
-        lines: list[list] = []
-        level: list[Optional[SegmentNode]] = [root]
-        nodes: int = 1
-        max_width: int = 0
+        lines = []
+        level = [root]
+        nodes = 1
+        max_width = 0
         while nodes:
-            line: list[Optional[list]] = []
-            next_level: list[Optional[SegmentNode]] = []
+            line = []
+            next_level = []
             nodes = 0
             for node in level:
                 if node:
-                    data = _mangled(node.data)
+                    data = Commons.repr(node.data)
                     _range = None
                     if node.left_index != node.right_index:
                         _range = f"[{node.left_index}:{node.right_index}]"
@@ -77,8 +52,9 @@ class SegmentTree(BinaryTree):
         "Building string from calculated values"
         per_piece = len(lines[-1]) * (max_width + 4)
 
-        string_builder = f"{_node_builder(lines[0][0][0], per_piece)}\n"
-        string_builder += f"{_node_builder(lines[0][0][1], per_piece)}\n"
+        string_builder = f"{Commons.node_builder(lines[0][0][0], per_piece)}\n"
+        string_builder += \
+            f"{Commons.node_builder(lines[0][0][1], per_piece)}\n"
         per_piece //= 2
         for _, line in enumerate(lines[1:], 1):
             hpw = int(math.floor(per_piece / 2) - 1)
@@ -100,11 +76,11 @@ class SegmentTree(BinaryTree):
             # Printing the value of each Node
             for value in line:
                 value = value[0] if value else value
-                string_builder += _node_builder(value, per_piece)
+                string_builder += Commons.node_builder(value, per_piece)
             string_builder += '\n'
             for value in line:
                 value = value[1] if value else value
-                string_builder += _node_builder(value, per_piece)
+                string_builder += Commons.node_builder(value, per_piece)
             string_builder += '\n'
 
             per_piece //= 2
@@ -120,7 +96,7 @@ class SegmentTree(BinaryTree):
             if self._string is not None:
                 self._string += (
                     f"\n{padding}{component}"
-                    f"{_mangled(parent.data)} "
+                    f"{Commons.repr(parent.data)} "
                 )
                 if parent.left_index != parent.right_index:
                     self._string += (
@@ -142,3 +118,21 @@ class SegmentTree(BinaryTree):
         self._string = ""
         string_builder(root, bool(root.right))
         print(self._string)
+
+    @abstractmethod
+    def update_at_range(self, left: int, right: int, data: int) -> None:
+        ...
+
+    @abstractmethod
+    def update_at_index(self, index: int, data: int) -> None:
+        ...
+
+    @abstractmethod
+    def get_range(self, left: int, right: int,
+                  root: SegmentNode | None,
+                  lazy_node: SegmentNode | None):
+        ...
+
+    @abstractmethod
+    def _traverse_leafs(self, node: SegmentNode | None) -> None:
+        ...
