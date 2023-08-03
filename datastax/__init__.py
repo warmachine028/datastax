@@ -2,4 +2,11 @@
 
 # Versioning of the datastax package
 __version__ = "0.4.2"
-__all__ = ['Trees', 'Lists', 'Arrays', 'Nodes', 'Utils']
+__all__ = [
+    'Utils',
+    'Arrays',
+    'Nodes',
+    'Lists',
+    'Trees',
+    'Tables'
+]
