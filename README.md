@@ -151,12 +151,11 @@ pip install datastax
 
 - **Queue**
 
-![queue](https://github.com/warmachine028/datastax/assets/75939390/0fe72e7a-7eb9-4ee9-9b7a-6c0f83d98409)
+![queue](https://github.com/warmachine028/datastax/assets/75939390/e62ba451-f499-45dc-bcb9-9e29ebfe6dbd)
 
 ![queue_output](https://github.com/warmachine028/datastax/assets/75939390/daecb209-d459-4374-96e0-816deb08dcde)
 
-------------------------------------
----------------
+---------------------------------------------------
 
 - **BinaryTree**
 
@@ -192,7 +191,7 @@ pip install datastax
 
 - **HuffmanTree**
 
-![hft](https://github.com/warmachine028/datastax/assets/75939390/5dc609a6-51c2-4ec9-88ba-c1ea175ef88e)
+![hft](https://github.com/warmachine028/datastax/assets/75939390/bab7da94-624f-40ac-b746-463157e84cdf)
 
 ![hft_output](https://github.com/warmachine028/datastax/assets/75939390/2de13da6-8eaa-4e62-a06a-8dbf91c008a2)
 
