@@ -2,7 +2,8 @@ import random
 import unittest
 from typing import Optional, Any
 
-from datastax.Lists import CircularLinkedList, Node
+from datastax.Lists import CircularLinkedList
+from datastax.Nodes import Node
 
 
 class TestCircularLinkedList(unittest.TestCase):

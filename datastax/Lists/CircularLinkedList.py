@@ -1,10 +1,9 @@
 from typing import Any
-
 from datastax.Lists.LinkedList import LinkedList
 from datastax.Lists.AbstractLists import CircularLinkedList as AbstractList
 
 
-class CircularLinkedList(AbstractList, LinkedList):
+class CircularLinkedList(LinkedList, AbstractList):
     def append(self, data: Any) -> None:
         super().append(data)
         self.tail.set_next(self.head)

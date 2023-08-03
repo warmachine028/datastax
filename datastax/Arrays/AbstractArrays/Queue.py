@@ -79,3 +79,6 @@ class Queue(Array, AbstractClass):
     @abstractmethod
     def peek(self) -> Any:
         ...
+
+    def __len__(self):
+        return len(self.array)

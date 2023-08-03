@@ -1,15 +1,17 @@
 import random
 import string
 import unittest
-
-from datastax.errors import (
-    PathNotGivenError,
-    PathNotFoundError,
+from datastax.Utils.Exceptions import (
+    PathNotGivenException,
+    PathNotFoundException,
+)
+from datastax.Utils.Warnings import (
     PathAlreadyOccupiedWarning,
     DeletionFromEmptyTreeWarning,
     NodeNotFoundWarning
 )
-from datastax.trees import BinaryTree, TreeNode
+from datastax.Trees import BinaryTree
+from datastax.Nodes import TreeNode
 from tests.trees_tests.common_helper_functions import level_wise_items
 
 
@@ -164,10 +166,10 @@ class TestBinaryTree(unittest.TestCase):
         self.assertEqual([1, 2, 3, 5, 4], level_wise_items(self.bt))
 
         # Unsuccessful insertion Must require path for non-root nodes
-        with self.assertRaises(PathNotGivenError):
+        with self.assertRaises(PathNotGivenException):
             self.bt.insert_path(10, None)
 
-        with self.assertRaises(PathNotFoundError):
+        with self.assertRaises(PathNotFoundException):
             self.bt.insert_path(10, [left, left, left, right])
 
         # Must Warn the user
@@ -185,7 +187,7 @@ class TestBinaryTree(unittest.TestCase):
             'A',  # -> char
             # Inserting Uncommon items
             BinaryTree([1, 2]).root,  # -> Node
-            BinaryTree([1, 2]),  # ->  self referential type
+            BinaryTree([1, 2]),  # ->  self-referential type
             None  # -> * can't be inserted anywhere
             # entire list will be discarded if Node as first element
         ]

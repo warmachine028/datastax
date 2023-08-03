@@ -22,8 +22,6 @@ Through encapsulating the logic and providing a clear separation between the und
 Author: Pritam Kundu
 Date: 2023-07-10
 """
-from .Node import Node
-from .DoublyNode import DoublyNode
 from .LinkedList import LinkedList
 from .DoublyLinkedList import DoublyLinkedList
 from .CircularLinkedList import CircularLinkedList
@@ -31,8 +29,6 @@ from .DoublyCircularList import DoublyCircularList
 from .Queue import Queue
 
 __all__ = [
-    'Node',
-    'DoublyNode',
     'LinkedList',
     'DoublyLinkedList',
     'CircularLinkedList',

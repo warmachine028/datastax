@@ -1,14 +1,11 @@
-from __future__ import annotations
-
 import random
 import unittest
-
-from datastax.errors import (
+from datastax.Utils.Warnings import (
     NodeNotFoundWarning,
     DeletionFromEmptyTreeWarning,
     DuplicateNodeWarning
 )
-from datastax.trees import SplayTree
+from datastax.Trees import SplayTree
 from tests.trees_tests.common_helper_functions import (
     inorder_items, level_wise_items, check_bst_property
 )

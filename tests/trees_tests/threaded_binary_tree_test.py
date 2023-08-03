@@ -2,10 +2,10 @@ import random
 import string
 import unittest
 from typing import Optional, Any
-
-from datastax.errors import DuplicateNodeWarning, ExplicitInsertionWarning
+from datastax.Utils.Warnings import DuplicateNodeWarning
 from datastax.Lists import Queue
-from datastax.trees import ThreadedBinaryTree, ThreadedNode
+from datastax.Trees import ThreadedBinaryTree
+from datastax.Nodes import ThreadedNode
 
 
 class TestThreadedBinaryTree(unittest.TestCase):
@@ -42,22 +42,6 @@ class TestThreadedBinaryTree(unittest.TestCase):
             tree = ThreadedBinaryTree(testcase)
             self.assertEqual(result, tree.array_repr)
 
-    def test_avl_tree(self):
-        # testing insertion
-        data = [4, 3, 1, 2, 5, 9]
-        result = [3, 1, 5, 2, 4, 9]
-        # Normal inserting
-        tree = ThreadedBinaryTree(data, insertion_logic="AVLTree")
-        self.assertEqual(result, self.level_wise_items(tree))
-        self.assertEqual(result, tree.array_repr)
-        self.assertEqual(sorted(result), tree.inorder())
-        # Testing Dummy Node
-        self.assertEqual(tree.dummy_node.left.data, 3)  # root
-        self.assertEqual(tree.dummy_node.right, tree.dummy_node)
-
-        with self.assertWarns(ExplicitInsertionWarning):
-            tree.insert(10)
-
     def test_construction(self):
         items = [
             [1, 2, 3, 4, 5, 6],  # <- Using general list of ints
@@ -84,25 +68,8 @@ class TestThreadedBinaryTree(unittest.TestCase):
 
         # Construct with existing root
         root_node = ThreadedNode(10)
-        tree = ThreadedBinaryTree([*range(9, 0, -1)], root_node,
-                                  insertion_logic=None)
+        tree = ThreadedBinaryTree([*range(9, 0, -1)], root_node)
         self.assertEqual([*range(10, 0, -1)], tree.array_repr)
-
-    def test_heap_trees(self):
-        # First Max Heap
-        data = [4, 3, 1, 2, 5, 3, 2, 1, 9]
-        result = [9, 5, 3, 4, 3, 1, 2, 1, 2]
-        # Normal inserting
-        tree = ThreadedBinaryTree(data, insertion_logic="HeapTree")
-        self.assertEqual(result, self.level_wise_items(tree))
-        self.assertEqual(result, tree.array_repr)
-        self.assertEqual(self.inorder(tree), tree.inorder())
-        # # Testing Dummy Node
-        self.assertEqual(tree.dummy_node.left.data, 9)  # root
-        self.assertEqual(tree.dummy_node.right, tree.dummy_node)
-
-        with self.assertWarns(ExplicitInsertionWarning):
-            tree.insert(10)
 
     def test_insert(self):
         self.assertEqual([], self.level_wise_items(self.tbt))
@@ -127,22 +94,6 @@ class TestThreadedBinaryTree(unittest.TestCase):
             with self.assertWarns(DuplicateNodeWarning):
                 self.tbt.insert(item)
 
-    def test_insert_with_logic(self):
-        # Inserting with explicit insertion logic of same type
-        tree = ThreadedBinaryTree(self.items,
-                                  insertion_logic="ThreadedBinaryTree")
-        self.traversal_testing(tree, self.items)
-        # Testing Dummy Node
-        self.assertEqual(tree.dummy_node.left.data, 1)
-        self.assertEqual(tree.dummy_node.right, tree.dummy_node)
-
-        tree = ThreadedBinaryTree(self.items,
-                                  insertion_logic="BinarySearchTree")
-        self.traversal_testing(tree, self.items)
-        # Testing Dummy Node
-        self.assertEqual(tree.dummy_node.left.data, 1)
-        self.assertEqual(tree.dummy_node.right, tree.dummy_node)
-
     def test_inserting_heterogeneous_items(self):
         # inserting miscellaneous items
         items = [
@@ -154,29 +105,13 @@ class TestThreadedBinaryTree(unittest.TestCase):
             'A',  # -> char
             # Inserting Uncommon items
             ThreadedBinaryTree([1, 2]).root,  # -> Node
-            ThreadedBinaryTree([1, 2]),  # ->  self referential type
+            ThreadedBinaryTree([1, 2]),  # ->  self-referential type
             None  # -> * can't be inserted anywhere
             # entire list will be discarded if Node as first element
         ]
         # Must Raise Type Error in normal insertion
         with self.assertRaises(TypeError):
             ThreadedBinaryTree(items)
-
-        # Would be able to build successfully
-        tree = ThreadedBinaryTree(items, insertion_logic='BinaryTree')
-        self.assertEqual(items[:-1], self.level_wise_items(tree))
-
-    def test_normal_binary_tree_construction(self):
-        tree = ThreadedBinaryTree(self.items, insertion_logic="BinaryTree")
-        self.assertEqual(self.items, self.level_wise_items(tree))
-        self.assertEqual(self.items, tree.array_repr)
-        self.assertEqual(self.inorder(tree), tree.inorder())
-        # Testing Dummy Node
-        self.assertEqual(tree.dummy_node.left.data, 1)
-        self.assertEqual(tree.dummy_node.right, tree.dummy_node)
-
-        with self.assertWarns(ExplicitInsertionWarning):
-            tree.insert(10)
 
     def test_preorder_print(self):
         results = [
@@ -203,13 +138,6 @@ class TestThreadedBinaryTree(unittest.TestCase):
                                     self.print_test_cases[-1:],
                                     results[:-3] + results[-1:]):
             tree = ThreadedBinaryTree(testcase)
-            tree.preorder_print()
-            self.assertEqual(result, tree._string)
-
-        for testcase, result in zip(self.print_test_cases[-3:-1],
-                                    results[-3:-1]):
-            tree = ThreadedBinaryTree(testcase,
-                                      insertion_logic='BinaryTree')
             tree.preorder_print()
             self.assertEqual(result, tree._string)
 
@@ -245,15 +173,12 @@ class TestThreadedBinaryTree(unittest.TestCase):
         ]
         for testcase, result in zip(self.print_test_cases, results[:4]):
             tree = ThreadedBinaryTree(testcase)
-            self.assertEqual(result, tree.__str__())
-        tree = ThreadedBinaryTree(self.print_test_cases[5],
-                                  insertion_logic="BinaryTree")
-        self.assertEqual(results[-1], tree.__str__())
+            self.assertEqual(result, str(tree))
 
     def test_with_random_inputs(self):
         numbers = range(-100, 100)
         characters = string.ascii_uppercase + string.ascii_lowercase
-        # To avoid terminal explosion please avoid printing these trees
+        # To avoid terminal explosion please avoid printing these Trees
         # after construction
         for _ in range(self.test_cases):
             sample_size = random.randint(1, self.max_sample_size)
@@ -287,9 +212,9 @@ class TestThreadedBinaryTree(unittest.TestCase):
     def inorder(tree: ThreadedBinaryTree):
         def insert_inorder(node: Optional[ThreadedNode]) -> None:
             if node:
-                insert_inorder(node.left if node.left_is_child else None)
+                insert_inorder(node.left if node._left_is_child else None)
                 array.append(node.data)
-                insert_inorder(node.right if node.right_is_child else None)
+                insert_inorder(node.right if node._right_is_child else None)
 
         if not tree:
             return
@@ -308,9 +233,9 @@ class TestThreadedBinaryTree(unittest.TestCase):
         while not queue.is_empty():
             node: ThreadedNode = queue.dequeue()
             result.append(node.data)
-            if node.left_is_child:
+            if node._left_is_child:
                 queue.enqueue(node.left)
-            if node.right_is_child:
+            if node._right_is_child:
                 queue.enqueue(node.right)
         return result
 

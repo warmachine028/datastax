@@ -1,7 +1,8 @@
 import unittest
 from typing import Optional, Any
 
-from datastax.Lists import DoublyCircularList, DoublyNode
+from datastax.Lists import DoublyCircularList
+from datastax.Nodes import DoublyNode
 
 
 class TestDoublyCircularList(unittest.TestCase):

@@ -1,11 +1,11 @@
-from abc import ABC
+from abc import ABC as AbstractClass
 from typing import Optional
+from datastax.Nodes.AbstractNodes import Node
 from datastax.Lists.AbstractLists.LinkedList import LinkedList
 from datastax.Utils import Commons
-from datastax.Lists.AbstractLists.Node import Node
 
 
-class CircularLinkedList(LinkedList, ABC):
+class CircularLinkedList(LinkedList, AbstractClass):
     def _max_width(self, node: Optional[Node]):
         max_width = 0
         ref = node

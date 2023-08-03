@@ -1,6 +1,5 @@
 import unittest
-
-from datastax.trees import HuffmanTree
+from datastax.Trees import HuffmanTree
 
 
 class TestHuffmanTree(unittest.TestCase):
@@ -27,6 +26,7 @@ class TestHuffmanTree(unittest.TestCase):
             "components of a paragraph (e.g. topic sentence, supporting "
             "details, conclusion) as well as their the sequence and order."
         )
+        print(tree)
         tree = HuffmanTree("Espresso Espress")
         print(tree)
         print(tree.compression_ratio())
@@ -52,4 +52,8 @@ class TestHuffmanTree(unittest.TestCase):
     def test3(self):
         h = HuffmanTree()
         c = h.huffman_code_of('A')
-        print(c)
+        self.assertEqual(c, None)
+
+
+if __name__ == '__main__':
+    unittest.main()

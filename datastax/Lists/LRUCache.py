@@ -14,7 +14,7 @@ LRU -> Least Recently used
 from typing import Any
 
 from datastax.Lists.DoublyLinkedList import DoublyLinkedList
-from datastax.Lists.DoublyNode import DoublyNode
+from datastax.Nodes import DoublyNode
 
 
 class LRUCache(DoublyLinkedList):
