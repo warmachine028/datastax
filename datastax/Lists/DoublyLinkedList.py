@@ -1,12 +1,11 @@
 from typing import Any, Optional, Iterable, Self
-
 from datastax.Nodes import DoublyNode
 from datastax.Lists.LinkedList import LinkedList
 from datastax.Lists.AbstractLists import DoublyLinkedList as AbstractList
 
 
-class DoublyLinkedList(AbstractList, LinkedList):
-    def __init__(self, items: Optional[Iterable[Any]] = None,
+class DoublyLinkedList(LinkedList, AbstractList):
+    def __init__(self, items: Optional[Iterable] = None,
                  head: Optional[DoublyNode] = None,
                  tail: Optional[DoublyNode] = None):
         if head and tail:

@@ -29,9 +29,9 @@ from .DoublyCircularList import DoublyCircularList
 from .Queue import Queue
 
 __all__ = [
-    LinkedList,
-    DoublyLinkedList,
-    CircularLinkedList,
-    DoublyCircularList,
-    Queue
+    'LinkedList',
+    'DoublyLinkedList',
+    'CircularLinkedList',
+    'DoublyCircularList',
+    'Queue'
 ]

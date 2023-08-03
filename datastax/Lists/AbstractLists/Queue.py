@@ -9,12 +9,6 @@ class Queue(LinkedList, AbstractClass):
     _capacity = 0
     _rear = 0
 
-    def append(self, data: Any) -> None:
-        raise NotImplementedError
-
-    def insert(self, data: Any) -> None:
-        raise NotImplementedError
-
     @property
     def capacity(self):
         return self._capacity

@@ -1,6 +1,6 @@
 from abc import ABC as AbstractClass
 from typing import Optional
-from datastax.Nodes.AbstractNodes import DoublyNode
+from datastax.Nodes import DoublyNode
 from datastax.Lists.AbstractLists.LinkedList import LinkedList
 from datastax.Utils import Commons
 

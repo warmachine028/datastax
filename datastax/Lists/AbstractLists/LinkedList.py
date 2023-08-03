@@ -1,7 +1,7 @@
+from abc import ABC as AbstractClass, abstractmethod
 from typing import Any, Optional, Self, Iterable
+from datastax.Nodes import Node
 from datastax.Utils import Commons
-from abc import abstractmethod, ABC as AbstractClass
-from datastax.Nodes.AbstractNodes import Node
 
 
 class LinkedList(AbstractClass):
@@ -44,6 +44,12 @@ class LinkedList(AbstractClass):
 
         return heading + top + mid + dow
 
+    def __iter__(self):
+        ref = self._head
+        while ref:
+            yield ref.data
+            ref = ref.next
+
     def _draw_heading(self, n: int, lpn: int, start_padding: int) -> str:
         if n == 0:
             return " "
@@ -68,4 +74,12 @@ class LinkedList(AbstractClass):
 
     @abstractmethod
     def _construct(self, array: Iterable[Any]) -> Self:
+        ...
+
+    @abstractmethod
+    def set_head(self, head: Node):
+        ...
+
+    @abstractmethod
+    def set_tail(self, tail: Node):
         ...

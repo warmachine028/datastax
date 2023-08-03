@@ -6,10 +6,10 @@ from .LRUCache import LRUCache
 from .Queue import Queue
 
 __all__ = [
-    LinkedList,
-    DoublyLinkedList,
-    CircularLinkedList,
-    DoublyCircularList,
-    Queue,
-    LRUCache
+    'LinkedList',
+    'DoublyLinkedList',
+    'CircularLinkedList',
+    'DoublyCircularList',
+    'Queue',
+    'LRUCache'
 ]

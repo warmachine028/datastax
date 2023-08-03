@@ -1,16 +1,12 @@
 from typing import Any, Optional, Iterable, Self
-
 from datastax.Nodes import Node
-from datastax.Lists.AbstractLists import LinkedList as AbstractLinkedList
+from datastax.Lists.AbstractLists import LinkedList as AbstractList
 
 
-class LinkedList(AbstractLinkedList):
-    def __init__(
-            self,
-            items: Optional[Iterable[Any]] = None,
-            head: Optional[Node] = None,
-            tail: Optional[Node] = None
-    ):
+class LinkedList(AbstractList):
+    def __init__(self, items: Optional[Iterable] = None,
+                 head: Optional[Node] = None,
+                 tail: Optional[Node] = None):
         if head and tail:
             head.set_next(tail)
         self.set_head(head)
@@ -18,12 +14,6 @@ class LinkedList(AbstractLinkedList):
         if tail and not head:
             self.set_head(tail)
         self._construct(items if items else [])
-
-    def __iter__(self):
-        ref = self._head
-        while ref:
-            yield ref.data
-            ref = ref.next
 
     def set_head(self, head: Node | None):
         if head is None or isinstance(head, Node):
@@ -39,7 +29,7 @@ class LinkedList(AbstractLinkedList):
         raise TypeError("The 'tail' parameter must be an "
                         "instance of Node or its subclass.")
 
-    def _construct(self, items: Iterable[Any]) -> Self:
+    def _construct(self, items: Iterable) -> Self:
         for item in items:
             self.append(item)
         return self

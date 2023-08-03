@@ -1,14 +1,12 @@
-# Queue implementation using LinkedList
-
 from sys import maxsize
 from typing import Any, Optional, Sequence, Self
 from datastax.Nodes import Node
-from datastax.errors import OverFlowError, UnderFlowError
+from datastax.Utils.Exceptions import OverflowException, UnderflowException
 from datastax.Lists.LinkedList import LinkedList
 from datastax.Lists.AbstractLists import Queue as AbstractQueue
 
 
-class Queue(AbstractQueue, LinkedList):
+class Queue(LinkedList, AbstractQueue):
     def __init__(self, capacity: Optional[int] = None,
                  items: Optional[list] = None):
         super().__init__()
@@ -40,7 +38,7 @@ class Queue(AbstractQueue, LinkedList):
 
     def enqueue(self, data: Any) -> int:
         if self.is_full():
-            raise OverFlowError(self)
+            raise OverflowException(self)
         node = Node(data)
         if not self.head:
             self.set_head(node)
@@ -52,7 +50,7 @@ class Queue(AbstractQueue, LinkedList):
 
     def dequeue(self) -> Any:
         if self.is_empty():
-            raise UnderFlowError(self)
+            raise UnderflowException(self)
         deleted_node = self.head
         deleted_item = deleted_node.data
         self.set_head(self.head.next)
@@ -63,3 +61,9 @@ class Queue(AbstractQueue, LinkedList):
         if self.is_empty():
             return "QUEUE EMPTY"
         return self._tail.data if self._tail else None
+
+    def append(self, data: Any) -> None:
+        raise NotImplementedError
+
+    def insert(self, data: Any) -> None:
+        raise NotImplementedError
