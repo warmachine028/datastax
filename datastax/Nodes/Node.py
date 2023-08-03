@@ -1,5 +1,4 @@
 from typing import Any, Self, Optional
-
 from datastax.Nodes.AbstractNodes import Node as AbstractNode
 
 
@@ -9,7 +8,7 @@ class Node(AbstractNode):
         self.data = data
         self.set_next(_next)
 
-    def set_next(self, _next: Optional[Self] = None):
+    def set_next(self, _next: Optional[Self]):
         if _next is None or isinstance(_next, Node):
             self._next = _next
             return

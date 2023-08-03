@@ -4,7 +4,7 @@ from abc import ABC as AbstractClass, abstractmethod
 
 
 class Node(AbstractClass):
-    data: Optional[Any]
+    data: Any
     _next: Optional[Self]
 
     @property
@@ -22,5 +22,5 @@ class Node(AbstractClass):
         return top + mid + dow
 
     @abstractmethod
-    def set_next(self, _next: Optional[Self]):
+    def set_next(self, _next: Self):
         ...

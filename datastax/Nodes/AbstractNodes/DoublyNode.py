@@ -1,4 +1,4 @@
-from abc import ABC as AbstractClass
+from abc import ABC as AbstractClass, abstractmethod
 from typing import Optional, Self
 
 from datastax.Nodes.AbstractNodes.Node import Node
@@ -27,3 +27,7 @@ class DoublyNode(Node, AbstractClass):
         )
         dow = f"        └────╨{'─' * width}╨────┘\n"
         return top + mid + dow
+
+    @abstractmethod
+    def set_prev(self, prev: Self):
+        ...
