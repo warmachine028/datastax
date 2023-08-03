@@ -1,7 +1,7 @@
 # Queue Implementation using Lists (Pseudo Arrays)
 from typing import Any, Optional
 
-from datastax.errors import OverFlowError, UnderFlowError
+from datastax.Utils.Exceptions import OverflowException, UnderflowException
 from datastax.Arrays.AbstractArrays import Queue as AbstractQueue
 
 
@@ -18,7 +18,7 @@ class Queue(AbstractQueue):
 
     def enqueue(self, item: Any) -> int:
         if self.is_full():
-            raise OverFlowError(self)
+            raise OverflowException(self)
 
         self._array.append(item)
         self._rear += 1
@@ -26,7 +26,7 @@ class Queue(AbstractQueue):
 
     def dequeue(self) -> Any:
         if self.is_empty() or self.front >= self.rear:
-            raise UnderFlowError(self)
+            raise UnderflowException(self)
         deleted_item = self._array[self.front]
         self._front += 1
         return deleted_item

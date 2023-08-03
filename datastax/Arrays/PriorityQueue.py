@@ -2,7 +2,7 @@
 from typing import Any, Callable, Optional
 
 from datastax.Arrays.Queue import Queue
-from datastax.errors import OverFlowError, UnderFlowError
+from datastax.Utils.Exceptions import OverflowException, UnderflowException
 
 
 class PriorityQueue(Queue):
@@ -38,7 +38,7 @@ class PriorityQueue(Queue):
 
     def dequeue(self) -> Any:
         if self.is_empty():
-            raise UnderFlowError(self)
+            raise UnderflowException(self)
 
         deleted_item = self._array[self._front]
         self._array[self._front] = self._array[-1]
@@ -49,7 +49,7 @@ class PriorityQueue(Queue):
 
     def enqueue(self, item: Any) -> int:
         if self.is_full():
-            raise OverFlowError(self)
+            raise OverflowException(self)
 
         self._array.append(item)
         self._rear += 1

@@ -1,7 +1,7 @@
 # Stack Implementation using Lists (Pseudo Arrays)
 from typing import Any, Optional
 
-from datastax.errors import UnderFlowError, OverFlowError
+from datastax.Utils.Exceptions import UnderflowException, OverflowException
 from datastax.Arrays.AbstractArrays import Stack as AbstractStack
 
 
@@ -18,14 +18,14 @@ class Stack(AbstractStack):
 
     def push(self, item: Any) -> int:
         if self.is_full():  # Overflow Condition
-            raise OverFlowError(self)
+            raise OverflowException(self)
 
         self.array.append(item)
         return 0
 
     def pop(self) -> Any:
         if self.is_empty():  # Underflow Condition handled
-            raise UnderFlowError(self)
+            raise UnderflowException(self)
         return self.array.pop()
 
     def __len__(self):
