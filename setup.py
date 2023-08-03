@@ -102,7 +102,7 @@ setup(
     platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
     test_suite='pytest',
     version=datastax.__version__,
-    python_requires='>=3.11',
+    python_requires='>3.11',
     packages=[
         'datastax',
         'datastax/Utils',
