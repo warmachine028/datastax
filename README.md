@@ -1,4 +1,4 @@
-    updated: Wednesday, 12th July 2023
+    updated: Thursday, 03rd August 2023
 
 <div align=center>
     <a href="https://github.com/warmachine028/datastax">
@@ -217,4 +217,4 @@ pip install datastax
 
 [license]: https://github.com/warmachine028/datastax/blob/main/LICENSE
 
----------------------------------------------------
+<!-- 03/08/23 -->
